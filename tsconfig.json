@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "declaration": true
+    },
+    "include": [
+        "lib/**/*.ts"
+    ]
+}
