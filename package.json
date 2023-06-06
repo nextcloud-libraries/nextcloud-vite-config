@@ -42,7 +42,8 @@
   },
   "files": [
     "dist/",
-    "LICENSES"
+    "LICENSES",
+    "banner-template.txt"
   ],
   "engines": {
     "node": ">=16.0"
