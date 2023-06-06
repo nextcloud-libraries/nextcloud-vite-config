@@ -1,0 +1,52 @@
+{
+  "name": "@susnux/nextcloud-vite-config",
+  "description": "Shared ViteJS config for nextcloud apps",
+  "author": {
+    "name": "Ferdinand Thiessen",
+    "email": "opensource@fthiessen.de",
+    "url": "https://github.com/susnux"
+  },
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint lib",
+    "lint:fix": "eslint --fix lib"
+  },
+  "peerDependencies": {
+    "sass": ">=1.60",
+    "vite": "^4"
+  },
+  "dependencies": {
+    "@rollup/plugin-replace": "^5.0.2",
+    "@vitejs/plugin-vue2": "^2.2.0",
+    "browserslist-to-esbuild": "^1.2.0",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "rollup-plugin-corejs": "^1.0.0-beta.0",
+    "rollup-plugin-license": "^3.0.1",
+    "vite-plugin-node-polyfills": "^0.8.2"
+  },
+  "devDependencies": {
+    "@nextcloud/eslint-config": "^8.3.0-beta.0",
+    "@types/node": "^16.18.18",
+    "typescript": "^5.0.4"
+  },
+  "files": [
+    "dist/",
+    "LICENSES"
+  ],
+  "engines": {
+    "node": ">=16.0"
+  },
+  "eslintConfig": {
+    "extends": "@nextcloud"
+  }
+}
