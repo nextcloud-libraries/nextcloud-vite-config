@@ -87,6 +87,14 @@ const baseConfig = defineConfig({
 			},
 		}),
 	],
+	define: {
+		'process.env.': '({}).',
+		'global.process.env.': '({}).',
+		'globalThis.process.env.': '({}).',
+		'process.env.NODE_ENV': JSON.stringify(buildMode),
+		'global.process.env.NODE_ENV': JSON.stringify(buildMode),
+		'globalThis.process.env.NODE_ENV': JSON.stringify(buildMode),
+	},
 	esbuild: {
 		legalComments: 'inline',
 		target: browserslistToEsbuild(),
