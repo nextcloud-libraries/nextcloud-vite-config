@@ -7,10 +7,9 @@
 import { existsSync, readFileSync, rmSync } from 'fs'
 import { corejsPlugin } from 'rollup-plugin-corejs'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import cleanup from 'rollup-plugin-cleanup'
+import { minify } from 'rollup-plugin-esbuild-minify/lib/index.js'
 import { defineConfig, mergeConfig } from 'vite'
 import type { Plugin, UserConfigExport } from 'vite'
-
 import replace from '@rollup/plugin-replace'
 import vue2 from '@vitejs/plugin-vue2'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
@@ -44,24 +43,8 @@ const emptyJSDir = () => {
 
 const baseConfig = defineConfig({
 	plugins: [
-		// Add node polyfills
-		/* nodePolyfills({
-			protocolImports: false,
-		}), */
-		// Add required polyfills, by default browserslist config is used
-		corejsPlugin({ usage: true }),
 		// Ensure `js/` is empty as we can not use the build in option (see below)
 		emptyJSDir(),
-		// Replace global variables, built-in `define` option does not work (replaces also strings in 'node_modules/`)
-		replace({
-			preventAssignment: true,
-			delimiters: ['\\b', '\\b'],
-			include: 'src/**/*',
-			values: {
-				appName: JSON.stringify(appName),
-				appVersion: JSON.stringify(appVersion),
-			},
-		}),
 		// Add vue2 support
 		vue2({
 			isProduction: !isDev,
@@ -74,7 +57,24 @@ const baseConfig = defineConfig({
 				},
 			},
 		}),
-		cleanup(),
+		// Replace global variables, built-in `define` option does not work (replaces also strings in 'node_modules/`)
+		replace({
+			preventAssignment: true,
+			delimiters: ['\\b', '\\b'],
+			include: 'src/**/*',
+			values: {
+				appName: JSON.stringify(appName),
+				appVersion: JSON.stringify(appVersion),
+			},
+		}),
+		// Add node polyfills
+		/* nodePolyfills({
+			protocolImports: false,
+		}), */
+		// Add required polyfills, by default browserslist config is used
+		corejsPlugin({ usage: true }),
+		// Remove unneeded whitespace
+		!isDev ? minify() : undefined,
 		// Add license header with all dependencies
 		license({
 			sourcemap: true,
@@ -104,6 +104,7 @@ const baseConfig = defineConfig({
 			formats: ['es'],
 			entry: {},
 		},
+		target: browserslistToEsbuild(),
 		sourcemap: isDev || 'hidden',
 		/* Output dir is the project root to allow main style to be generated within `/css` */
 		outDir: '',
