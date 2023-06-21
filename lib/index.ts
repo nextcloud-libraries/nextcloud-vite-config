@@ -9,7 +9,7 @@ import { corejsPlugin } from 'rollup-plugin-corejs'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify/lib/index.js'
 import { defineConfig, mergeConfig } from 'vite'
-import type { Plugin, UserConfigExport } from 'vite'
+import type { Plugin, UserConfig } from 'vite'
 import replace from '@rollup/plugin-replace'
 import vue2 from '@vitejs/plugin-vue2'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
@@ -22,6 +22,21 @@ const appNameSanitized = appName.replace('/', '-')
 
 const buildMode = process.env.NODE_ENV
 const isDev = buildMode === 'development'
+
+console.info(`Building ${appName} for ${buildMode}`)
+
+interface BaseOptions {
+	/** Whether to minify the output (default: production true, false otherwise) */
+	minify?: boolean
+	/** Whether to empty the build dir */
+	emptyBuildDir?: boolean
+	/** Records to replace within your code */
+	defines: Record<string, unknown>
+}
+
+interface LibraryOptions extends BaseOptions {
+	externalDependencies: RegExp[] | string[]
+}
 
 /**
  * Vite plugin to clear the `js/` directory before emitting files
@@ -43,20 +58,21 @@ const emptyJSDir = () => {
 }
 
 /**
- *
- * @param minify Whether to minify the output (default: production true, false otherwise)
- * @param defines Records to replace within your code
+ * Create a basic configuration
+ * @param options Options to use
  */
-export function createBaseConfig(minify = !isDev, defines: Record<string, unknown>) {
+export function createBaseConfig(options: BaseOptions) {
+	options = { minify: !isDev, defines: {}, ...options }
+
 	const replaceValues = {
 		appName: JSON.stringify(appName),
 		appVersion: JSON.stringify(appVersion),
-		...defines,
+		...options.defines,
 	}
 	return defineConfig({
 		plugins: [
-		// Ensure `js/` is empty as we can not use the build in option (see below)
-			emptyJSDir(),
+			// Ensure `js/` is empty as we can not use the build in option (see below)
+			...(options?.emptyBuildDir ? [emptyJSDir()] : []),
 			// Add vue2 support
 			vue2({
 				isProduction: !isDev,
@@ -83,7 +99,7 @@ export function createBaseConfig(minify = !isDev, defines: Record<string, unknow
 			// Add required polyfills, by default browserslist config is used
 			corejsPlugin({ usage: true }),
 			// Remove unneeded whitespace
-			minify ? minifyPlugin() : undefined,
+			options?.minify ? minifyPlugin() : undefined,
 			// Add license header with all dependencies
 			license({
 				sourcemap: true,
@@ -124,14 +140,14 @@ export function createBaseConfig(minify = !isDev, defines: Record<string, unknow
  *
  * @param entries Entry points of your app
  * @param defines Record of values to replace
- * @return {UserConfigExport} The vite config
+ * @return {UserConfig} The vite config
  * @example
  * export default nextcloudViteConfig({
  *   main: path.resolve(path.join('src', 'main.js')),
  *   settings: path.resolve(path.join('src', 'settings.js')),
  * })
  */
-export const createAppConfig = (entries: { [entryAlias: string]: string }, defines: Record<string, unknown> = {}): UserConfigExport => mergeConfig(createBaseConfig(!isDev, defines), {
+export const createAppConfig = (entries: { [entryAlias: string]: string }, defines: Record<string, unknown> = {}): UserConfig => mergeConfig(createBaseConfig({ defines }), {
 	build: {
 		lib: {
 			entry: {
@@ -170,42 +186,40 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, defin
  * Create a vite config for your nextcloud libraries
  *
  * @param entries Entry points of your app
- * @param externalDeps List of dependencies to keep external
- * @param minify Whether to minify the output (default true for production)
- * @param defines Record of values to replace
- * @return {UserConfigExport} The vite config
+ * @param options Options to use
+ * @return The vite config
  */
-export const createLibConfig = (entries: { [entryAlias: string]: string }, externalDeps: string[] = [], minify = !isDev, defines: Record<string, unknown> = {}): UserConfigExport => mergeConfig(createBaseConfig(minify, defines), {
-	build: {
-		lib: {
-			entry: {
-				...entries,
-			},
-		},
-		outDir: 'dist',
-		emptyOutDir: true,
-		rollupOptions: {
-			external: externalDeps,
-			output: {
-				assetFileNames: (assetInfo) => {
-					const extType = assetInfo.name.split('.').pop()
-					if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-						return 'img/[name][extname]'
-					} else if (/css/i.test(extType)) {
-						return '[name].css'
-					}
-					return '[name]-[hash][extname]'
-				},
-				entryFileNames: () => {
-					return '[name].mjs'
-				},
-				chunkFileNames: () => {
-					return 'chunks/[name]-[hash].mjs'
-				},
-				manualChunks: {
-					polyfill: ['core-js'],
+export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions): UserConfig => {
+	options = { externalDependencies: [], ...options }
+	return mergeConfig(createBaseConfig(options), {
+		build: {
+			lib: {
+				entry: {
+					...entries,
 				},
 			},
+			outDir: 'dist',
+			emptyOutDir: true,
+			rollupOptions: {
+				external: [/^core-js\//, ...options.externalDependencies],
+				output: {
+					assetFileNames: (assetInfo) => {
+						const extType = assetInfo.name.split('.').pop()
+						if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+							return 'img/[name][extname]'
+						} else if (/css/i.test(extType)) {
+							return '[name].css'
+						}
+						return '[name]-[hash][extname]'
+					},
+					entryFileNames: () => {
+						return '[name].mjs'
+					},
+					chunkFileNames: () => {
+						return 'chunks/[name]-[hash].mjs'
+					},
+				},
+			},
 		},
-	},
-})
+	})
+}
