@@ -31,7 +31,7 @@ interface BaseOptions {
 	/** Whether to empty the build dir */
 	emptyBuildDir?: boolean
 	/** Records to replace within your code */
-	defines: Record<string, unknown>
+	defines: Record<string, string>
 }
 
 interface LibraryOptions extends BaseOptions {
@@ -65,8 +65,6 @@ export function createBaseConfig(options: BaseOptions) {
 	options = { minify: !isDev, defines: {}, ...options }
 
 	const replaceValues = {
-		appName: JSON.stringify(appName),
-		appVersion: JSON.stringify(appVersion),
 		...options.defines,
 	}
 	return defineConfig({
@@ -89,7 +87,7 @@ export function createBaseConfig(options: BaseOptions) {
 			replace({
 				preventAssignment: true,
 				delimiters: ['\\b', '\\b'],
-				include: 'src/**/*',
+				include: ['src/**/*', 'node_modules/@nextcloud/vue/**/*'],
 				values: replaceValues,
 			}),
 			// Add node polyfills
@@ -147,40 +145,47 @@ export function createBaseConfig(options: BaseOptions) {
  *   settings: path.resolve(path.join('src', 'settings.js')),
  * })
  */
-export const createAppConfig = (entries: { [entryAlias: string]: string }, defines: Record<string, unknown> = {}): UserConfig => mergeConfig(createBaseConfig({ defines }), {
-	build: {
-		lib: {
-			entry: {
-				...entries,
-			},
-		},
-		/* Output dir is the project root to allow main style to be generated within `/css` */
-		outDir: '',
-		emptyOutDir: false, // ensure project root is NOT emptied!
-		rollupOptions: {
-			output: {
-				assetFileNames: (assetInfo) => {
-					const extType = assetInfo.name.split('.').pop()
-					if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-						return 'img/[name][extname]'
-					} else if (/css/i.test(extType)) {
-						return `css/${appNameSanitized}-[name].css`
-					}
-					return 'dist/[name]-[hash][extname]'
-				},
-				entryFileNames: () => {
-					return `js/${appNameSanitized}-[name].mjs`
-				},
-				chunkFileNames: () => {
-					return 'js/[name]-[hash].mjs'
-				},
-				manualChunks: {
-					polyfill: ['core-js'],
+export const createAppConfig = (entries: { [entryAlias: string]: string }, defines: Record<string, string> = {}): UserConfig => {
+	defines = {
+		appName: JSON.stringify(appName),
+		appVersion: JSON.stringify(appVersion),
+		...defines,
+	}
+	return mergeConfig(createBaseConfig({ defines }), {
+		build: {
+			lib: {
+				entry: {
+					...entries,
 				},
 			},
+			/* Output dir is the project root to allow main style to be generated within `/css` */
+			outDir: '',
+			emptyOutDir: false, // ensure project root is NOT emptied!
+			rollupOptions: {
+				output: {
+					assetFileNames: (assetInfo) => {
+						const extType = assetInfo.name.split('.').pop()
+						if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+							return 'img/[name][extname]'
+						} else if (/css/i.test(extType)) {
+							return `css/${appNameSanitized}-[name].css`
+						}
+						return 'dist/[name]-[hash][extname]'
+					},
+					entryFileNames: () => {
+						return `js/${appNameSanitized}-[name].mjs`
+					},
+					chunkFileNames: () => {
+						return 'js/[name]-[hash].mjs'
+					},
+					manualChunks: {
+						polyfill: ['core-js'],
+					},
+				},
+			},
 		},
-	},
-})
+	})
+}
 
 /**
  * Create a vite config for your nextcloud libraries
