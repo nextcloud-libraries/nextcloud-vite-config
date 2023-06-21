@@ -28,8 +28,8 @@ console.info(`Building ${appName} for ${buildMode}`)
 interface BaseOptions {
 	/** Whether to minify the output (default: production true, false otherwise) */
 	minify?: boolean
-	/** Whether to empty the build dir */
-	emptyBuildDir?: boolean
+	/** Whether to empty the output directory */
+	emptyOutputDirectory?: boolean
 	/** Records to replace within your code */
 	defines: Record<string, string>
 }
@@ -70,7 +70,7 @@ export function createBaseConfig(options: BaseOptions) {
 	return defineConfig({
 		plugins: [
 			// Ensure `js/` is empty as we can not use the build in option (see below)
-			...(options?.emptyBuildDir ? [emptyJSDir()] : []),
+			...(options?.emptyOutputDirectory ? [emptyJSDir()] : []),
 			// Add vue2 support
 			vue2({
 				isProduction: !isDev,
@@ -204,7 +204,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 				},
 			},
 			outDir: 'dist',
-			emptyOutDir: true,
+			emptyOutDir: !!options.emptyOutputDirectory,
 			rollupOptions: {
 				external: [/^core-js\//, ...options.externalDependencies],
 				output: {
