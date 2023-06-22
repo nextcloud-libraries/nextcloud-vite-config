@@ -61,7 +61,7 @@ export function createBaseConfig(options: BaseOptions = {}) {
 		plugins.push(replace({
 			preventAssignment: true,
 			delimiters: ['\\b', '\\b'],
-			include: ['src/**/*', 'node_modules/@nextcloud/vue/**/*'],
+			include: ['src/**/*', 'lib/**/*', 'node_modules/@nextcloud/vue/**/*'],
 			values: options.replace,
 		}))
 	}

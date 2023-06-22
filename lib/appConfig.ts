@@ -47,11 +47,6 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 	}
 
 	return mergeConfig(createBaseConfig({ ...options }), {
-		define: {
-			// global variables with app name and version
-			appName: JSON.stringify(appName),
-			appVersion: JSON.stringify(appVersion),
-		},
 		build: {
 			lib: {
 				entry: {
@@ -63,6 +58,8 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 			emptyOutDir: false, // ensure project root is NOT emptied!
 			rollupOptions: {
 				output: {
+					// global variables for appName and appVersion
+					intro: `const appName = ${JSON.stringify(appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
 					assetFileNames: (assetInfo) => {
 						const extType = assetInfo.name.split('.').pop()
 						if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
