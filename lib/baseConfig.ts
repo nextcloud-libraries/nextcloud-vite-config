@@ -15,17 +15,14 @@ import browserslistToEsbuild from 'browserslist-to-esbuild'
 import license from 'rollup-plugin-license'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 
-export const appName = process.env.npm_package_name
-export const appVersion = process.env.npm_package_version
-export const appNameSanitized = appName.replace(/[/\\]/, '-')
 export const buildMode = process.env.NODE_ENV
 export const isDev = buildMode === 'development'
 
 type NodePolyfillsOptions = Parameters<typeof nodePolyfills>[0]
 
 export interface BaseOptions {
-	/** Records to replace within your code */
-	defines: Record<string, string>
+	/** Strings to replace within your code */
+	replace?: Record<string, string>
 	/**
 	 * Inject all styles inside the javascript bundle instead of emitting a .css file
 	 * @default false
@@ -47,10 +44,8 @@ export interface BaseOptions {
  * Create a basic configuration
  * @param options Options to use
  */
-export function createBaseConfig(options: BaseOptions) {
-	options = { minify: !isDev, defines: {}, ...options }
-
-	console.info(`Building ${appName} for ${buildMode}`)
+export function createBaseConfig(options: BaseOptions = {}) {
+	options = { minify: !isDev, replace: {}, ...options }
 
 	const plugins = []
 	if (options?.inlineCSS !== false) {
@@ -61,13 +56,18 @@ export function createBaseConfig(options: BaseOptions) {
 		// Add polyfills for node packages
 		plugins.push(nodePolyfills(typeof options.nodePolyfills === 'object' ? options.nodePolyfills : {}))
 	}
-
-	const replaceValues = {
-		...options.defines,
+	if (Object.keys(options.replace).length > 0) {
+		// Replace global variables, built-in `define` option does not work (replaces also strings in 'node_modules/`)
+		plugins.push(replace({
+			preventAssignment: true,
+			delimiters: ['\\b', '\\b'],
+			include: ['src/**/*', 'node_modules/@nextcloud/vue/**/*'],
+			values: options.replace,
+		}))
 	}
+
 	return defineConfig({
 		plugins: [
-			...plugins,
 			// Add vue2 support
 			vue2({
 				isProduction: !isDev,
@@ -80,13 +80,7 @@ export function createBaseConfig(options: BaseOptions) {
 					},
 				},
 			}),
-			// Replace global variables, built-in `define` option does not work (replaces also strings in 'node_modules/`)
-			replace({
-				preventAssignment: true,
-				delimiters: ['\\b', '\\b'],
-				include: ['src/**/*', 'node_modules/@nextcloud/vue/**/*'],
-				values: replaceValues,
-			}),
+			...plugins,
 			// Add node polyfills
 			/* nodePolyfills({
 				protocolImports: false,
@@ -108,6 +102,7 @@ export function createBaseConfig(options: BaseOptions) {
 			}),
 		],
 		define: {
+			// process env
 			'process.env.': '({}).',
 			'global.process.env.': '({}).',
 			'globalThis.process.env.': '({}).',

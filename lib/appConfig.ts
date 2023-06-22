@@ -8,9 +8,13 @@ import type { UserConfig } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
-import { appName, appNameSanitized, appVersion, createBaseConfig } from './baseConfig.js'
+import { buildMode, createBaseConfig } from './baseConfig.js'
 
 import EmptyJSDirPlugin from './EmptyJSDirPlugin.js'
+
+export const appName = process.env.npm_package_name
+export const appVersion = process.env.npm_package_version
+export const appNameSanitized = appName.replace(/[/\\]/, '-')
 
 interface AppOptions extends BaseOptions {
     /**
@@ -32,12 +36,9 @@ interface AppOptions extends BaseOptions {
  *   settings: path.resolve(path.join('src', 'settings.js')),
  * })
  */
-export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions): UserConfig => {
-	const defines = {
-		appName: JSON.stringify(appName),
-		appVersion: JSON.stringify(appVersion),
-		...(options.defines || {}),
-	}
+export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfig => {
+	console.info(`Building ${appName} for ${buildMode}`)
+
 	const plugins = []
 	// defaults to true so only not adding if explicitly set to false
 	if (options?.emptyOutputDirectory !== false) {
@@ -45,7 +46,12 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 		plugins.push(EmptyJSDirPlugin())
 	}
 
-	return mergeConfig(createBaseConfig({ ...options, defines }), {
+	return mergeConfig(createBaseConfig({ ...options }), {
+		define: {
+			// global variables with app name and version
+			appName: JSON.stringify(appName),
+			appVersion: JSON.stringify(appVersion),
+		},
 		build: {
 			lib: {
 				entry: {
@@ -78,5 +84,5 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 				},
 			},
 		},
-	})
+	} as UserConfig)
 }

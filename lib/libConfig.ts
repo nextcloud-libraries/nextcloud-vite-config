@@ -17,7 +17,7 @@ interface LibraryOptions extends BaseOptions {
 	 * Strings must fully match the import, e.g. 'foo' does not match 'foo/bar',
 	 * in this case use a RegExp like /^foo/
 	 */
-	externalDependencies: (RegExp | string)[]
+	externalDependencies?: (RegExp | string)[]
 }
 
 /**
@@ -27,8 +27,9 @@ interface LibraryOptions extends BaseOptions {
  * @param options Options to use
  * @return The vite config
  */
-export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions): UserConfig => {
+export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfig => {
 	options = { externalDependencies: [], ...options }
+
 	return mergeConfig(createBaseConfig(options), {
 		build: {
 			lib: {
