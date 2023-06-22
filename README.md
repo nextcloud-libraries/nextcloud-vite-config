@@ -14,22 +14,22 @@ vite.config.js
 
 And your `vite.config.js` should look like this:
 ```js
-import { nextcloudViteConfig } from '@nextcloud/vite-config'
+import { createAppConfig } from '@susnux/nextcloud-vite-config'
 
-export default nextcloudViteConfig({
+export default createAppConfig({
     main: 'src/main.js',
     settings: 'src/settings.js',
 })
 ```
 
-Of cause you can modify the configuration, for example if you want to set an include path for the scss preprocessor:
+You can also modify the configuration, for example if you want to set an include path for the scss preprocessor:
 
 ```js
-import { nextcloudViteConfig } from '@nextcloud/vite-config'
+import { createAppConfig } from '@susnux/nextcloud-vite-config'
 import { mergeConfig } from 'vite'
 import path from 'node:path'
 
-const config = nextcloudViteConfig({
+const config = createAppConfig({
     main: 'src/main.js',
     settings: 'src/settings.js',
 })
@@ -44,5 +44,28 @@ export default mergeConfig(config, {
             },
         },
     },
+})
+```
+
+### Use with a library
+There is also a configuration for libraries, this configuration will handle the output directory correctly and allows to define external dependencies:
+
+```js
+import { createLibConfig } from '@susnux/nextcloud-vite-config'
+
+const translations = //...
+
+export default createLibConfig({
+    index: 'src/index.js',
+}, {
+    defines: {
+        TRANSLATIONS: translations,
+    },
+    externalDependencies: [
+        // mark 'vue' as external
+        'vue',
+        // mark all paths starting with `@nextcloud/vue` as external
+        /^@nextcloud\/vue/
+    ]
 })
 ```
