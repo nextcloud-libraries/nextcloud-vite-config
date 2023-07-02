@@ -9,7 +9,7 @@ import { type CoreJSPluginOptions, corejsPlugin } from 'rollup-plugin-corejs'
 import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify/lib/index.js'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { defineConfig } from 'vite'
-import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch'
+import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
 
 import replace from '@rollup/plugin-replace'
 import vue2 from '@vitejs/plugin-vue2'
