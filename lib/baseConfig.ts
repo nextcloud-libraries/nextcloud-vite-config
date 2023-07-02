@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import { readFileSync } from 'fs'
-import { corejsPlugin } from 'rollup-plugin-corejs'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import { readFileSync } from 'node:fs'
+import { type CoreJSPluginOptions, corejsPlugin } from 'rollup-plugin-corejs'
 import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify/lib/index.js'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { defineConfig } from 'vite'
 import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch'
 
@@ -40,6 +40,12 @@ export interface BaseOptions {
 	 * @default false Disabled to reduce buildtime
 	 */
 	nodePolyfills?: boolean | NodePolyfillsOptions
+	/**
+	 * Adjust settings for core-js polyfills
+	 *
+	 * By default enabled with `{ usage: true }`
+	 */
+	coreJS?: boolean | CoreJSPluginOptions
 }
 
 /**
@@ -67,6 +73,10 @@ export function createBaseConfig(options: BaseOptions = {}) {
 			values: options.replace,
 		}))
 	}
+	if (options.coreJS !== false) {
+		// Add required polyfills, by default browserslist config is used
+		plugins.push(corejsPlugin(typeof options.coreJS === 'object' ? options.coreJS : undefined))
+	}
 
 	return defineConfig({
 		plugins: [
@@ -85,8 +95,6 @@ export function createBaseConfig(options: BaseOptions = {}) {
 				},
 			}),
 			...plugins,
-			// Add required polyfills, by default browserslist config is used
-			corejsPlugin({ usage: true }),
 			// Remove unneeded whitespace
 			options?.minify ? minifyPlugin() : undefined,
 			// Add license header with all dependencies
