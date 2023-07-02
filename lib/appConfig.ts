@@ -47,6 +47,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 	}
 
 	return mergeConfig(createBaseConfig({ ...options }), {
+		plugins,
 		build: {
 			lib: {
 				entry: {
