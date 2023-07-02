@@ -10,7 +10,7 @@ import type { BaseOptions } from './baseConfig.js'
 import { mergeConfig } from 'vite'
 import { buildMode, createBaseConfig } from './baseConfig.js'
 
-import EmptyJSDirPlugin from './EmptyJSDirPlugin.js'
+import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
 
 export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version

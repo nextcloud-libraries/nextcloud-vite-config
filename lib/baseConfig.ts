@@ -9,6 +9,8 @@ import { corejsPlugin } from 'rollup-plugin-corejs'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify/lib/index.js'
 import { defineConfig } from 'vite'
+import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch'
+
 import replace from '@rollup/plugin-replace'
 import vue2 from '@vitejs/plugin-vue2'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
@@ -68,6 +70,8 @@ export function createBaseConfig(options: BaseOptions = {}) {
 
 	return defineConfig({
 		plugins: [
+			// Fix build in watch mode with commonjs files
+			RemoveEnsureWatchPlugin,
 			// Add vue2 support
 			vue2({
 				isProduction: !isDev,
@@ -81,10 +85,6 @@ export function createBaseConfig(options: BaseOptions = {}) {
 				},
 			}),
 			...plugins,
-			// Add node polyfills
-			/* nodePolyfills({
-				protocolImports: false,
-			}), */
 			// Add required polyfills, by default browserslist config is used
 			corejsPlugin({ usage: true }),
 			// Remove unneeded whitespace
