@@ -4,24 +4,26 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { LibraryFormats, UserConfig, UserConfigFn, BuildOptions } from 'vite'
+import type { LibraryFormats, UserConfig, UserConfigFn, BuildOptions, Plugin } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
 import { createBaseConfig } from './baseConfig.js'
 
 import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
+import { nodeExternals, type ExternalsOptions } from 'rollup-plugin-node-externals'
 
 type OutputOptions = BuildOptions['rollupOptions']['output']
 
 interface LibraryOptions extends BaseOptions {
 	/**
-	 * Dependencies to keep as external
+	 * Options for the rollup node externals plugin
 	 *
-	 * Strings must fully match the import, e.g. 'foo' does not match 'foo/bar',
-	 * in this case use a RegExp like /^foo/
+	 * By default all `dependencies` and `peerDependencies` are marked as external.
+	 * Note: If you use dependencies `@nextcloud/vue/dist/Components/NcButton.js` and what them to be externalized too,
+	 * you need to set an include pattern: `{ include: [ /^@nextcloud\/vue/ ]}`
 	 */
-	externalDependencies?: (RegExp | string)[]
+	nodeExternalsOptions?: ExternalsOptions
 
 	/**
 	 * Options for the Vite DTS plugin
@@ -47,9 +49,15 @@ interface LibraryOptions extends BaseOptions {
  */
 export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfigFn => {
 	// Add default values for options
-	options = { config: {}, externalDependencies: [], libraryFormats: ['es'], ...options }
+	options = { config: {}, nodeExternalsOptions: {}, libraryFormats: ['es'], ...options }
 
-	const plugins = []
+	const node = nodeExternals({ builtins: true, builtinsPrefix: 'add', peerDeps: true, deps: true, ...options.nodeExternalsOptions });
+	// Order is important, run the plugin first
+	(node as Plugin).enforce = 'pre'
+	const plugins = [
+		// Make dependencies external
+		node,
+	]
 
 	// Handle the DTS plugin
 	if (options?.DTSPluginOptions !== false) {
@@ -96,7 +104,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 					},
 					outDir: 'dist',
 					rollupOptions: {
-						external: [/^core-js\//, ...options.externalDependencies],
+						external: [/^core-js\//],
 						output: outputOptions,
 					},
 				},
