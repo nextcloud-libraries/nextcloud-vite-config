@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { UserConfigFn } from 'vite'
+import type { LibraryFormats, UserConfig, UserConfigFn, BuildOptions } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
 import { createBaseConfig } from './baseConfig.js'
 
 import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
+
+type OutputOptions = BuildOptions['rollupOptions']['output']
 
 interface LibraryOptions extends BaseOptions {
 	/**
@@ -28,6 +30,12 @@ interface LibraryOptions extends BaseOptions {
 	 * Pass `false` to disable the plugin
 	 */
 	DTSPluginOptions?: DTSOptions | false
+
+	/**
+	 * Formats you like your library to be built
+	 * @default ['es']
+	 */
+	libraryFormats?: LibraryFormats[]
 }
 
 /**
@@ -39,7 +47,7 @@ interface LibraryOptions extends BaseOptions {
  */
 export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfigFn => {
 	// Add default values for options
-	options = { config: {}, externalDependencies: [], ...options }
+	options = { config: {}, externalDependencies: [], libraryFormats: ['es'], ...options }
 
 	const plugins = []
 
@@ -55,6 +63,29 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 			// Make sure we get a user config and not a promise or a user config function
 			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
+			const assetFileNames = (assetInfo) => {
+				const extType = assetInfo.name.split('.').pop()
+				if (/css/i.test(extType)) {
+					return '[name].css'
+				}
+				return '[name]-[hash][extname]'
+			}
+
+			// Manually define output options for file extensions
+			const outputOptions: OutputOptions = options.libraryFormats.map(format => {
+				const extension = format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)
+				return {
+					format,
+					assetFileNames,
+					entryFileNames: () => {
+						return `[name].${extension}`
+					},
+					chunkFileNames: () => {
+						return `chunks/[name]-[hash].${extension}`
+					},
+				}
+			})
+
 			return mergeConfig({
 				plugins,
 				build: {
@@ -66,26 +97,10 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 					outDir: 'dist',
 					rollupOptions: {
 						external: [/^core-js\//, ...options.externalDependencies],
-						output: {
-							assetFileNames: (assetInfo) => {
-								const extType = assetInfo.name.split('.').pop()
-								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-									return 'img/[name][extname]'
-								} else if (/css/i.test(extType)) {
-									return '[name].css'
-								}
-								return '[name]-[hash][extname]'
-							},
-							entryFileNames: () => {
-								return '[name].mjs'
-							},
-							chunkFileNames: () => {
-								return 'chunks/[name]-[hash].mjs'
-							},
-						},
+						output: outputOptions,
 					},
 				},
-			}, userConfig)
+			} as UserConfig, userConfig)
 		},
 	})
 }
