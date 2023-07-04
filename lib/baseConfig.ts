@@ -110,13 +110,13 @@ export function createBaseConfig(options: BaseOptions = {}) {
 			}),
 		],
 		define: {
-			// process env
-			'process.env.': '({}).',
-			'global.process.env.': '({}).',
-			'globalThis.process.env.': '({}).',
-			'process.env.NODE_ENV': JSON.stringify(buildMode),
-			'global.process.env.NODE_ENV': JSON.stringify(buildMode),
+			// process env (keep order of this rules)
 			'globalThis.process.env.NODE_ENV': JSON.stringify(buildMode),
+			'globalThis.process.env.': '({}).',
+			'global.process.env.NODE_ENV': JSON.stringify(buildMode),
+			'global.process.env.': '({}).',
+			'process.env.NODE_ENV': JSON.stringify(buildMode),
+			'process.env.': '({}).',
 		},
 		esbuild: {
 			legalComments: 'inline',
