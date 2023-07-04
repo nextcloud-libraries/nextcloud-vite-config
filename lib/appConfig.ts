@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { UserConfigFn } from 'vite'
+import type { UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
@@ -56,7 +56,8 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 				plugins.push(EmptyJSDirPlugin())
 			}
 
-			return mergeConfig({
+			// Extended config for apps
+			const overrides: UserConfig = {
 				plugins,
 				build: {
 					lib: {
@@ -64,35 +65,37 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 							...entries,
 						},
 					},
-				},
-				/* Output dir is the project root to allow main style to be generated within `/css` */
-				outDir: '',
-				emptyOutDir: false, // ensure project root is NOT emptied!
-				rollupOptions: {
-					output: {
-					// global variables for appName and appVersion
-						intro: `const appName = ${JSON.stringify(appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
-						assetFileNames: (assetInfo) => {
-							const extType = assetInfo.name.split('.').pop()
-							if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-								return 'img/[name][extname]'
-							} else if (/css/i.test(extType)) {
-								return `css/${appNameSanitized}-[name].css`
-							}
-							return 'dist/[name]-[hash][extname]'
-						},
-						entryFileNames: () => {
-							return `js/${appNameSanitized}-[name].mjs`
-						},
-						chunkFileNames: () => {
-							return 'js/[name]-[hash].mjs'
-						},
-						manualChunks: {
-							polyfill: ['core-js'],
+					/* Output dir is the project root to allow main style to be generated within `/css` */
+					outDir: '',
+					emptyOutDir: false, // ensure project root is NOT emptied!
+					rollupOptions: {
+						output: {
+							// global variables for appName and appVersion
+							intro: `const appName = ${JSON.stringify(appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
+							assetFileNames: (assetInfo) => {
+								const extType = assetInfo.name.split('.').pop()
+								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+									return 'img/[name][extname]'
+								} else if (/css/i.test(extType)) {
+									return `css/${appNameSanitized}-[name].css`
+								}
+								return 'dist/[name]-[hash][extname]'
+							},
+							entryFileNames: () => {
+								return `js/${appNameSanitized}-[name].mjs`
+							},
+							chunkFileNames: () => {
+								return 'js/[name]-[hash].mjs'
+							},
+							manualChunks: {
+								polyfill: ['core-js'],
+							},
 						},
 					},
 				},
-			}, userConfig)
+			}
+
+			return mergeConfig(overrides, userConfig)
 		},
 	})
 }
