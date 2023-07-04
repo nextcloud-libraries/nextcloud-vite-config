@@ -9,17 +9,17 @@
   "license": "AGPL-3.0-or-later",
   "version": "1.0.0-beta.13",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.mjs"
     }
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "vite build",
+    "dev": "vite --mode development --watch",
     "lint": "eslint lib",
     "lint:fix": "eslint --fix lib"
   },

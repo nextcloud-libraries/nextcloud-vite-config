@@ -5,6 +5,7 @@
  */
 
 import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { type CoreJSPluginOptions, corejsPlugin } from 'rollup-plugin-corejs'
 import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify/lib/index.js'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
@@ -114,7 +115,9 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 					banner: {
 						commentStyle: 'regular',
 						content: () => {
-							const template = new URL('../banner-template.txt', import.meta.url)
+							// This should work with ESM, but esbuild converts it to a data URL which then will not work
+							// const template = new URL('../banner-template.txt', import.meta.url);
+							const template = resolve(import.meta.url.split('/').slice(1, -2).join('/'), 'banner-template.txt')
 							return readFileSync(template, 'utf-8')
 						},
 					},
@@ -122,11 +125,11 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 			],
 			define: {
 				// process env replacement (keep order of this rules)
-				'globalThis.process.env.NODE_ENV': JSON.stringify(mode),
+				'globalThis.process.env.NODE_ENV': mode,
 				'globalThis.process.env.': '({}).',
-				'global.process.env.NODE_ENV': JSON.stringify(mode),
+				'global.process.env.NODE_ENV': mode,
 				'global.process.env.': '({}).',
-				'process.env.NODE_ENV': JSON.stringify(mode),
+				'process.env.NODE_ENV': mode,
 				'process.env.': '({}).',
 			},
 			esbuild: {
