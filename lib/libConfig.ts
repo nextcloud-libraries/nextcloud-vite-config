@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { UserConfig } from 'vite'
+import type { UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
@@ -35,10 +35,12 @@ interface LibraryOptions extends BaseOptions {
  *
  * @param entries Entry points of your app
  * @param options Options to use
- * @return The vite config
+ * @return {UserConfigFn} The vite config
  */
-export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfig => {
-	options = { externalDependencies: [], ...options }
+export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfigFn => {
+	// Add default values for options
+	options = { config: {}, externalDependencies: [], ...options }
+
 	const plugins = []
 
 	// Handle the DTS plugin
@@ -46,35 +48,44 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 		plugins.push(DTSPlugin(options.DTSPluginOptions))
 	}
 
-	return mergeConfig(createBaseConfig(options), {
-		plugins,
-		build: {
-			lib: {
-				entry: {
-					...entries,
+	return createBaseConfig({
+		...options,
+		config: async (env) => {
+			// This config is used to extend or override our base config
+			// Make sure we get a user config and not a promise or a user config function
+			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
+
+			return mergeConfig({
+				plugins,
+				build: {
+					lib: {
+						entry: {
+							...entries,
+						},
+					},
+					outDir: 'dist',
+					rollupOptions: {
+						external: [/^core-js\//, ...options.externalDependencies],
+						output: {
+							assetFileNames: (assetInfo) => {
+								const extType = assetInfo.name.split('.').pop()
+								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+									return 'img/[name][extname]'
+								} else if (/css/i.test(extType)) {
+									return '[name].css'
+								}
+								return '[name]-[hash][extname]'
+							},
+							entryFileNames: () => {
+								return '[name].mjs'
+							},
+							chunkFileNames: () => {
+								return 'chunks/[name]-[hash].mjs'
+							},
+						},
+					},
 				},
-			},
-			outDir: 'dist',
-			rollupOptions: {
-				external: [/^core-js\//, ...options.externalDependencies],
-				output: {
-					assetFileNames: (assetInfo) => {
-						const extType = assetInfo.name.split('.').pop()
-						if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-							return 'img/[name][extname]'
-						} else if (/css/i.test(extType)) {
-							return '[name].css'
-						}
-						return '[name]-[hash][extname]'
-					},
-					entryFileNames: () => {
-						return '[name].mjs'
-					},
-					chunkFileNames: () => {
-						return 'chunks/[name]-[hash].mjs'
-					},
-				},
-			},
+			}, userConfig)
 		},
 	})
 }

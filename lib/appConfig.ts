@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { UserConfig } from 'vite'
+import type { UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
-import { buildMode, createBaseConfig } from './baseConfig.js'
+import { createBaseConfig } from './baseConfig.js'
 
 import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
 
@@ -29,58 +29,70 @@ interface AppOptions extends BaseOptions {
  *
  * @param entries Entry points of your app
  * @param options App related options for the vite config
- * @return {UserConfig} The vite config
+ * @return {UserConfigFn} The vite config
  * @example
- * export default nextcloudViteConfig({
+ * export default createAppConfig({
  *   main: path.resolve(path.join('src', 'main.js')),
  *   settings: path.resolve(path.join('src', 'settings.js')),
  * })
  */
-export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfig => {
-	console.info(`Building ${appName} for ${buildMode}`)
+export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn => {
+	// Add default options
+	options = { config: {}, ...options }
 
-	const plugins = []
-	// defaults to true so only not adding if explicitly set to false
-	if (options?.emptyOutputDirectory !== false) {
-		// Ensure `js/` is empty as we can not use the build in option (see below)
-		plugins.push(EmptyJSDirPlugin())
-	}
+	return createBaseConfig({
+		...options,
+		config: async (env) => {
+			console.info(`Building ${appName} for ${env.mode}`)
 
-	return mergeConfig(createBaseConfig({ ...options }), {
-		plugins,
-		build: {
-			lib: {
-				entry: {
-					...entries,
+			// This config is used to extend or override our base config
+			// Make sure we get a user config and not a promise or a user config function
+			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
+
+			const plugins = []
+			// defaults to true so only not adding if explicitly set to false
+			if (options?.emptyOutputDirectory !== false) {
+				// Ensure `js/` is empty as we can not use the build in option (see below)
+				plugins.push(EmptyJSDirPlugin())
+			}
+
+			return mergeConfig({
+				plugins,
+				build: {
+					lib: {
+						entry: {
+							...entries,
+						},
+					},
 				},
-			},
-			/* Output dir is the project root to allow main style to be generated within `/css` */
-			outDir: '',
-			emptyOutDir: false, // ensure project root is NOT emptied!
-			rollupOptions: {
-				output: {
+				/* Output dir is the project root to allow main style to be generated within `/css` */
+				outDir: '',
+				emptyOutDir: false, // ensure project root is NOT emptied!
+				rollupOptions: {
+					output: {
 					// global variables for appName and appVersion
-					intro: `const appName = ${JSON.stringify(appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
-					assetFileNames: (assetInfo) => {
-						const extType = assetInfo.name.split('.').pop()
-						if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-							return 'img/[name][extname]'
-						} else if (/css/i.test(extType)) {
-							return `css/${appNameSanitized}-[name].css`
-						}
-						return 'dist/[name]-[hash][extname]'
-					},
-					entryFileNames: () => {
-						return `js/${appNameSanitized}-[name].mjs`
-					},
-					chunkFileNames: () => {
-						return 'js/[name]-[hash].mjs'
-					},
-					manualChunks: {
-						polyfill: ['core-js'],
+						intro: `const appName = ${JSON.stringify(appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
+						assetFileNames: (assetInfo) => {
+							const extType = assetInfo.name.split('.').pop()
+							if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+								return 'img/[name][extname]'
+							} else if (/css/i.test(extType)) {
+								return `css/${appNameSanitized}-[name].css`
+							}
+							return 'dist/[name]-[hash][extname]'
+						},
+						entryFileNames: () => {
+							return `js/${appNameSanitized}-[name].mjs`
+						},
+						chunkFileNames: () => {
+							return 'js/[name]-[hash].mjs'
+						},
+						manualChunks: {
+							polyfill: ['core-js'],
+						},
 					},
 				},
-			},
+			}, userConfig)
 		},
-	} as UserConfig)
+	})
 }

@@ -17,6 +17,7 @@ And your `vite.config.js` should look like this:
 import { createAppConfig } from '@susnux/nextcloud-vite-config'
 
 export default createAppConfig({
+    // entry points: {name: script}
     main: 'src/main.js',
     settings: 'src/settings.js',
 })
@@ -29,12 +30,7 @@ import { createAppConfig } from '@susnux/nextcloud-vite-config'
 import { mergeConfig } from 'vite'
 import path from 'node:path'
 
-const config = createAppConfig({
-    main: 'src/main.js',
-    settings: 'src/settings.js',
-})
-
-export default mergeConfig(config, {
+const yourOverrides = defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
@@ -43,7 +39,16 @@ export default mergeConfig(config, {
                 ],
             },
         },
-    },
+    }
+})
+
+export default createAppConfig({
+    // entry points
+    main: 'src/main.js',
+    settings: 'src/settings.js',
+}, {
+    // options
+    config: yourOverrides
 })
 ```
 
