@@ -38,11 +38,11 @@ export interface BaseOptions {
 	 */
 	nodePolyfills?: boolean | NodePolyfillsOptions
 	/**
-	 * Adjust settings for core-js polyfills
+	 * Enable and adjust settings for core-js polyfills
 	 *
-	 * By default enabled with `{ usage: true }`
+	 * By default disabled as Nextcloud core already includes the `core-js/stable` polyfills globally
 	 */
-	coreJS?: boolean | CoreJSPluginOptions
+	coreJS?: CoreJSPluginOptions
 	/**
 	 * Vite config to override or extend the base config
 	 */
@@ -83,9 +83,9 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 				values: options.replace,
 			}))
 		}
-		if (options.coreJS !== false) {
+		if (options.coreJS !== undefined) {
 		// Add required polyfills, by default browserslist config is used
-			plugins.push(corejsPlugin(typeof options.coreJS === 'object' ? options.coreJS : undefined))
+			plugins.push(corejsPlugin(options.coreJS))
 		}
 
 		return mergeConfig(defineConfig({
