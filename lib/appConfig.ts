@@ -88,7 +88,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 								return 'js/[name]-[hash].mjs'
 							},
 							manualChunks: {
-								polyfill: ['core-js'],
+								...(options?.coreJS ? { polyfill: ['core-js'] } : {}),
 							},
 						},
 					},
