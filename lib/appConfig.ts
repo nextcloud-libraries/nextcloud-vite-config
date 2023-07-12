@@ -11,6 +11,7 @@ import { mergeConfig } from 'vite'
 import { createBaseConfig } from './baseConfig.js'
 
 import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
+import replace from '@rollup/plugin-replace'
 
 export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version
@@ -54,6 +55,18 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 			if (options?.emptyOutputDirectory !== false) {
 				// Ensure `js/` is empty as we can not use the build in option (see below)
 				plugins.push(EmptyJSDirPlugin())
+			}
+			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
+			if (env.command === 'serve') {
+				plugins.push(replace({
+					delimiters: ['\\b', '\\b'],
+					include: ['src/**'],
+					preventAssignment: true,
+					values: {
+						appName: JSON.stringify(appName),
+						appVersion: JSON.stringify(appVersion),
+					},
+				}))
 			}
 
 			// Extended config for apps
