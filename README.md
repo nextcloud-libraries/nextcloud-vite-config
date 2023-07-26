@@ -1,3 +1,12 @@
+# `@nextcloud/vite-config`
+[![npm last version](https://img.shields.io/npm/v/@nextcloud/vite-config.svg?style=flat-square)](https://www.npmjs.com/package/@nextcloud/vite-config) [![Project documentation](https://img.shields.io/badge/documentation-online-blue?style=flat-square)](https://nextcloud.github.io/nextcloud-vite-config/)
+
+Shared Vite ⚡ config for Nextcloud apps and libraries, which also can be easily extended.
+
+## API reference
+
+The full API reference can be found on the [documentation](https://nextcloud.github.io/nextcloud-vite-config/).
+
 ## How to use
 If your app uses an entry point for the main app and one for the settings page, then your default project tree will look like this:
 ```
