@@ -4,6 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-export { createAppConfig } from './appConfig.js'
-export { createBaseConfig } from './baseConfig.js'
-export { createLibConfig } from './libConfig.js'
+export { createAppConfig, type AppOptions } from './appConfig.js'
+export { createBaseConfig, type BaseOptions } from './baseConfig.js'
+export { createLibConfig, type LibraryOptions } from './libConfig.js'

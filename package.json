@@ -1,6 +1,6 @@
 {
 	"name": "@nextcloud/vite-config",
-	"description": "Shared Vite config for nextcloud apps",
+	"description": "Shared Vite configuration for Nextcloud apps and libraries",
 	"author": {
 		"name": "Ferdinand Thiessen",
 		"email": "opensource@fthiessen.de"
@@ -22,6 +22,7 @@
 	},
 	"scripts": {
 		"build": "tsc",
+		"build:doc": "typedoc --out dist/doc lib/index.ts && touch dist/doc/.nojekyll",
 		"dev": "tsc --watch",
 		"lint": "eslint lib",
 		"lint:fix": "eslint --fix lib"
@@ -45,6 +46,7 @@
 	"devDependencies": {
 		"@nextcloud/eslint-config": "^8.3.0-beta.2",
 		"@types/node": "^20.4.5",
+		"typedoc": "^0.24.8",
 		"typescript": "^5.0.4"
 	},
 	"files": [

@@ -17,7 +17,7 @@ export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version
 export const appNameSanitized = appName.replace(/[/\\]/, '-')
 
-interface AppOptions extends BaseOptions {
+export interface AppOptions extends BaseOptions {
     /**
      * Whether to empty the output directory (`js/`)
      * @default true
