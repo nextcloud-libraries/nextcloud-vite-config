@@ -1,59 +1,62 @@
 {
-  "name": "@susnux/nextcloud-vite-config",
-  "description": "Shared ViteJS config for nextcloud apps",
-  "author": {
-    "name": "Ferdinand Thiessen",
-    "email": "opensource@fthiessen.de",
-    "url": "https://github.com/susnux"
-  },
-  "license": "AGPL-3.0-or-later",
-  "version": "1.0.0-beta.16",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
-  "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "lint": "eslint lib",
-    "lint:fix": "eslint --fix lib"
-  },
-  "peerDependencies": {
-    "sass": ">=1.60",
-    "vite": "^4"
-  },
-  "dependencies": {
-    "@rollup/plugin-replace": "^5.0.2",
-    "@vitejs/plugin-vue2": "^2.2.0",
-    "browserslist-to-esbuild": "^1.2.0",
-    "rollup-plugin-corejs": "^1.0.0-beta.0",
-    "rollup-plugin-esbuild-minify": "^1.1.0",
-    "rollup-plugin-license": "^3.0.1",
-    "rollup-plugin-node-externals": "^6.1.1",
-    "vite-plugin-css-injected-by-js": "^3.2.0",
-    "vite-plugin-dts": "^3.2.0",
-    "vite-plugin-node-polyfills": "^0.9.0"
-  },
-  "devDependencies": {
-    "@nextcloud/eslint-config": "^8.3.0-beta.2",
-    "@types/node": "^20.4.1",
-    "typescript": "^5.0.4"
-  },
-  "files": [
-    "dist/",
-    "LICENSES",
-    "banner-template.txt"
-  ],
-  "engines": {
-    "node": "^20",
-    "npm": "^9"
-  },
-  "eslintConfig": {
-    "extends": "@nextcloud/eslint-config/typescript"
-  }
+	"name": "@nextcloud/vite-config",
+	"description": "Shared Vite config for nextcloud apps",
+	"author": {
+		"name": "Ferdinand Thiessen",
+		"email": "opensource@fthiessen.de"
+	},
+	"bugs": {
+		"url": "https://github.com/nextcloud/nextcloud-vite-config/issues"
+	},
+	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
+	"license": "AGPL-3.0-or-later",
+	"version": "1.0.0-beta.16",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"lint": "eslint lib",
+		"lint:fix": "eslint --fix lib"
+	},
+	"peerDependencies": {
+		"sass": ">=1.60",
+		"vite": "^4"
+	},
+	"dependencies": {
+		"@rollup/plugin-replace": "^5.0.2",
+		"@vitejs/plugin-vue2": "^2.2.0",
+		"browserslist-to-esbuild": "^1.2.0",
+		"rollup-plugin-corejs": "^1.0.0-beta.0",
+		"rollup-plugin-esbuild-minify": "^1.1.0",
+		"rollup-plugin-license": "^3.0.1",
+		"rollup-plugin-node-externals": "^6.1.1",
+		"vite-plugin-css-injected-by-js": "^3.2.0",
+		"vite-plugin-dts": "^3.2.0",
+		"vite-plugin-node-polyfills": "^0.9.0"
+	},
+	"devDependencies": {
+		"@nextcloud/eslint-config": "^8.3.0-beta.2",
+		"@types/node": "^20.4.1",
+		"typescript": "^5.0.4"
+	},
+	"files": [
+		"dist/",
+		"LICENSES",
+		"banner-template.txt"
+	],
+	"engines": {
+		"node": "^20",
+		"npm": "^9"
+	},
+	"eslintConfig": {
+		"extends": "@nextcloud/eslint-config/typescript"
+	}
 }
