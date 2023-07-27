@@ -15,7 +15,7 @@ import { nodeExternals, type ExternalsOptions } from 'rollup-plugin-node-externa
 
 type OutputOptions = BuildOptions['rollupOptions']['output']
 
-interface LibraryOptions extends BaseOptions {
+export interface LibraryOptions extends BaseOptions {
 	/**
 	 * Options for the rollup node externals plugin
 	 *
