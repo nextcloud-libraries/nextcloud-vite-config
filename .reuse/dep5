@@ -1,8 +1,0 @@
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: nextcloud-vite-config
-Upstream-Contact: Ferdinand Thiessen <rpm@fthiessen.de>
-Source: https://github.com/susnux/nextcloud-vite-config
-
-Files: package-lock.json package.json
-Copyright: Ferdinand Thiessen <rpm@fthiessen.de>
-License: EUPL-1.2
