@@ -12,6 +12,7 @@ import { createBaseConfig } from './baseConfig.js'
 
 import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
 import replace from '@rollup/plugin-replace'
+import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 
 export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version
@@ -59,11 +60,17 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
 			const plugins = []
+			// Inject all imported styles into the javascript bundle by creating dynamic styles on the document
+			if (options?.inlineCSS !== false) {
+				plugins.push(injectCSSPlugin())
+			}
+
 			// defaults to true so only not adding if explicitly set to false
 			if (options?.emptyOutputDirectory !== false) {
 				// Ensure `js/` is empty as we can not use the build in option (see below)
 				plugins.push(EmptyJSDirPlugin())
 			}
+
 			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
 			if (env.command === 'serve') {
 				plugins.push(replace({

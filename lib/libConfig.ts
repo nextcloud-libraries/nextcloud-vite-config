@@ -12,6 +12,7 @@ import { createBaseConfig } from './baseConfig.js'
 
 import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
 import { nodeExternals, type ExternalsOptions } from 'rollup-plugin-node-externals'
+import { ImportCSSPlugin } from './plugins/ImportCSS.js'
 
 type OutputOptions = BuildOptions['rollupOptions']['output']
 
@@ -69,6 +70,11 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 		node,
 	]
 
+	// Handle inline CSS, this is different on library than on app mode, because app will have a DOM env so styles can injected in the document while libraries might run in node
+	if (options.inlineCSS) {
+		plugins.push(ImportCSSPlugin())
+	}
+
 	// Handle the DTS plugin
 	if (options?.DTSPluginOptions !== false) {
 		plugins.push(DTSPlugin(options.DTSPluginOptions))
@@ -83,10 +89,10 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 
 			const assetFileNames = (assetInfo) => {
 				const extType = assetInfo.name.split('.').pop()
-				if (/css/i.test(extType)) {
+				if (!options.inlineCSS && /css/i.test(extType)) {
 					return '[name].css'
 				}
-				return '[name]-[hash][extname]'
+				return 'assets/[name][extname]'
 			}
 
 			// Manually define output options for file extensions
@@ -94,13 +100,11 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 				const extension = format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)
 				return {
 					format,
+					hoistTransitiveImports: false, // For libraries this might otherwise introduce side effects
+					preserveModules: false,
 					assetFileNames,
-					entryFileNames: () => {
-						return `[name].${extension}`
-					},
-					chunkFileNames: () => {
-						return `chunks/[name]-[hash].${extension}`
-					},
+					entryFileNames: `[name].${extension}`,
+					chunkFileNames: `chunks/[name]-[hash].${extension}`,
 				}
 			})
 
@@ -112,6 +116,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 							...entries,
 						},
 					},
+					cssCodeSplit: true,
 					outDir: 'dist',
 					rollupOptions: {
 						external: [/^core-js\//],
