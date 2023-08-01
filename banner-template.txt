@@ -1,7 +1,3 @@
-@name <%= pkg.name %>
-@license <%= pkg.license %>
-@version <%= pkg.version %> (generated <%= moment().format('YYYY-MM-DD') %>)
-
 Included dependencies:<% dependencies.sort((a,b) => a.name.localeCompare(b.name)) %>
 <% _.forEach(dependencies.sort(), function (dependency) { %>
 <%= dependency.name %>
