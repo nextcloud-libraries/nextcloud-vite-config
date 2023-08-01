@@ -20,6 +20,8 @@ export interface LibraryOptions extends BaseOptions {
 	 * Options for the rollup node externals plugin
 	 *
 	 * By default all `dependencies` and `peerDependencies` are marked as external.
+	 * And node builtins prefix (`node:`) is stripped to make the library compatible with webpack and `node-polyfill-webpack-plugin`.
+	 *
 	 * Note: If you use dependencies `@nextcloud/vue/dist/Components/NcButton.js` and what them to be externalized too,
 	 * you need to set an include pattern: `{ include: [ /^@nextcloud\/vue/ ]}`
 	 */
@@ -51,7 +53,15 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 	// Add default values for options
 	options = { config: {}, nodeExternalsOptions: {}, libraryFormats: ['es'], ...options }
 
-	const node = nodeExternals({ builtins: true, builtinsPrefix: 'add', peerDeps: true, deps: true, ...options.nodeExternalsOptions });
+	const node = nodeExternals({
+		builtins: true, // Mark all node core modules, like `path` as external
+		builtinsPrefix: 'strip', // Strip off `node:` prefix to make packages work with webpack (webpack/webpack#14166 and Richienb/node-polyfill-webpack-plugin#19)
+		devDeps: false, // Development dependencies should not be included in the bundle
+		peerDeps: true, // Peer dependencies should be by definition external
+		deps: true, // Runtime dependencies: Same as with peer dependencies
+		...options.nodeExternalsOptions,
+	});
+
 	// Order is important, run the plugin first
 	(node as Plugin).enforce = 'pre'
 	const plugins = [
