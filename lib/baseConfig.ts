@@ -15,7 +15,6 @@ import replace from '@rollup/plugin-replace'
 import vue2 from '@vitejs/plugin-vue2'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
 import license from 'rollup-plugin-license'
-import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 
 export type NodePolyfillsOptions = Parameters<typeof nodePolyfills>[0]
 
@@ -66,10 +65,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 		const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
 		const plugins = []
-		if (options?.inlineCSS !== false) {
-		// Inject all imported styles into the javascript bundle
-			plugins.push(injectCSSPlugin())
-		}
 		if (options?.nodePolyfills) {
 		// Add polyfills for node packages
 			plugins.push(nodePolyfills(typeof options.nodePolyfills === 'object' ? options.nodePolyfills : {}))
