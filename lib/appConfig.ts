@@ -18,7 +18,7 @@ export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version
 export const appNameSanitized = appName.replace(/[/\\]/, '-')
 
-export interface AppOptions extends Omit<BaseOptions, 'nodePolyfills'> {
+export interface AppOptions extends BaseOptions {
 	/**
 	 * Whether to empty the output directory (`js/`)
 	 * @default true
@@ -32,6 +32,14 @@ export interface AppOptions extends Omit<BaseOptions, 'nodePolyfills'> {
 	 * @default {protocolImports: true}
 	 */
 	nodePolyfills?: boolean | NodePolyfillsOptions
+
+	/**
+	 * Location of license summary file of third party dependencies
+	 * Pass `false` to disable generating a license file.
+	 *
+	 * @default 'js/vendor.LICENSE.txt'
+	 */
+	thirdPartyLicense?: false | string
 }
 
 /**
@@ -48,7 +56,14 @@ export interface AppOptions extends Omit<BaseOptions, 'nodePolyfills'> {
  */
 export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn => {
 	// Add default options
-	options = { config: {}, nodePolyfills: { protocolImports: true }, ...options }
+	options = {
+		config: {},
+		nodePolyfills: {
+			protocolImports: true,
+		},
+		thirdPartyLicense: options.thirdPartyLicense === undefined ? 'js/vendor.LICENSE.txt' : options.thirdPartyLicense,
+		...options,
+	}
 
 	return createBaseConfig({
 		...options,

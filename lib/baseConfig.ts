@@ -43,6 +43,13 @@ export interface BaseOptions {
 	 */
 	coreJS?: CoreJSPluginOptions
 	/**
+	 * Location of license summary file of third party dependencies
+	 * Pass `false` to disable generating a license file.
+	 *
+	 * @default 'dist/vendor.LICENSE.txt'
+	 */
+	thirdPartyLicense?: false | string
+	/**
 	 * Vite config to override or extend the base config
 	 */
 	config?: UserConfigExport
@@ -65,12 +72,13 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 		const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
 		const plugins = []
-		if (options?.nodePolyfills) {
 		// Add polyfills for node packages
+		if (options?.nodePolyfills) {
 			plugins.push(nodePolyfills(typeof options.nodePolyfills === 'object' ? options.nodePolyfills : {}))
 		}
-		if (Object.keys(options.replace).length > 0) {
+
 		// Replace global variables, built-in `define` option does not work (replaces also strings in 'node_modules/`)
+		if (Object.keys(options.replace).length > 0) {
 			plugins.push(replace({
 				preventAssignment: true,
 				delimiters: ['\\b', '\\b'],
@@ -78,9 +86,26 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 				values: options.replace,
 			}))
 		}
-		if (options.coreJS !== undefined) {
+
 		// Add required polyfills, by default browserslist config is used
+		if (options.coreJS !== undefined) {
 			plugins.push(corejsPlugin(options.coreJS))
+		}
+
+		// Add license header with all dependencies
+		if (options.thirdPartyLicense !== false) {
+			const licenseTemplate = readFileSync(new URL('../banner-template.txt', import.meta.url), 'utf-8')
+
+			plugins.push(license({
+				thirdParty: {
+					output: {
+						file: options.thirdPartyLicense || 'dist/vendor.LICENSE.txt',
+						template: licenseTemplate,
+					},
+				},
+			}))
+			// Enforce the license is generated at the end so all dependencies are included
+			plugins.at(-1).enforce = 'post'
 		}
 
 		return mergeConfig(defineConfig({
@@ -103,17 +128,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 				...plugins,
 				// Remove unneeded whitespace
 				options?.minify ? minifyPlugin() : undefined,
-				// Add license header with all dependencies
-				license({
-					sourcemap: true,
-					banner: {
-						commentStyle: 'regular',
-						content: () => {
-							const template = new URL('../banner-template.txt', import.meta.url)
-							return readFileSync(template, 'utf-8')
-						},
-					},
-				}),
 			],
 			define: {
 				// process env replacement (keep order of this rules)
@@ -127,6 +141,7 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 			esbuild: {
 				legalComments: 'inline',
 				target: browserslistToEsbuild(),
+				banner: options.thirdPartyLicense ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
 			},
 			build: {
 				cssTarget: browserslistToEsbuild(),
