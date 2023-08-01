@@ -5,7 +5,7 @@
  */
 
 import type { UserConfig, UserConfigFn } from 'vite'
-import type { BaseOptions } from './baseConfig.js'
+import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
 import { createBaseConfig } from './baseConfig.js'
@@ -17,12 +17,20 @@ export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version
 export const appNameSanitized = appName.replace(/[/\\]/, '-')
 
-export interface AppOptions extends BaseOptions {
-    /**
-     * Whether to empty the output directory (`js/`)
-     * @default true
-     */
-    emptyOutputDirectory?: boolean
+export interface AppOptions extends Omit<BaseOptions, 'nodePolyfills'> {
+	/**
+	 * Whether to empty the output directory (`js/`)
+	 * @default true
+	 */
+	emptyOutputDirectory?: boolean
+
+	/**
+	 * Inject polyfills for node packages
+	 * By default all node core modules are polyfilled, including prefixed with `node:` protocol
+	 *
+	 * @default {protocolImports: true}
+	 */
+	nodePolyfills?: boolean | NodePolyfillsOptions
 }
 
 /**
@@ -39,7 +47,7 @@ export interface AppOptions extends BaseOptions {
  */
 export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn => {
 	// Add default options
-	options = { config: {}, ...options }
+	options = { config: {}, nodePolyfills: { protocolImports: true }, ...options }
 
 	return createBaseConfig({
 		...options,

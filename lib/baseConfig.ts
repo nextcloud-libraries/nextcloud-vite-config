@@ -17,7 +17,7 @@ import browserslistToEsbuild from 'browserslist-to-esbuild'
 import license from 'rollup-plugin-license'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 
-type NodePolyfillsOptions = Parameters<typeof nodePolyfills>[0]
+export type NodePolyfillsOptions = Parameters<typeof nodePolyfills>[0]
 
 export interface BaseOptions {
 	/** Strings to replace within your code */
