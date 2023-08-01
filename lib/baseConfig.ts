@@ -15,7 +15,7 @@ import { defineConfig, mergeConfig } from 'vite'
 import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
 
 import replace from '@rollup/plugin-replace'
-import vue2 from '@vitejs/plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
 import license from 'rollup-plugin-license'
 
@@ -124,8 +124,8 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 			plugins: [
 				// Fix build in watch mode with commonjs files
 				RemoveEnsureWatchPlugin,
-				// Add vue2 support
-				vue2({
+				// Add vue 3 support
+				vue({
 					isProduction: !isDev,
 					style: {
 						trim: true,
