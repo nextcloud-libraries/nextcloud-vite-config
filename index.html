@@ -12,9 +12,9 @@
 <div class="col-content">
 <div class="tsd-page-title">
 <h2>@nextcloud/vite-config</h2></div>
-<div class="tsd-panel tsd-typography"><a id="md:nextcloudvite-config" class="tsd-anchor"></a><h1><a href="#md:nextcloudvite-config"><code>@nextcloud/vite-config</code></a></h1><p><a href="https://www.npmjs.com/package/@nextcloud/vite-config"><img src="https://img.shields.io/npm/v/@nextcloud/vite-config.svg?style=flat-square" alt="npm last version"></a> <a href="https://nextcloud.github.io/nextcloud-vite-config/"><img src="https://img.shields.io/badge/documentation-online-blue?style=flat-square" alt="Project documentation"></a></p>
+<div class="tsd-panel tsd-typography"><a id="md:nextcloudvite-config" class="tsd-anchor"></a><h1><a href="#md:nextcloudvite-config"><code>@nextcloud/vite-config</code></a></h1><p><a href="https://www.npmjs.com/package/@nextcloud/vite-config"><img src="https://img.shields.io/npm/v/@nextcloud/vite-config.svg?style=flat-square" alt="npm last version"></a> <a href="https://nextcloud-libraries.github.io/nextcloud-vite-config/"><img src="https://img.shields.io/badge/documentation-online-blue?style=flat-square" alt="Project documentation"></a></p>
 <p>Shared Vite ⚡ config for Nextcloud apps and libraries, which also can be easily extended.</p>
-<a id="md:api-reference" class="tsd-anchor"></a><h2><a href="#md:api-reference">API reference</a></h2><p>The full API reference can be found on the <a href="https://nextcloud.github.io/nextcloud-vite-config/">documentation</a>.</p>
+<a id="md:api-reference" class="tsd-anchor"></a><h2><a href="#md:api-reference">API reference</a></h2><p>The full API reference can be found on the <a href="https://nextcloud-libraries.github.io/nextcloud-vite-config/">documentation</a>.</p>
 <a id="md:how-to-use" class="tsd-anchor"></a><h2><a href="#md:how-to-use">How to use</a></h2><p>If your app uses an entry point for the main app and one for the settings page, then your default project tree will look like this:</p>
 <pre><code><span class="hl-0">css</span><span class="hl-1">/</span><br/><span class="hl-0">js</span><span class="hl-1">/</span><br/><span class="hl-0">lib</span><span class="hl-1">/</span><br/><span class="hl-0">src</span><span class="hl-1">/</span><br/><span class="hl-1">  |- ...</span><br/><span class="hl-1">  |- </span><span class="hl-0">main</span><span class="hl-1">.</span><span class="hl-0">js</span><br/><span class="hl-1">  |- </span><span class="hl-0">settings</span><span class="hl-1">.</span><span class="hl-0">js</span><br/><span class="hl-0">package</span><span class="hl-1">.</span><span class="hl-0">json</span><br/><span class="hl-0">vite</span><span class="hl-1">.</span><span class="hl-0">config</span><span class="hl-1">.</span><span class="hl-0">js</span>
 </code><button>Copy</button></pre>
@@ -27,6 +27,15 @@
 <a id="md:use-with-a-library" class="tsd-anchor"></a><h3><a href="#md:use-with-a-library">Use with a library</a></h3><p>There is also a configuration for libraries, this configuration will handle the output directory correctly and automatically mark all <code>dependencies</code> as external:</p>
 <pre><code class="language-js"><span class="hl-2">import</span><span class="hl-1"> { </span><span class="hl-0">createLibConfig</span><span class="hl-1"> } </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&#39;@nextcloud/vite-config&#39;</span><br/><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">translations</span><span class="hl-1"> = </span><span class="hl-5">//...</span><br/><br/><span class="hl-2">export</span><span class="hl-1"> </span><span class="hl-2">default</span><span class="hl-1"> </span><span class="hl-4">createLibConfig</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-0">index:</span><span class="hl-1"> </span><span class="hl-3">&#39;src/index.js&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">}, {</span><br/><span class="hl-1">    </span><span class="hl-0">replace:</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-0">TRANSLATIONS:</span><span class="hl-1"> </span><span class="hl-0">translations</span><span class="hl-1">,</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">})</span>
 </code><button>Copy</button></pre>
+<a id="md:notes" class="tsd-anchor"></a><h2><a href="#md:notes">Notes</a></h2><a id="md:inlining--injecting-css" class="tsd-anchor"></a><h3><a href="#md:inlining--injecting-css">Inlining / injecting CSS</a></h3><p>You can enable inlining CSS code, but please note that this is handled differently for apps and libraries.</p>
+<ul>
+<li>Apps will inline the CSS by dynamically inject it as <code>script</code> tags</li>
+<li>Libraries will extract the CSS to the dist/assets directory and import it in the entry point</li>
+</ul>
+<p>For apps any styles can be injected in the JS by dynamically inject the styles in the document (creating <code>&lt;style&gt;</code> tags).
+But this only works in DOM environments, so for libraries this might not work (e.g. while testing in the Node environment).</p>
+<p>So for libraries the CSS will still be extracted by Vite, but the extracted CSS assets will be imported.
+This way the library user can decide how to handle the imported CSS without relying on a DOM environment.</p>
 </div></div>
 <div class="col-sidebar">
 <div class="page-menu">
@@ -56,7 +65,11 @@
 <li><a href="#md:how-to-use"><span>How to use</span></a></li>
 <li>
 <ul>
-<li><a href="#md:use-with-a-library"><span>Use with a library</span></a></li></ul></li></ul></li></ul></li></ul></div></details></div>
+<li><a href="#md:use-with-a-library"><span>Use with a library</span></a></li></ul></li>
+<li><a href="#md:notes"><span>Notes</span></a></li>
+<li>
+<ul>
+<li><a href="#md:inlining--injecting-css"><span>Inlining / injecting CSS</span></a></li></ul></li></ul></li></ul></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-namespace)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.33 16V7.24H10.77L13.446 14.74C13.43 14.54 13.41 14.296 13.386 14.008C13.37 13.712 13.354 13.404 13.338 13.084C13.33 12.756 13.326 12.448 13.326 12.16V7.24H14.37V16H12.93L10.266 8.5C10.282 8.692 10.298 8.936 10.314 9.232C10.33 9.52 10.342 9.828 10.35 10.156C10.366 10.476 10.374 10.784 10.374 11.08V16H9.33Z" fill="var(--color-text)"></path></g></svg><span>@nextcloud/vite-<wbr/>config</span></a>
 <ul class="tsd-small-nested-navigation">
