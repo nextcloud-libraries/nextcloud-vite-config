@@ -92,7 +92,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 				if (!options.inlineCSS && /css/i.test(extType)) {
 					return '[name].css'
 				}
-				return 'assets/[name][extname]'
+				return 'assets/[name]-[hash][extname]'
 			}
 
 			// Manually define output options for file extensions
