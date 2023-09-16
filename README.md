@@ -82,9 +82,11 @@ export default createLibConfig({
 
 ### Inlining / injecting CSS
 You can enable inlining CSS code, but please note that this is handled differently for apps and libraries.
+* Apps will inline the CSS by dynamically inject it as `script` tags
+* Libraries will extract the CSS to the dist/assets directory and import it in the entry point
 
 For apps any styles can be injected in the JS by dynamically inject the styles in the document (creating `<style>` tags).
 But this only works in DOM environments, so for libraries this might not work (e.g. while testing in the Node environment).
 
-So for apps the CSS will still be extracted by Vite, but the extracted CSS assets will be imported.
+So for libraries the CSS will still be extracted by Vite, but the extracted CSS assets will be imported.
 This way the library user can decide how to handle the imported CSS without relying on a DOM environment.
