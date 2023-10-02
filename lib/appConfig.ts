@@ -103,15 +103,13 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 			const overrides: UserConfig = {
 				plugins,
 				build: {
-					lib: {
-						entry: {
-							...entries,
-						},
-					},
 					/* Output dir is the project root to allow main style to be generated within `/css` */
 					outDir: '',
 					emptyOutDir: false, // ensure project root is NOT emptied!
 					rollupOptions: {
+						input: {
+							...entries,
+						},
 						output: {
 							// global variables for appName and appVersion
 							intro: `const appName = ${JSON.stringify(appName)}; const appVersion = ${JSON.stringify(appVersion)};`,

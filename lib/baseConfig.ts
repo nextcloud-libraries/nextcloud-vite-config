@@ -145,10 +145,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 			},
 			build: {
 				cssTarget: browserslistToEsbuild(),
-				lib: {
-					formats: ['es'],
-					entry: {},
-				},
 				sourcemap: isDev || 'hidden',
 				target: browserslistToEsbuild(),
 			},
