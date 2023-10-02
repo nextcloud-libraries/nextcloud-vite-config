@@ -3,6 +3,6 @@ Upstream-Name: nextcloud-vite-config
 Upstream-Contact: Ferdinand Thiessen <rpm@fthiessen.de>
 Source: https://github.com/susnux/nextcloud-vite-config
 
-Files: package-lock.json package.json tsconfig.json .gitignore banner-template.txt README.md
+Files: package-lock.json package.json tsconfig.json .gitignore banner-template.txt README.md CHANGELOG.md
 Copyright: Ferdinand Thiessen <rpm@fthiessen.de>
 License: AGPL-3.0-or-later
