@@ -25,7 +25,9 @@
 		"build:doc": "typedoc --out dist/doc lib/index.ts && touch dist/doc/.nojekyll",
 		"dev": "tsc --watch",
 		"lint": "eslint lib",
-		"lint:fix": "eslint --fix lib"
+		"lint:fix": "eslint --fix lib",
+		"test": "vitest run",
+		"test:coverage": "vitest run --coverage.enabled --coverage.all"
 	},
 	"peerDependencies": {
 		"sass": ">=1.60",
@@ -47,6 +49,7 @@
 	"devDependencies": {
 		"@nextcloud/eslint-config": "^8.3.0",
 		"@types/node": "^20.8.1",
+		"@vitest/coverage-v8": "^0.34.6",
 		"typedoc": "^0.25.1",
 		"typescript": "^5.2.2",
 		"vitest": "^0.34.6"
