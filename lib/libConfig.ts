@@ -82,6 +82,8 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 
 	return createBaseConfig({
 		...options,
+		// Workaround https://github.com/vitejs/vite/issues/14515
+		minify: false,
 		config: async (env) => {
 			// This config is used to extend or override our base config
 			// Make sure we get a user config and not a promise or a user config function
@@ -110,12 +112,22 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 
 			return mergeConfig({
 				plugins,
+				// workaround, see above (https://github.com/vitejs/vite/issues/14515)
+				esbuild: {
+					minifyIdentifiers: true,
+					minifySyntax: true,
+					minifyWhitespace: false,
+					legalComments: options.minify ? 'none' : 'inline',
+					target: undefined,
+				},
 				build: {
 					lib: {
 						entry: {
 							...entries,
 						},
 					},
+					// workaround, see above
+					minify: options.minify ?? env.mode === 'production' ? 'esbuild' : false,
 					cssCodeSplit: true,
 					outDir: 'dist',
 					rollupOptions: {
