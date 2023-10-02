@@ -125,6 +125,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 						entry: {
 							...entries,
 						},
+						formats: options.libraryFormats,
 					},
 					// workaround, see above
 					minify: options.minify ?? env.mode === 'production' ? 'esbuild' : false,
