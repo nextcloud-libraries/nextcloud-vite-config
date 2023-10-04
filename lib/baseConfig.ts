@@ -129,15 +129,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 				// Remove unneeded whitespace
 				options?.minify ? minifyPlugin() : undefined,
 			],
-			define: {
-				// process env replacement (keep order of this rules)
-				'globalThis.process.env.NODE_ENV': JSON.stringify(mode),
-				'globalThis.process.env.': '({}).',
-				'global.process.env.NODE_ENV': JSON.stringify(mode),
-				'global.process.env.': '({}).',
-				'process.env.NODE_ENV': JSON.stringify(mode),
-				'process.env.': '({}).',
-			},
 			esbuild: {
 				legalComments: 'inline',
 				target: browserslistToEsbuild(),
