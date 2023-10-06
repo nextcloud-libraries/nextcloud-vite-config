@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.0.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.0.1) (2023-10-06)
+[Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.0.0...v1.0.1)
+
+### :bug: Fixed bugs
+- fix: Remove define of process.env from base config [\#34](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/34) ([susnux](https://github.com/susnux))
+- fix(libConfig): import default in CJS build [\#35](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/35) ([ShGKme](https://github.com/ShGKme))
+
 ## [v1.0.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.0.0) (2023-10-02)
 
 [Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.0.0-beta.1...v1.0.0)
