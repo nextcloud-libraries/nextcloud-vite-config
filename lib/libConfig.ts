@@ -102,6 +102,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 				const extension = format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)
 				return {
 					format,
+					interop: 'auto', // Add __esModule for CJS externals imports to fix interop issues in tools like Babel/TS
 					hoistTransitiveImports: false, // For libraries this might otherwise introduce side effects
 					preserveModules: false,
 					assetFileNames,
