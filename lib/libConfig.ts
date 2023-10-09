@@ -90,6 +90,14 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
 			const assetFileNames = (assetInfo) => {
+				// Allow to customize the asset file names
+				if (options.assetFileNames) {
+					const customName = options.assetFileNames(assetInfo)
+					if (customName) {
+						return customName
+					}
+				}
+
 				const extType = assetInfo.name.split('.').pop()
 				if (!options.inlineCSS && /css/i.test(extType)) {
 					return '[name].css'
