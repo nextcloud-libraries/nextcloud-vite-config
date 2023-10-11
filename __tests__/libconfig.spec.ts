@@ -46,6 +46,30 @@ describe('library config', () => {
 			// and minify disabled
 			expect(resolved.build.minify).toBe(false)
 		})
+
+		it('keep name without inlining the CSS assets ', async () => {
+			const resolved = await createConfig('build', 'development')
+
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames).not.toBe(undefined)
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'some.css' })).toBe('[name].css')
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'some.nfo' })).toBe('assets/[name]-[hash][extname]')
+		})
+
+		it('move CSS files to asset directory when inlining CSS', async () => {
+			const resolved = await createConfig('build', 'development', { inlineCSS: true })
+
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames).not.toBe(undefined)
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'some.css' })).toBe('assets/[name]-[hash][extname]')
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'some.nfo' })).toBe('assets/[name]-[hash][extname]')
+		})
+
+		it('allow custom asset names', async () => {
+			const resolved = await createConfig('build', 'development', { assetFileNames: (({ name }) => name === 'foo.css' ? 'bar.css' : undefined) as never })
+
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames).not.toBe(undefined)
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'foo.css' })).toBe('bar.css')
+			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'baz.css' })).toBe('[name].css')
+		})
 	})
 
 	const createConfig = async (command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: LibraryOptions) => await resolveConfig(await createLibConfig({
