@@ -3,15 +3,16 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
+
 // ok as this is just for tests
 // eslint-disable-next-line n/no-extraneous-import
 import type { RollupOutput, OutputOptions, OutputChunk } from 'rollup'
 import { build, resolveConfig } from 'vite'
 import { describe, it, expect } from 'vitest'
-import { createAppConfig } from '../lib/appConfig'
+import { AppOptions, createAppConfig } from '../lib/appConfig'
 import { fileURLToPath } from 'url'
 import { resolve } from 'path'
-import { LibraryOptions } from '../lib/libConfig'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -65,7 +66,31 @@ describe('app config', () => {
 		expect(assetFileNames({ name: 'foo.css' })).toBe('css/@nextcloud-vite-config-[name].css')
 	})
 
-	const createConfig = async (command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: LibraryOptions) => await resolveConfig(await createAppConfig({
+	describe('inlining css', () => {
+		const pluginName = cssInjectedByJsPlugin().name
+
+		it('does not inline css by default', async () => {
+			const resolved = await createConfig()
+			expect(resolved.plugins.filter(({ name }) => name === pluginName)).toHaveLength(0)
+		})
+
+		it('does not inline css when disabled', async () => {
+			const resolved = await createConfig('build', 'production', { inlineCSS: false })
+			expect(resolved.plugins.filter(({ name }) => name === pluginName)).toHaveLength(0)
+		})
+
+		it('does inline css when enabled', async () => {
+			const resolved = await createConfig('build', 'production', { inlineCSS: true })
+			expect(resolved.plugins.filter(({ name }) => name === pluginName)).toHaveLength(1)
+		})
+
+		it('does inline css when enabled with configuration', async () => {
+			const resolved = await createConfig('build', 'production', { inlineCSS: { useStrictCSP: true } })
+			expect(resolved.plugins.filter(({ name }) => name === pluginName)).toHaveLength(1)
+		})
+	})
+
+	const createConfig = async (command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: AppOptions) => await resolveConfig(await createAppConfig({
 		main: 'src/main.js',
 	}, options)({ command, mode, ssrBuild: false }), command)
 })
