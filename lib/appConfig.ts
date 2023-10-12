@@ -102,8 +102,18 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 			// Extended config for apps
 			const overrides: UserConfig = {
 				plugins,
+				// we need to set the base path, so module preloading works correctly
+				// currently this is hidden behind the `experimental` options.
+				experimental: {
+					renderBuiltUrl(filename) {
+						return {
+							// already contains the "js/" prefix as it is our output file configuration
+							runtime: `OC.filePath('${appName}', '', '${filename}')`,
+						}
+					},
+				},
 				build: {
-					/* Output dir is the project root to allow main style to be generated within `/css` */
+					// Output dir is the project root to allow main style to be generated within `/css`
 					outDir: '',
 					emptyOutDir: false, // ensure project root is NOT emptied!
 					rollupOptions: {
