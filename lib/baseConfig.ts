@@ -8,7 +8,7 @@ import { readFileSync } from 'node:fs'
 import { type CoreJSPluginOptions, corejsPlugin } from 'rollup-plugin-corejs'
 import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify/lib/index.js'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import { defineConfig, mergeConfig, type UserConfigExport, type UserConfigFn } from 'vite'
+import { defineConfig, mergeConfig, type UserConfigExport, type UserConfigFn, type Rollup } from 'vite'
 import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
 
 import replace from '@rollup/plugin-replace'
@@ -49,6 +49,15 @@ export interface BaseOptions {
 	 * @default 'dist/vendor.LICENSE.txt'
 	 */
 	thirdPartyLicense?: false | string
+	/**
+	 * Customize the asset file names.
+	 * Similar to `output.assetFileNames` in rollup config,
+	 * but if returns undefined, then this config defaults is be used.
+	 *
+	 * @example Move CSS styles to `styles/style.css` instead of the default `css/[entrypoint-name].css`:
+	 *          (chunkInfo) => chunkInfo.name.endsWith('.css') ? 'styles/style.css' : undefined
+	 */
+	assetFileNames?: (chunkInfo: Rollup.PreRenderedAsset) => 'string' | undefined,
 	/**
 	 * Vite config to override or extend the base config
 	 */

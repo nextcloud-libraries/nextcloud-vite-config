@@ -124,6 +124,14 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 							// global variables for appName and appVersion
 							intro: `const appName = ${JSON.stringify(appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
 							assetFileNames: (assetInfo) => {
+								// Allow to customize the asset file names
+								if (options.assetFileNames) {
+									const customName = options.assetFileNames(assetInfo)
+									if (customName) {
+										return customName
+									}
+								}
+
 								const extType = assetInfo.name.split('.').pop()
 								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
 									return 'img/[name][extname]'
