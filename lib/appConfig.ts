@@ -5,6 +5,7 @@
  */
 
 import type { UserConfig, UserConfigFn } from 'vite'
+import type { PluginConfiguration as VitePluginInjectCSSOptions } from 'vite-plugin-css-injected-by-js/dist/esm/declarations/interface.js'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
@@ -18,7 +19,13 @@ export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version
 export const appNameSanitized = appName.replace(/[/\\]/, '-')
 
-export interface AppOptions extends BaseOptions {
+export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
+	/**
+	 * Inject all styles inside the javascript bundle instead of emitting a .css file
+	 * @default false
+	 */
+	inlineCSS?: boolean | VitePluginInjectCSSOptions,
+
 	/**
 	 * Whether to empty the output directory (`js/`)
 	 * @default true
@@ -66,7 +73,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 	}
 
 	return createBaseConfig({
-		...options,
+		...(options as BaseOptions),
 		config: async (env) => {
 			console.info(`Building ${appName} for ${env.mode}`)
 
@@ -76,8 +83,8 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 
 			const plugins = []
 			// Inject all imported styles into the javascript bundle by creating dynamic styles on the document
-			if (options?.inlineCSS !== false) {
-				plugins.push(injectCSSPlugin())
+			if (options.inlineCSS) {
+				plugins.push(injectCSSPlugin(typeof options.inlineCSS === 'object' ? options.inlineCSS : undefined))
 			}
 
 			// defaults to true so only not adding if explicitly set to false
