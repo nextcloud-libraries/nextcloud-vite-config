@@ -1,5 +1,26 @@
 # Changelog
 
+## [v1.1.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.1.0) (2023-10-20)
+[Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.0.1...v1.1.0)
+
+### :rocket: Enhancements
+* feat: add option to customize asset file names [\#41](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/41) ([ShGKme](https://github.com/ShGKme))
+* feat\(appconfig\): Add base path so module preloading works [\#43](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/43) ([susnux](https://github.com/susnux))
+
+### :bug: Fixed bugs
+* fix\(appconfig\): Fix the default value for inlining CSS [\#42](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/42) ([susnux](https://github.com/susnux))
+
+### Closed pull requests
+* chore(deps): Bump postcss from 8.4.24 to 8.4.31 [\#37](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/37)
+* chore(deps-dev): Bump @types/node from 20.8.1 to 20.8.3 [\#38](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/38)
+* chore(deps): Bump rollup-plugin-node-externals from 6.1.1 to 6.1.2 [\#39](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/39)
+* chore(deps): Bump @rollup/plugin-replace from 5.0.2 to 5.0.3 [\#40](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/40)
+* chore(deps): Bump rollup-plugin-esbuild-minify from 1.1.0 to 1.1.1 [\#44](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/44)
+* chore(deps-dev): Bump @types/node from 20.8.3 to 20.8.6 [\#47](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/47)
+* chore(deps): Bump magic-string from 0.30.4 to 0.30.5 [\#46](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/46)
+* chore(deps-dev): Bump typedoc from 0.25.1 to 0.25.2 [\#45](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/45)
+* chore(deps-dev): Bump @babel/traverse from 7.23.0 to 7.23.2 [\#48](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/48)
+
 ## [v1.0.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.0.1) (2023-10-06)
 [Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.0.0...v1.0.1)
 
