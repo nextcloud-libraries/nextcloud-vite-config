@@ -43,7 +43,7 @@
 		"rollup-plugin-license": "^3.2.0",
 		"rollup-plugin-node-externals": "^6.1.2",
 		"vite-plugin-css-injected-by-js": "^3.3.0",
-		"vite-plugin-dts": "^3.6.3",
+		"vite-plugin-dts": "^3.6.4",
 		"vite-plugin-node-polyfills": "^0.17.0"
 	},
 	"devDependencies": {
