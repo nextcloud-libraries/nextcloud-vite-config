@@ -51,7 +51,7 @@
 		"@types/node": "^20.10.2",
 		"@vitest/coverage-v8": "^0.34.6",
 		"typedoc": "^0.25.4",
-		"typescript": "^5.3.2",
+		"typescript": "^5.3.3",
 		"vite": "^4.5.1",
 		"vitest": "^0.34.6"
 	},
