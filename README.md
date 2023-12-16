@@ -36,7 +36,7 @@ You can also modify the configuration, for example if you want to set an include
 
 ```js
 import { createAppConfig } from '@nextcloud/vite-config'
-import { mergeConfig } from 'vite'
+import { defineConfig } from 'vite'
 import path from 'node:path'
 
 const yourOverrides = defineConfig({
