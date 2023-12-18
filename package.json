@@ -21,9 +21,9 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc",
+		"build": "vite --mode production build",
 		"build:doc": "typedoc --out dist/doc lib/index.ts && touch dist/doc/.nojekyll",
-		"dev": "tsc --watch",
+		"dev": "vite --mode development build --watch",
 		"lint": "eslint lib",
 		"lint:fix": "eslint --fix lib",
 		"test": "vitest run",
