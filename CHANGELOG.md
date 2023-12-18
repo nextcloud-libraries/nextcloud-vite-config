@@ -1,5 +1,16 @@
 # Changelog
 
+## [v1.1.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.1.1) (2023-12-19)
+[Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.1.0...v1.1.1)
+
+### :bug: Fixed bugs
+* fix(typing): fix typo in typing by [\#69](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/69) \([ShGKme](https://github.com/ShGKme)\)
+* fix: typo in readme by [\#83](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/83) \([raimund-schluessler](https://github.com/raimund-schluessler)\)
+* fix: Do not set vue's `comments` setting for dev builds by [\#84](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/84) \([susnux](https://github.com/susnux)\)
+
+### Changed
+* Updated dependencies
+
 ## [v1.1.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.1.0) (2023-10-20)
 [Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.0.1...v1.1.0)
 
