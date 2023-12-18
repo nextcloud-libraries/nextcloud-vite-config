@@ -4,11 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import type { CoreJSPluginOptions } from 'rollup-plugin-corejs'
+import type { UserConfigExport, UserConfigFn, Rollup } from 'vite'
+
 import { readFileSync } from 'node:fs'
-import { type CoreJSPluginOptions, corejsPlugin } from 'rollup-plugin-corejs'
+import { corejsPlugin } from 'rollup-plugin-corejs'
 import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify/lib/index.js'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import { defineConfig, mergeConfig, type UserConfigExport, type UserConfigFn, type Rollup } from 'vite'
+import { defineConfig, mergeConfig } from 'vite'
 import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
 
 import replace from '@rollup/plugin-replace'
@@ -126,11 +129,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 					isProduction: !isDev,
 					style: {
 						trim: true,
-					},
-					template: {
-						compilerOptions: {
-							comments: isDev,
-						},
 					},
 				}),
 				// Add custom plugins
