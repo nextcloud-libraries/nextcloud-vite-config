@@ -61,10 +61,10 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 		peerDeps: true, // Peer dependencies should be by definition external
 		deps: true, // Runtime dependencies: Same as with peer dependencies
 		...options.nodeExternalsOptions,
-	});
+	}) as unknown as Plugin
 
 	// Order is important, run the plugin first
-	(node as Plugin).enforce = 'pre'
+	node.enforce = 'pre'
 	const plugins = [
 		// Make dependencies external
 		node,

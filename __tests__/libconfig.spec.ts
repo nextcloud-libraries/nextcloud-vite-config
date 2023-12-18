@@ -72,7 +72,10 @@ describe('library config', () => {
 		})
 	})
 
-	const createConfig = async (command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: LibraryOptions) => await resolveConfig(await createLibConfig({
-		main: 'src/main.js',
-	}, options)({ command, mode, ssrBuild: false }), command)
+	const createConfig = async (command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: LibraryOptions) => {
+		const inlineConfig = await createLibConfig({
+			main: 'src/main.js',
+		}, options)({ command, mode })
+		return await resolveConfig({ ...inlineConfig, configFile: false }, command)
+	}
 })
