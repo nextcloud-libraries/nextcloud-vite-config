@@ -103,7 +103,8 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 
 		// Add license header with all dependencies
 		if (options.thirdPartyLicense !== false) {
-			const licenseTemplate = readFileSync(new URL('../banner-template.txt', import.meta.url), 'utf-8')
+			const path = '../banner-template.txt'
+			const licenseTemplate = readFileSync(new URL(path, import.meta.url), 'utf-8')
 
 			plugins.push(license({
 				thirdParty: {
