@@ -3,9 +3,9 @@
 		"allowSyntheticDefaultImports": true,
 		"target": "ES2022",
 		"module": "ESNext",
-		"moduleResolution": "node",
+		"moduleResolution": "Bundler",
 		"outDir": "dist",
-		"declaration": true
+		"declaration": true,
 	},
 	"include": [
 		"lib/**/*.ts"
