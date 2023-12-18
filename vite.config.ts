@@ -1,3 +1,9 @@
+/**
+ * SPDX-FileCopyrightText: 2023 Ferdinand Thiessen <opensource@fthiessen.de>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 import type { Plugin } from 'vite'
 import { nodeExternals } from 'rollup-plugin-node-externals'
 import { defineConfig } from 'vite'
