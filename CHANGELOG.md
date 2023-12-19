@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.2.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.0) (2023-12-19)
+[Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.1.1...v1.2.0)
+
+### :rocket: Enhancements
+* enh: Support vite v5 [\#69](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/87) \([susnux](https://github.com/susnux)\)
+
+### Changed
+* Updated dependencies
+
 ## [v1.1.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.1.1) (2023-12-19)
 [Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.1.0...v1.1.1)
 
