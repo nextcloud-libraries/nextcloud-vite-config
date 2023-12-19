@@ -2,6 +2,6 @@
 
 exports[`app config > replaces process.env 1`] = `
 "/*! third party licenses: js/vendor.LICENSE.txt */
-window.my_timezone={}.TZ;
+var e={};window.my_timezone=e.TZ;
 "
 `;
