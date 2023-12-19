@@ -5,7 +5,6 @@
  */
 
 import type { UserConfig, UserConfigFn } from 'vite'
-import type { PluginConfiguration as VitePluginInjectCSSOptions } from 'vite-plugin-css-injected-by-js/dist/esm/declarations/interface.js'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
@@ -14,6 +13,8 @@ import { createBaseConfig } from './baseConfig.js'
 import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
 import replace from '@rollup/plugin-replace'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
+
+type VitePluginInjectCSSOptions = Parameters<typeof injectCSSPlugin>[0]
 
 export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version
