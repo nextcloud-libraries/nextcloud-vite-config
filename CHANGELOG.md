@@ -1,5 +1,22 @@
 # Changelog
 
+## [v1.2.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.1) (2024-01-29)
+[Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.2.0...v1.2.1)
+
+### :bug: Fixed bugs
+* fix(css-plugin): Use `generateBundle` hook to prevent CSS imports from being lost [\#112](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/112) \([susnux](https://github.com/susnux)\)
+
+### Changes
+* Updated development dependencies
+* Updated dependencies:
+  * chore(deps): Bump vite-plugin-node-polyfills from 0.17.0 to 0.18.0 [\#89](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/89) \([dependabot](https://github.com/dependabot)\)
+  * chore(deps): Bump vite-plugin-css-injected-by-js from 3.3.0 to 3.3.1 [\#92](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/92) \([dependabot](https://github.com/dependabot)\)
+  * chore(deps): Bump vite-plugin-node-polyfills from 0.18.0 to 0.19.0 [\#94](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/94) \([dependabot](https://github.com/dependabot)\)
+  * chore(deps): Bump vite-plugin-dts from 3.6.4 to 3.7.0 [\#96](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/96) \([dependabot](https://github.com/dependabot)\)
+  * chore(deps): Bump vite-plugin-dts from 3.7.0 to 3.7.1 [\#111](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/111) \([dependabot](https://github.com/dependabot)\)
+  * chore(deps): Bump browserslist-to-esbuild from 1.2.0 to 2.1.1 [\#105](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/105) \([dependabot](https://github.com/dependabot)\)
+* chore: update workflows from templates [\#93](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/93) \([nextcloud-command](https://github.com/nextcloud-command)\)
+
 ## [v1.2.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.0) (2023-12-19)
 [Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.1.1...v1.2.0)
 
