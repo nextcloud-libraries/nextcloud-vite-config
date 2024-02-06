@@ -56,6 +56,18 @@ describe('app config', () => {
 		expect(assetFileNames({ name: 'some.ico' })).toBe('img/[name][extname]')
 	})
 
+	it('moves fonts to css/fonts', async () => {
+		const resolved = await createConfig('build', 'development')
+
+		const output = resolved.build.rollupOptions.output as OutputOptions
+		expect(typeof output?.assetFileNames).toBe('function')
+		const assetFileNames = output?.assetFileNames as ((chunkInfo: unknown) => string)
+		expect(assetFileNames({ name: 'some.woff' })).toBe('css/fonts/[name][extname]')
+		expect(assetFileNames({ name: 'some.woff2' })).toBe('css/fonts/[name][extname]')
+		expect(assetFileNames({ name: 'some.otf' })).toBe('css/fonts/[name][extname]')
+		expect(assetFileNames({ name: 'some.ttf' })).toBe('css/fonts/[name][extname]')
+	})
+
 	it('allow custom asset names', async () => {
 		const resolved = await createConfig('build', 'development', { assetFileNames: (({ name }) => name === 'main.css' ? 'css/app-styles.css' : undefined) as never })
 
