@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.2.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.2) (2024-02-06)
+[Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.2.1...v1.2.2)
+
+### :bug: Fixed bugs
+* fix: Move fonts to `css/fonts` and fix css path resolving [\#121](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/121) \([susnux](https://github.com/susnux)\)
+
+### Changes
+* chore(deps): Bump magic-string from 0.30.5 to 0.30.6
+* chore(deps): Bump rollup-plugin-node-externals from 6.1.2 to 7.0.1
+
 ## [v1.2.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.1) (2024-01-29)
 [Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.2.0...v1.2.1)
 
