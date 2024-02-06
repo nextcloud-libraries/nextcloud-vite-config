@@ -7,6 +7,7 @@
 import type { UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 
+import { relative } from 'node:path'
 import { mergeConfig } from 'vite'
 import { createBaseConfig } from './baseConfig.js'
 
@@ -113,7 +114,11 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 				// we need to set the base path, so module preloading works correctly
 				// currently this is hidden behind the `experimental` options.
 				experimental: {
-					renderBuiltUrl(filename) {
+					renderBuiltUrl(filename, { hostType }) {
+						if (hostType === 'css') {
+							// CSS `url()` does not support any dynamic path, so we use relative path to the css files
+							return relative('../css', `../${filename}`)
+						}
 						return {
 							// already contains the "js/" prefix as it is our output file configuration
 							runtime: `OC.filePath('${appName}', '', '${filename}')`,
@@ -145,6 +150,8 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
 									return `css/${appNameSanitized}-[name].css`
+								} else if (/woff2?|ttf|otf/i.test(extType)) {
+									return 'css/fonts/[name][extname]'
 								}
 								return 'dist/[name]-[hash][extname]'
 							},
