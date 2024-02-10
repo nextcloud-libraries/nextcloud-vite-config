@@ -45,7 +45,7 @@
 		"rollup-plugin-node-externals": "^7.0.1",
 		"vite-plugin-css-injected-by-js": "^3.3.1",
 		"vite-plugin-dts": "^3.7.2",
-		"vite-plugin-node-polyfills": "^0.19.0"
+		"vite-plugin-node-polyfills": "^0.20.0"
 	},
 	"devDependencies": {
 		"@nextcloud/eslint-config": "^8.3.0",
