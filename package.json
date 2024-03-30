@@ -42,7 +42,7 @@
 		"rollup-plugin-corejs": "^1.0.0-beta.2",
 		"rollup-plugin-esbuild-minify": "^1.1.1",
 		"rollup-plugin-license": "^3.3.1",
-		"rollup-plugin-node-externals": "^7.0.1",
+		"rollup-plugin-node-externals": "^7.1.1",
 		"vite-plugin-css-injected-by-js": "^3.3.1",
 		"vite-plugin-dts": "^3.8.1",
 		"vite-plugin-node-polyfills": "^0.21.0"
