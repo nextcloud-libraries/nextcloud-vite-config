@@ -39,7 +39,7 @@
 		"@vitejs/plugin-vue2": "^2.3.1",
 		"browserslist-to-esbuild": "^2.1.1",
 		"magic-string": "^0.30.10",
-		"rollup-plugin-corejs": "^1.0.0-beta.2",
+		"rollup-plugin-corejs": "^1.0.0",
 		"rollup-plugin-esbuild-minify": "^1.1.1",
 		"rollup-plugin-license": "^3.3.1",
 		"rollup-plugin-node-externals": "^7.1.1",
@@ -53,8 +53,8 @@
 		"@vitest/coverage-v8": "^1.5.0",
 		"typedoc": "^0.25.13",
 		"typescript": "^5.4.5",
-		"vite": "^5.2.9",
-		"vitest": "^1.2.2"
+		"vite": "^5.2.10",
+		"vitest": "^1.5.0"
 	},
 	"files": [
 		"dist/",
