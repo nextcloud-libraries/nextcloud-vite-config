@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { UserConfig, UserConfigFn } from 'vite'
+import type { Plugin, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 
 import { relative } from 'node:path'
@@ -83,10 +83,16 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 			// Make sure we get a user config and not a promise or a user config function
 			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
-			const plugins = []
+			const plugins = [] as Plugin[]
 			// Inject all imported styles into the javascript bundle by creating dynamic styles on the document
 			if (options.inlineCSS) {
-				plugins.push(injectCSSPlugin(typeof options.inlineCSS === 'object' ? options.inlineCSS : undefined))
+				const plugin = injectCSSPlugin({
+					dev: {
+						enableDev: env.mode === 'development',
+					},
+					...(typeof options.inlineCSS === 'object' ? options.inlineCSS : {}),
+				})
+				plugins.push(...[plugin].flat())
 			}
 
 			// defaults to true so only not adding if explicitly set to false

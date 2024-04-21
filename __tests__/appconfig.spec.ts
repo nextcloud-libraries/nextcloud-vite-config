@@ -79,7 +79,7 @@ describe('app config', () => {
 	})
 
 	describe('inlining css', () => {
-		const pluginName = cssInjectedByJsPlugin().name
+		const pluginName = [cssInjectedByJsPlugin()].flat()[0].name
 
 		it('does not inline css by default', async () => {
 			const resolved = await createConfig()
