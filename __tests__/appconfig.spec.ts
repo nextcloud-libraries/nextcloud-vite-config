@@ -104,5 +104,5 @@ describe('app config', () => {
 
 	const createConfig = async (command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: AppOptions) => await resolveConfig(await createAppConfig({
 		main: 'src/main.js',
-	}, options)({ command, mode, ssrBuild: false }), command)
+	}, options)({ command, mode, isSsrBuild: false }), command)
 })
