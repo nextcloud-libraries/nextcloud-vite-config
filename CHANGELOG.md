@@ -1,5 +1,19 @@
 # Changelog
 
+## [v1.2.3]
+### :bug: Fixed bugs
+* fix(tests): `ssrBuild` was renamed to `isSsrBuild` [\#168](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/168) \([susnux](https://github.com/susnux)\)
+* fix(base): Correctly pass minify configuration to vite [\#169](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/169) \([susnux](https://github.com/susnux)\)
+
+### Changed
+* chore(deps): Bump vite-plugin-node-polyfills to 0.21.0
+* chore(deps): Bump rollup-plugin-license to 3.3.1
+* chore(deps): Bump rollup-plugin-node-externals to 7.1.1
+* chore(deps): Bump magic-string to 0.30.10
+* chore(deps): Bump vite-plugin-dts to 3.8.3
+* chore(deps): Bump vite-plugin-css-injected-by-js to 3.5.0
+* chore(deps): Update `rollup-plugin-corejs` to v1
+
 ## [v1.2.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.2) (2024-02-06)
 [Full Changelog](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.2.1...v1.2.2)
 
