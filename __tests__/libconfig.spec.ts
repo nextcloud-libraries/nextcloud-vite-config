@@ -11,7 +11,7 @@ import { LibraryOptions, createLibConfig } from '../lib/libConfig'
 describe('library config', () => {
 	describe('workaround vite#14515 minify bug', () => {
 		it('minifies using esbuild by default', async () => {
-			const resolved = await createConfig('build')
+			const resolved = await createConfig('build', 'production', { minify: true })
 
 			// there is no minify plugin
 			expect(resolved.plugins.filter((plugin) => plugin.name === 'esbuild-minify').length).toBe(0)
@@ -72,7 +72,17 @@ describe('library config', () => {
 		})
 	})
 
-	const createConfig = async (command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: LibraryOptions) => await resolveConfig(await createLibConfig({
-		main: 'src/main.js',
-	}, options)({ command, mode, isSsrBuild: false }), command)
+	const createConfig = async (
+		command: 'build' | 'serve' = 'build',
+		mode: 'development' | 'production' = 'production',
+		options?: LibraryOptions,
+	) => {
+		return await resolveConfig(
+			await createLibConfig(
+				{
+					main: 'src/main.js',
+				},
+				options,
+			)({ command, mode, isSsrBuild: false }), command)
+	}
 })

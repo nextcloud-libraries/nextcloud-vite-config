@@ -18,6 +18,12 @@ type OutputOptions = BuildOptions['rollupOptions']['output']
 
 export interface LibraryOptions extends BaseOptions {
 	/**
+	 * Whether to minify the output
+	 * @default false For libraries the code is not minified by default for better DX. Usually it is not needed: a library will be minified as a part of an app bundling.
+	 */
+	minify?: boolean
+
+	/**
 	 * Options for the rollup node externals plugin
 	 *
 	 * By default all `dependencies` and `peerDependencies` are marked as external.
@@ -52,7 +58,13 @@ export interface LibraryOptions extends BaseOptions {
  */
 export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfigFn => {
 	// Add default values for options
-	options = { config: {}, nodeExternalsOptions: {}, libraryFormats: ['es'], ...options }
+	options = {
+		config: {},
+		minify: false,
+		nodeExternalsOptions: {},
+		libraryFormats: ['es'],
+		...options,
+	}
 
 	const node = nodeExternals({
 		builtins: true, // Mark all node core modules, like `path` as external
@@ -137,7 +149,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 						formats: options.libraryFormats,
 					},
 					// workaround, see above
-					minify: options.minify ?? env.mode === 'production' ? 'esbuild' : false,
+					minify: (options.minify ?? env.mode === 'production') ? 'esbuild' : false,
 					cssCodeSplit: true,
 					outDir: 'dist',
 					rollupOptions: {

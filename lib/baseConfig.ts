@@ -142,6 +142,7 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 				banner: options.thirdPartyLicense ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
 			},
 			build: {
+				minify: !!options.minify,
 				cssTarget: browserslistToEsbuild(),
 				sourcemap: isDev || 'hidden',
 				target: browserslistToEsbuild(),
