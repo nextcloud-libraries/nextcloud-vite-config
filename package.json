@@ -41,7 +41,7 @@
 		"magic-string": "^0.30.10",
 		"rollup-plugin-corejs": "^1.0.0",
 		"rollup-plugin-esbuild-minify": "^1.1.1",
-		"rollup-plugin-license": "^3.3.1",
+		"rollup-plugin-license": "^3.4.0",
 		"rollup-plugin-node-externals": "^7.1.2",
 		"vite-plugin-css-injected-by-js": "^3.5.1",
 		"vite-plugin-dts": "^3.9.1",
@@ -49,12 +49,12 @@
 	},
 	"devDependencies": {
 		"@nextcloud/eslint-config": "^8.3.0",
-		"@types/node": "^20.12.11",
+		"@types/node": "^20.12.12",
 		"@vitest/coverage-v8": "^1.6.0",
 		"typedoc": "^0.25.13",
 		"typescript": "^5.4.5",
 		"vite": "^5.2.11",
-		"vitest": "^1.5.0"
+		"vitest": "^1.6.0"
 	},
 	"files": [
 		"dist/",
@@ -63,7 +63,7 @@
 	],
 	"engines": {
 		"node": "^20",
-		"npm": "^9 || ^10"
+		"npm": "^10"
 	},
 	"eslintConfig": {
 		"extends": "@nextcloud/eslint-config/typescript"
