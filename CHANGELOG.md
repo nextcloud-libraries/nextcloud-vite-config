@@ -3,7 +3,7 @@
 ## [v2.0.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.0.0)
 ### Breaking changes
 This version is Vue3 only.
-For Vue2 use the 1.x versions, 2+ will be providing a common config for apps and libraries built using Vue3.
+For Vue 2 use the 1.x version.
 
 ## [v1.2.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.3)
 ### :bug: Fixed bugs
