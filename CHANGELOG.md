@@ -1,6 +1,11 @@
 # Changelog
 
-## [v1.2.3]
+## [v2.0.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.0.0)
+### Breaking changes
+This version is Vue3 only.
+For Vue2 use the 1.x versions, 2+ will be providing a common config for apps and libraries built using Vue3.
+
+## [v1.2.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.3)
 ### :bug: Fixed bugs
 * fix(tests): `ssrBuild` was renamed to `isSsrBuild` [\#168](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/168) \([susnux](https://github.com/susnux)\)
 * fix(base): Correctly pass minify configuration to vite [\#169](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/169) \([susnux](https://github.com/susnux)\)
