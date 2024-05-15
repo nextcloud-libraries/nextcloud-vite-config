@@ -10,7 +10,7 @@
 	},
 	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
 	"license": "AGPL-3.0-or-later",
-	"version": "1.2.3",
+	"version": "2.0.0-alpha.0",
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -36,7 +36,7 @@
 	},
 	"dependencies": {
 		"@rollup/plugin-replace": "^5.0.5",
-		"@vitejs/plugin-vue2": "^2.3.1",
+		"@vitejs/plugin-vue": "^5.0.4",
 		"browserslist-to-esbuild": "^2.1.1",
 		"magic-string": "^0.30.10",
 		"rollup-plugin-corejs": "^1.0.0",
