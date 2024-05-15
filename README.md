@@ -3,7 +3,7 @@
 
 Shared Vite ⚡ config for Nextcloud apps and libraries, which also can be easily extended.
 
-**Please note version 2+ is for Vue3 only, for Vue 2.7 use the 1.x version.**
+**Please note version 2+ is for Vue 3 only, for Vue 2.7 use the 1.x version.**
 
 ## API reference
 
