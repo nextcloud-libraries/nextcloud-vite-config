@@ -10,7 +10,7 @@
 	},
 	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
 	"license": "AGPL-3.0-or-later",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",

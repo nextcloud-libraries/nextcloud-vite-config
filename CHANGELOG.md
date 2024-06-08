@@ -1,5 +1,12 @@
 # Changelog
 
+## [v2.0.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.0.1)
+### Changed
+* chore: update source url in dep5 spec [\#187](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/187) \([st3iny](https://github.com/st3iny)\)
+* chore(deps): Bump vite-plugin-node-polyfills from 0.21.0 to 0.22.0
+* chore(deps): Bump @vitejs/plugin-vue from 5.0.4 to 5.0.5
+* chore(deps): Bump @rollup/plugin-replace from 5.0.5 to 5.0.7
+
 ## [v2.0.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.0.0)
 ### Breaking changes
 This version is Vue 3 only.
