@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.2.5](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.5) (2024-06-14)
+### Fixed
+* fix: explicitly use window.OC global in app config [\#197](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/197) \([st3iny](https://github.com/st3iny)\)
+
 ## [v1.2.4](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.4) (2024-06-08)
 ### Changed
 * chore(deps): Bump rollup-plugin-node-externals from 7.1.1 to 7.1.2
