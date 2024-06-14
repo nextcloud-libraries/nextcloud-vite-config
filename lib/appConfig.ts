@@ -127,7 +127,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 						}
 						return {
 							// already contains the "js/" prefix as it is our output file configuration
-							runtime: `OC.filePath('${appName}', '', '${filename}')`,
+							runtime: `window.OC.filePath('${appName}', '', '${filename}')`,
 						}
 					},
 				},
