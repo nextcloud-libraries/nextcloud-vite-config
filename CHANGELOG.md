@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2.0.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.0.2)
+### Fixed
+* fix: explicitly use window.OC global in app config [\#197](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/197) \([st3iny](https://github.com/st3iny)\)
+
 ## [v2.0.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.0.1)
 ### Changed
 * chore: update source url in dep5 spec [\#187](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/187) \([st3iny](https://github.com/st3iny)\)
