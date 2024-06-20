@@ -17,6 +17,7 @@ import { findAppinfo } from './utils/appinfo.js'
 import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
 import replace from '@rollup/plugin-replace'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
+import { CSSEntryPointsPlugin } from './plugins/CSSEntryPoints.js'
 
 type VitePluginInjectCSSOptions = Parameters<typeof injectCSSPlugin>[0]
 
@@ -38,6 +39,14 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	 * @default false
 	 */
 	inlineCSS?: boolean | VitePluginInjectCSSOptions,
+
+	/**
+	 * When not using inline css and using `cssCodeSplit` this option allows to create
+	 * one CSS entry file for each JS entry point instead of only one for each JS entry point with styles.
+	 *
+	 * @default false
+	 */
+	createEmptyCSSEntryPoints?: boolean
 
 	/**
 	 * Whether to empty the output directory (`js/`)
@@ -129,6 +138,9 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 					...(typeof options.inlineCSS === 'object' ? options.inlineCSS : {}),
 				})
 				plugins.push(...[plugin].flat())
+			} else if (userConfig.build?.cssCodeSplit) {
+				// If not inlining CSS and using `cssCodeSplit` we need this plugin to fix https://github.com/vitejs/vite/issues/17527
+				plugins.push(CSSEntryPointsPlugin({ createEmptyEntryPoints: options.createEmptyCSSEntryPoints }))
 			}
 
 			// defaults to true so only not adding if explicitly set to false
