@@ -17,11 +17,17 @@ import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 
 type VitePluginInjectCSSOptions = Parameters<typeof injectCSSPlugin>[0]
 
-export const appName = process.env.npm_package_name
 export const appVersion = process.env.npm_package_version
-export const appNameSanitized = appName.replace(/[/\\]/, '-')
+export const sanitizeAppName = (appName: string) => appName.replace(/[/\\]/, '-')
 
 export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
+	/**
+	 * Override the `appName`, by default the name from the `package.json` is used.
+	 * But if that name differs from the app id used for the Nextcloud app you need to override it.
+	 * @default process.env.npm_package_name
+	 */
+	appName?: string
+
 	/**
 	 * Inject all styles inside the javascript bundle instead of emitting a .css file
 	 * @default false
@@ -38,7 +44,7 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	 * Inject polyfills for node packages
 	 * By default all node core modules are polyfilled, including prefixed with `node:` protocol
 	 *
-	 * @default {protocolImports: true}
+	 * @default '{ protocolImports: true }'
 	 */
 	nodePolyfills?: boolean | NodePolyfillsOptions
 
@@ -66,6 +72,7 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn => {
 	// Add default options
 	options = {
+		appName: process.env.npm_package_name,
 		config: {},
 		nodePolyfills: {
 			protocolImports: true,
@@ -77,7 +84,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 	return createBaseConfig({
 		...(options as BaseOptions),
 		config: async (env) => {
-			console.info(`Building ${appName} for ${env.mode}`)
+			console.info(`Building ${options.appName} for ${env.mode}`)
 
 			// This config is used to extend or override our base config
 			// Make sure we get a user config and not a promise or a user config function
@@ -108,7 +115,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 					include: ['src/**'],
 					preventAssignment: true,
 					values: {
-						appName: JSON.stringify(appName),
+						appName: JSON.stringify(options.appName),
 						appVersion: JSON.stringify(appVersion),
 					},
 				}))
@@ -127,7 +134,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 						}
 						return {
 							// already contains the "js/" prefix as it is our output file configuration
-							runtime: `window.OC.filePath('${appName}', '', '${filename}')`,
+							runtime: `window.OC.filePath('${options.appName}', '', '${filename}')`,
 						}
 					},
 				},
@@ -141,7 +148,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 						},
 						output: {
 							// global variables for appName and appVersion
-							intro: `const appName = ${JSON.stringify(appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
+							intro: `const appName = ${JSON.stringify(options.appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
 							assetFileNames: (assetInfo) => {
 								// Allow to customize the asset file names
 								if (options.assetFileNames) {
@@ -155,14 +162,14 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
-									return `css/${appNameSanitized}-[name].css`
+									return `css/${sanitizeAppName(options.appName)}-[name].css`
 								} else if (/woff2?|ttf|otf/i.test(extType)) {
 									return 'css/fonts/[name][extname]'
 								}
 								return 'dist/[name]-[hash][extname]'
 							},
 							entryFileNames: () => {
-								return `js/${appNameSanitized}-[name].mjs`
+								return `js/${sanitizeAppName(options.appName)}-[name].mjs`
 							},
 							chunkFileNames: () => {
 								return 'js/[name]-[hash].mjs'
