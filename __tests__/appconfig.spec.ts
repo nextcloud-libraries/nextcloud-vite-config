@@ -17,6 +17,16 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 describe('app config', () => {
+	it('adds global appName variable', async () => {
+		const resolved = await createConfig('build', 'development')
+		expect([resolved.build.rollupOptions.output!].flat()[0].intro).toMatch(/appName = "@nextcloud\/vite-config"/)
+	})
+
+	it('adds global appName variable with override', async () => {
+		const resolved = await createConfig('build', 'development', { appName: 'spreed' })
+		expect([resolved.build.rollupOptions.output!].flat()[0].intro).toMatch(/appName = "spreed"/)
+	})
+
 	it('replaces process.env', async () => {
 		const root = resolve(__dirname, '../__fixtures__/app_process_env')
 
