@@ -8,7 +8,7 @@
 import type { OutputOptions, PreRenderedAsset } from 'rollup'
 import type { Plugin } from 'vite'
 
-import { basename, dirname, join, normalize } from 'path'
+import { basename, dirname, join, normalize, extname } from 'path'
 
 interface CSSEntryPointsPluginOptions {
 	/**
@@ -97,8 +97,13 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 					.map((css) => `@import './${basename(css)}'`)
 					.join('\n')
 
-				const cssName = `${chunk.name}.css`
+				// Name new CSS entry same as the entry
+				const entryName = basename(chunk.fileName).slice(0, -1 * extname(chunk.fileName).length)
+				const cssName = `${entryName}.css`
+
+				// Keep original path
 				const path = dirname(typeof options.assetFileNames === 'string' ? options.assetFileNames : options.assetFileNames({ type: 'asset', source: '', name: 'name.css' }))
+
 				this.emitFile({
 					type: 'asset',
 					name: `\0${cssName}`,
@@ -107,6 +112,6 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 					source: `/* extracted by css-entry-points-plugin */\n${source}`,
 				})
 			}
-		}
+		},
 	} as Plugin
 }
