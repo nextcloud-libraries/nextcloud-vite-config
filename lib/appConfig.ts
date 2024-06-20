@@ -29,6 +29,12 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	appName?: string
 
 	/**
+	 * Prefix to use for assets and chunks
+	 * @default '{appName}-'
+	 */
+	assetsPrefix?: string
+
+	/**
 	 * Inject all styles inside the javascript bundle instead of emitting a .css file
 	 * @default false
 	 */
@@ -85,6 +91,8 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 		...(options as BaseOptions),
 		config: async (env) => {
 			console.info(`Building ${options.appName} for ${env.mode}`)
+
+			const assetsPrefix = (options.assetsPrefix ?? `${options.appName}-`).replace(/[/\\]/, '-')
 
 			// This config is used to extend or override our base config
 			// Make sure we get a user config and not a promise or a user config function
@@ -162,17 +170,17 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
-									return `css/${sanitizeAppName(options.appName)}-[name].css`
+									return `css/${assetsPrefix}[name].css`
 								} else if (/woff2?|ttf|otf/i.test(extType)) {
 									return 'css/fonts/[name][extname]'
 								}
 								return 'dist/[name]-[hash][extname]'
 							},
 							entryFileNames: () => {
-								return `js/${sanitizeAppName(options.appName)}-[name].mjs`
+								return `js/${assetsPrefix}[name].mjs`
 							},
 							chunkFileNames: () => {
-								return 'js/[name]-[hash].mjs'
+								return 'js/[name].chunk.mjs'
 							},
 							manualChunks: {
 								...(options?.coreJS ? { polyfill: ['core-js'] } : {}),
