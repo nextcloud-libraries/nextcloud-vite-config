@@ -7,9 +7,12 @@
 import type { Plugin, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 
+import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
+import { cwd } from 'node:process'
 import { mergeConfig } from 'vite'
 import { createBaseConfig } from './baseConfig.js'
+import { findAppinfo } from './utils/appinfo.js'
 
 import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
 import replace from '@rollup/plugin-replace'
@@ -17,16 +20,18 @@ import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 
 type VitePluginInjectCSSOptions = Parameters<typeof injectCSSPlugin>[0]
 
-export const appVersion = process.env.npm_package_version
-export const sanitizeAppName = (appName: string) => appName.replace(/[/\\]/, '-')
-
 export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	/**
-	 * Override the `appName`, by default the name from the `package.json` is used.
+	 * Override the `appName`, by default the name from the `appinfo/info.xml` and if not found the name from `package.json` is used.
 	 * But if that name differs from the app id used for the Nextcloud app you need to override it.
-	 * @default process.env.npm_package_name
 	 */
 	appName?: string
+
+	/**
+	 * Prefix to use for assets and chunks
+	 * @default '{appName}-'
+	 */
+	assetsPrefix?: string
 
 	/**
 	 * Inject all styles inside the javascript bundle instead of emitting a .css file
@@ -72,7 +77,6 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn => {
 	// Add default options
 	options = {
-		appName: process.env.npm_package_name,
 		config: {},
 		nodePolyfills: {
 			protocolImports: true,
@@ -81,10 +85,35 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 		...options,
 	}
 
+	let appVersion: string
+
+	const appinfo = findAppinfo(cwd())
+	if (appinfo) {
+		const content = String(readFileSync(appinfo))
+		const version = content.match(/<version>([^<]+)<\/version>/i)[1]
+		const id = content.match(/<id>([^<]+)<\/id>/i)[1]
+
+		if (version) {
+			appVersion = version
+		}
+		if (id && !options.appName) {
+			options.appName = id
+		}
+	} else {
+		appVersion = process.env.npm_package_version
+	}
+
+	if (!options.appName) {
+		console.warn('No app name configured, falling back to name from `package.json`')
+		options.appName = process.env.npm_package_name
+	}
+
 	return createBaseConfig({
 		...(options as BaseOptions),
 		config: async (env) => {
 			console.info(`Building ${options.appName} for ${env.mode}`)
+
+			const assetsPrefix = (options.assetsPrefix ?? `${options.appName}-`).replace(/[/\\]/, '-')
 
 			// This config is used to extend or override our base config
 			// Make sure we get a user config and not a promise or a user config function
@@ -162,17 +191,17 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
-									return `css/${sanitizeAppName(options.appName)}-[name].css`
+									return `css/${assetsPrefix}[name].css`
 								} else if (/woff2?|ttf|otf/i.test(extType)) {
 									return 'css/fonts/[name][extname]'
 								}
 								return 'dist/[name]-[hash][extname]'
 							},
 							entryFileNames: () => {
-								return `js/${sanitizeAppName(options.appName)}-[name].mjs`
+								return `js/${assetsPrefix}[name].mjs`
 							},
 							chunkFileNames: () => {
-								return 'js/[name]-[hash].mjs'
+								return 'js/[name].chunk.mjs'
 							},
 							manualChunks: {
 								...(options?.coreJS ? { polyfill: ['core-js'] } : {}),
