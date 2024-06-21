@@ -62,7 +62,7 @@
 		"banner-template.txt"
 	],
 	"engines": {
-		"node": "^20",
+		"node": "^20 <20.14.0 || ^20.15.0",
 		"npm": "^10"
 	},
 	"eslintConfig": {
