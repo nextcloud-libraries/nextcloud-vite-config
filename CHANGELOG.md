@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.3.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.3.0) (2024-06-21)
+### Added
+* feat(app-config): Add option to override the app name [\#206](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/206) \([susnux](https://github.com/susnux)\)
+* Allow to specify an output prefix and load app id from appinfo [\#209](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/209) \([susnux](https://github.com/susnux)\)
+* feat: Add `CSSEntryPointsPlugin` to fix vite for creating one CSS entry per JS entry point [\#210](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/210) \([susnux](https://github.com/susnux)\)
+
+### Changed
+* chore(deps-dev): Bump vite from 5.2.13 to 5.3.1
+
 ## [v1.2.5](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.2.5) (2024-06-14)
 ### Fixed
 * fix: explicitly use window.OC global in app config [\#197](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/197) \([st3iny](https://github.com/st3iny)\)
