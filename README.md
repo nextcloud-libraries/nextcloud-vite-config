@@ -1,4 +1,6 @@
 # `@nextcloud/vite-config`
+
+[![REUSE status](https://api.reuse.software/badge/github.com/nextcloud-libraries/nextcloud-vite-config)](https://api.reuse.software/info/github.com/nextcloud-libraries/nextcloud-vite-config)
 [![npm last version](https://img.shields.io/npm/v/@nextcloud/vite-config.svg?style=flat-square)](https://www.npmjs.com/package/@nextcloud/vite-config) [![Project documentation](https://img.shields.io/badge/documentation-online-blue?style=flat-square)](https://nextcloud-libraries.github.io/nextcloud-vite-config/)
 
 Shared Vite ⚡ config for Nextcloud apps and libraries, which also can be easily extended.

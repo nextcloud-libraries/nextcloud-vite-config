@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2024 Ferdinand Thiessen <opensource@fthiessen.de>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+version = 1
+SPDX-PackageName = "nextcloud-vite-config"
+SPDX-PackageSupplier = "Ferdinand Thiessen <rpm@fthiessen.de>"
+SPDX-PackageDownloadLocation = "https://github.com/nextcloud-libraries/nextcloud-vite-config"
+
+[[annotations]]
+path = ["package-lock.json", "package.json", "tsconfig.json", "banner-template.txt", "README.md", "CHANGELOG.md", "__tests__/__snapshots__/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Ferdinand Thiessen <rpm@fthiessen.de>"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
