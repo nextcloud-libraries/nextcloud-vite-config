@@ -64,7 +64,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 		},
 
 		generateBundle(options, bundle) {
-			for (const chunk of Object.values(bundle)) {
+			for (const [chunkName, chunk] of Object.entries(bundle)) {
 				// Only handle entry points
 				if (chunk.type !== 'chunk' || !chunk.isEntry) {
 					continue
@@ -72,8 +72,15 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 
 				// Set of all synchronously imported CSS of this entry point
 				const importedCSS = new Set<string>(chunk.viteMetadata?.importedCss ?? [])
+				const visitedChunks = new Set<string>()
 				const getImportedCSS = (importedNames: string[]) => {
 					for (const importedName of importedNames) {
+						// skip if already extracted
+						if (visitedChunks.has(importedName)) {
+							continue
+						}
+						visitedChunks.add(importedName)
+
 						const importedChunk = bundle[importedName]
 						// Skip non chunks
 						if (importedChunk.type !== 'chunk') {
@@ -86,7 +93,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 							.forEach((name: string) => importedCSS.add(name))
 					}
 				}
-				getImportedCSS(chunk.imports)
+				getImportedCSS([chunkName])
 
 				// Skip empty entries if not configured to output empty CSS
 				if (importedCSS.size === 0 && !pluginOptions.createEmptyEntryPoints) {
@@ -102,7 +109,11 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 				const cssName = `${entryName}.css`
 
 				// Keep original path
-				const path = dirname(typeof options.assetFileNames === 'string' ? options.assetFileNames : options.assetFileNames({ type: 'asset', source: '', name: 'name.css' }))
+				const path = dirname(
+					typeof options.assetFileNames === 'string'
+						? options.assetFileNames
+						: options.assetFileNames({ type: 'asset', source: '', name: 'name.css' })
+				)
 
 				this.emitFile({
 					type: 'asset',
