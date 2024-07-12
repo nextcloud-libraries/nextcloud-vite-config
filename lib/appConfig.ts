@@ -14,7 +14,7 @@ import { mergeConfig } from 'vite'
 import { createBaseConfig } from './baseConfig.js'
 import { findAppinfo } from './utils/appinfo.js'
 
-import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
+import EmptyJSDirPlugin, { EmptyJSDirPluginOptions } from './plugins/EmptyJSDir.js'
 import replace from '@rollup/plugin-replace'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 import { CSSEntryPointsPlugin } from './plugins/CSSEntryPoints.js'
@@ -49,10 +49,12 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	createEmptyCSSEntryPoints?: boolean
 
 	/**
-	 * Whether to empty the output directory (`js/`)
+	 * Whether to empty the 'js' directory
+	 * Pass `false` to disable clearing the directory,
+	 * it is also possible to pass options to the plugin.
 	 * @default true
 	 */
-	emptyOutputDirectory?: boolean
+	emptyOutputDirectory?: boolean | EmptyJSDirPluginOptions
 
 	/**
 	 * Inject polyfills for node packages
@@ -146,7 +148,13 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 			// defaults to true so only not adding if explicitly set to false
 			if (options?.emptyOutputDirectory !== false) {
 				// Ensure `js/` is empty as we can not use the build in option (see below)
-				plugins.push(EmptyJSDirPlugin())
+				plugins.push(
+					EmptyJSDirPlugin(
+						typeof options.emptyOutputDirectory === 'object'
+							? options.emptyOutputDirectory
+							: undefined
+					),
+				)
 			}
 
 			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
