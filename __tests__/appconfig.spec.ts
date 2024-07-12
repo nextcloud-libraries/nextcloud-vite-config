@@ -50,8 +50,8 @@ describe('app config', () => {
 		const output = resolved.build.rollupOptions.output as OutputOptions
 		expect(typeof output?.assetFileNames).toBe('function')
 		const assetFileNames = output?.assetFileNames as ((chunkInfo: unknown) => string)
-		expect(assetFileNames({ name: 'some.css' })).toBe('css/@nextcloud-vite-config-[name].css')
-		expect(assetFileNames({ name: 'other/file.css' })).toBe('css/@nextcloud-vite-config-[name].css')
+		expect(assetFileNames({ name: 'some.css' })).toMatch(/^css\/[^/]+\.css/)
+		expect(assetFileNames({ name: 'other/file.css' })).toMatch(/^css\/[^/]+\.css/)
 	})
 
 	it('moves image assets to img/', async () => {
@@ -79,13 +79,28 @@ describe('app config', () => {
 	})
 
 	it('allow custom asset names', async () => {
-		const resolved = await createConfig('build', 'development', { assetFileNames: (({ name }) => name === 'main.css' ? 'css/app-styles.css' : undefined) as never })
+		const resolved = await createConfig('build', 'development', { assetFileNames: (({ name }) => name === 'main.png' ? 'img/main.png' : undefined) as never })
 
 		const output = resolved.build.rollupOptions.output as OutputOptions
 		expect(typeof output?.assetFileNames).toBe('function')
 		const assetFileNames = output?.assetFileNames as ((chunkInfo: unknown) => string)
-		expect(assetFileNames({ name: 'main.css' })).toBe('css/app-styles.css')
-		expect(assetFileNames({ name: 'foo.css' })).toBe('css/@nextcloud-vite-config-[name].css')
+		expect(assetFileNames({ name: 'main.png' })).toBe('img/main.png')
+		expect(assetFileNames({ name: 'foo.png' })).toBe('img/[name][extname]')
+	})
+
+	it('extracts CSS by default with CSS entry points', async () => {
+		const resolved = await createConfig('build', 'development')
+
+		expect(resolved.build.cssCodeSplit).toBe(true)
+		expect(resolved.plugins.find(({ name }) => name === 'css-entry-points-plugin')).not.toBeUndefined()
+	})
+
+	it('does not add CSS entry points with CSS inject', async () => {
+		const resolved = await createConfig('build', 'development', { inlineCSS: true })
+
+		expect(resolved.build.cssCodeSplit).toBe(true)
+		// not found!
+		expect(resolved.plugins.find(({ name }) => name === 'css-entry-points-plugin')).toBeUndefined()
 	})
 
 	describe('inlining css', () => {

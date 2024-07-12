@@ -140,7 +140,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 					...(typeof options.inlineCSS === 'object' ? options.inlineCSS : {}),
 				})
 				plugins.push(...[plugin].flat())
-			} else if (userConfig.build?.cssCodeSplit) {
+			} else if (userConfig.build?.cssCodeSplit !== false) {
 				// If not inlining CSS and using `cssCodeSplit` we need this plugin to fix https://github.com/vitejs/vite/issues/17527
 				plugins.push(CSSEntryPointsPlugin({ createEmptyEntryPoints: options.createEmptyCSSEntryPoints }))
 			}
