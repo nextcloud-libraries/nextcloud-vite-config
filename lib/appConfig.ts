@@ -18,6 +18,7 @@ import EmptyJSDirPlugin, { EmptyJSDirPluginOptions } from './plugins/EmptyJSDir.
 import replace from '@rollup/plugin-replace'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 import { CSSEntryPointsPlugin } from './plugins/CSSEntryPoints.js'
+import { REUSELicensesPlugin, REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
 
 type VitePluginInjectCSSOptions = Parameters<typeof injectCSSPlugin>[0]
 
@@ -71,6 +72,12 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	 * @default 'js/vendor.LICENSE.txt'
 	 */
 	thirdPartyLicense?: false | string
+
+	/**
+	 * Extract license information from built assets into `.license` files
+	 * This is needed to be REUSE complient
+	 */
+	extractLicenseInformation?: true | REUSELicensesPluginOptions
 }
 
 /**
@@ -143,6 +150,14 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 			} else if (userConfig.build?.cssCodeSplit !== false) {
 				// If not inlining CSS and using `cssCodeSplit` we need this plugin to fix https://github.com/vitejs/vite/issues/17527
 				plugins.push(CSSEntryPointsPlugin({ createEmptyEntryPoints: options.createEmptyCSSEntryPoints }))
+			}
+
+			if (options.extractLicenseInformation && env.mode !== 'development') {
+				plugins.push(REUSELicensesPlugin(
+					typeof options.extractLicenseInformation === 'object'
+						? options.extractLicenseInformation
+						: {},
+				))
 			}
 
 			// defaults to true so only not adding if explicitly set to false
