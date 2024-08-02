@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: MIT
  */
 
+// eslint-disable-next-line n/no-extraneous-import
 import type { RollupOutput, OutputAsset } from 'rollup'
+
 import { build } from 'vite'
 import { describe, it, expect } from 'vitest'
 import { CSSEntryPointsPlugin } from '../lib/plugins/CSSEntryPoints'
