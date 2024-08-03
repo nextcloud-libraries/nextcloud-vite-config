@@ -36,7 +36,7 @@
 	},
 	"dependencies": {
 		"@rollup/plugin-replace": "^5.0.7",
-		"@vitejs/plugin-vue": "^5.1.0",
+		"@vitejs/plugin-vue": "^5.1.2",
 		"browserslist-to-esbuild": "^2.1.1",
 		"magic-string": "^0.30.10",
 		"rollup-plugin-corejs": "^1.0.0",
