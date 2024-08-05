@@ -1,5 +1,22 @@
 # Changelog
 
+## [v1.4.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.4.0) (2024-08-05)
+### Added
+* [stable1] feat(EmptyJSDirPlugin): Allow to specify other directories to clear [\#242](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/242)
+* [stable1] feat: Add REUSE license plugin to extract license information for built assets [\#276](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/276)
+
+### Fixed
+* [stable1] perf(CSSEntryPointsPlugin): Only visit chunks once per entry point [\#241](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/241)
+* [stable1] fix(appconfig): `cssCodeSplit` is enabled by default so handle CSS entries [\#244](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/244)
+* [stable1] fix: Revert chunkFileNames to include hash [\#275](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/275)
+
+### Changed
+* [stable1] chore: Update workflows from templates
+* chore(deps): Bump rollup-plugin-license to 3.4.1
+* chore(deps): Bump rollup-plugin-license to 3.5.1
+* chore(deps): Bump rollup-plugin-license to 3.5.2
+* chore(deps): Bump magic-string to 0.30.11
+
 ## [v1.3.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.3.0) (2024-06-21)
 ### Added
 * feat(app-config): Add option to override the app name [\#206](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/206) \([susnux](https://github.com/susnux)\)
