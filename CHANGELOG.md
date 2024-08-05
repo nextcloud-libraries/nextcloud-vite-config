@@ -1,5 +1,22 @@
 # Changelog
 
+## [v2.2.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.2.0)
+### Added
+* feat(EmptyJSDirPlugin): Allow to specify other directories to clear [\#240](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/240) \([susnux](https://github.com/susnux)\)
+* feat: Add REUSE license plugin to extract license information for built assets [\#250](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/250) \([susnux](https://github.com/susnux)\)
+
+### Fixed
+* perf(CSSEntryPointsPlugin): Only visit chunks once per entry point [\#239](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/239) \([susnux](https://github.com/susnux)\)
+* fix(appconfig): `cssCodeSplit` is enabled by default so handle CSS entries [\#243](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/243) \([susnux](https://github.com/susnux)\)
+* fix: Revert chunkFileNames to include hash [\#267](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/267) \([juliushaertl](https://github.com/juliushaertl)\)
+
+### Changed
+* Migrate REUSE to TOML format [\#245](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/245) \([AndyScherzinger](https://github.com/AndyScherzinger)\)
+* chore: Update workflows from templates [\#213](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/213) \([susnux](https://github.com/susnux)\)
+* chore(deps): Bump rollup-plugin-license to 3.5.2
+* chore(deps): Bump @vitejs/plugin-vue to 5.1.2
+* chore(deps): Bump magic-string to 0.30.11
+
 ## [v2.1.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.1.0)
 ### Added
 * feat(app-config): Add option to override the app name [\#205](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/205) \([susnux](https://github.com/susnux)\)
