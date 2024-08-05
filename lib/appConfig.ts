@@ -152,7 +152,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 					EmptyJSDirPlugin(
 						typeof options.emptyOutputDirectory === 'object'
 							? options.emptyOutputDirectory
-							: undefined
+							: undefined,
 					),
 				)
 			}
@@ -211,6 +211,10 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
+									if (userConfig.build?.cssCodeSplit !== false) {
+										// we need hashed css name for css chunks as a cache buster
+										return 'css/[name]-[hash].css'
+									}
 									return `css/${assetsPrefix}[name].css`
 								} else if (/woff2?|ttf|otf/i.test(extType)) {
 									return 'css/fonts/[name][extname]'
@@ -221,7 +225,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 								return `js/${assetsPrefix}[name].mjs`
 							},
 							chunkFileNames: () => {
-								return 'js/[name].chunk.mjs'
+								return 'js/[name]-[hash].chunk.mjs'
 							},
 							manualChunks: {
 								...(options?.coreJS ? { polyfill: ['core-js'] } : {}),
