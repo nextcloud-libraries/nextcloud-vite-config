@@ -9,7 +9,7 @@ import type { UserConfigExport, UserConfigFn, Rollup } from 'vite'
 
 import { readFileSync } from 'node:fs'
 import { corejsPlugin } from 'rollup-plugin-corejs'
-import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify/lib/index.js'
+import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { defineConfig, mergeConfig } from 'vite'
 import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
