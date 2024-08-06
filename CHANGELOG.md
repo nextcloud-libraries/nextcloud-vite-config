@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2.2.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.2.1)
+### Fixed
+* fix: Adjust import of `rollup-plugin-esbuild-minify` [\#279](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/279) \([susnux](https://github.com/susnux)\)
+
 ## [v2.2.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.2.0)
 ### Added
 * feat(EmptyJSDirPlugin): Allow to specify other directories to clear [\#240](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/240) \([susnux](https://github.com/susnux)\)
