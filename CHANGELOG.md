@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2.2.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.2.2)
+### Fixed
+* fix(REUSELicensesPlugin): Emit files in `generateBundle` hook to have real filenames [\#283](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/283) \([susnux](https://github.com/susnux)\)
+
 ## [v2.2.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.2.1)
 ### Fixed
 * fix: Adjust import of `rollup-plugin-esbuild-minify` [\#279](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/279) \([susnux](https://github.com/susnux)\)
