@@ -189,55 +189,60 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 	return {
 		name: 'reuse-licenses',
 
-		async renderChunk(_, chunk, config) {
+		async generateBundle(outputOptions, bundle) {
 			onError = this.error
 
-			const modules = new Set<string>()
-			for (const [moduleName, module] of Object.entries(chunk.modules)) {
-				if (module.renderedLength > 0) {
-					modules.add(moduleName)
+			for (const chunk of Object.values(bundle)) {
+				if (chunk.type === 'asset') {
+					continue
 				}
-			}
 
-			const packages = new Set((
-				await Promise.all(
-					[...modules.values()]
-						.map(sanitizeName)
-						.map(findPackage),
-				)).filter(Boolean),
-			)
+				const modules = new Set<string>()
+				for (const [moduleName, module] of Object.entries(chunk.modules)) {
+					if (module.renderedLength > 0) {
+						modules.add(moduleName)
+					}
+				}
 
-			const sortedPackages = [...packages].sort((a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version, undefined, { numeric: true }))
-			const authors = new Set(sortedPackages.map(({ author }) => author))
-			const licenses = new Set<string>()
+				const packages = new Set((
+					await Promise.all(
+						[...modules.values()]
+							.map(sanitizeName)
+							.map(findPackage),
+					)).filter(Boolean),
+				)
 
-			let source = 'This file is generated from multiple sources. Included packages:\n'
-			for (const pkg of sortedPackages) {
-				const license = verifyLicense(pkg.license, pkg.name, pkg.version)
-				licenses.add(license)
-				source += `- ${pkg.name}\n\t- version: ${pkg.version}\n\t- license: ${license}\n`
-			}
-			source = [...licenses.values()].sort().map((license) => `SPDX-License-Identifier: ${license}`).join('\n')
-				+ '\n'
-				+ [...authors.values()].sort().map((author) => `SPDX-FileCopyrightText: ${author}`).join('\n')
-				+ '\n\n'
-				+ source
+				const sortedPackages = [...packages].sort((a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version, undefined, { numeric: true }))
+				const authors = new Set(sortedPackages.map(({ author }) => author))
+				const licenses = new Set<string>()
 
-			this.emitFile({
-				name: `${chunk.name}.license`,
-				fileName: `${chunk.fileName}.license`,
-				type: 'asset',
-				source,
-			})
+				let source = 'This file is generated from multiple sources. Included packages:\n'
+				for (const pkg of sortedPackages) {
+					const license = verifyLicense(pkg.license, pkg.name, pkg.version)
+					licenses.add(license)
+					source += `- ${pkg.name}\n\t- version: ${pkg.version}\n\t- license: ${license}\n`
+				}
+				source = [...licenses.values()].sort().map((license) => `SPDX-License-Identifier: ${license}`).join('\n')
+					+ '\n'
+					+ [...authors.values()].sort().map((author) => `SPDX-FileCopyrightText: ${author}`).join('\n')
+					+ '\n\n'
+					+ source
 
-			// Also emit the sourcemap license file (as it includes the sources we need the same licenses)
-			if (config.sourcemap && config.sourcemap !== 'inline' && options.includeSourceMaps) {
 				this.emitFile({
-					name: `${chunk.name}.map.license`,
-					fileName: `${chunk.fileName}.map.license`,
+					name: `${chunk.name}.license`,
+					fileName: `${chunk.fileName}.license`,
 					type: 'asset',
 					source,
 				})
+
+				if (outputOptions.sourcemap && outputOptions.sourcemap !== 'inline' && options.includeSourceMaps) {
+					this.emitFile({
+						type: 'asset',
+						name: `${chunk.name}.map.license`,
+						fileName: `${chunk.fileName}.map.license`,
+						source,
+					})
+				}
 			}
 		},
 	}
