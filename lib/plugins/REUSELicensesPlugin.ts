@@ -204,13 +204,15 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 					}
 				}
 
-				const packages = new Set((
-					await Promise.all(
-						[...modules.values()]
-							.map(sanitizeName)
-							.map(findPackage),
-					)).filter(Boolean),
-				)
+				// Get all package license data of the modules
+				const allPackages = (await Promise.all(
+					[...modules.values()]
+						.map(sanitizeName)
+						.map(findPackage),
+				)).filter(Boolean)
+
+				// Remove duplicates by serialized package license data
+				const packages = [...new Map(allPackages.map((item) => [JSON.stringify(item), item])).values()]
 
 				const sortedPackages = [...packages].sort((a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version, undefined, { numeric: true }))
 				const authors = new Set(sortedPackages.map(({ author }) => author))
