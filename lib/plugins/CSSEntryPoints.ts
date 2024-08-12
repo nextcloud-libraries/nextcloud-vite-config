@@ -48,8 +48,8 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 						&& !String(info.source).startsWith('/* extracted by css-entry-points-plugin */')
 						&& !info.name.endsWith('extracted-by-css-entry-points-plugin.css')
 					) {
-						// The new name should have the same path but instead of the .css extension it is .chunk.css
-						return name.replace(/(.css|.\[ext\]|\[extname\])$/, '.chunk.css')
+						// The new name should have the same path but in chunks subdirectory with .chunk.css extension
+						return name.replace(/\/(.+?)(?:.css|.\[ext\]|\[extname\])$/, 'chunks/$1.chunk.css')
 					}
 					return name
 				}
@@ -104,7 +104,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 				}
 
 				const source = [...importedCSS.values()]
-					.map((css) => `@import './${basename(css)}';`)
+					.map((css) => `@import './chunks/${basename(css)}';`)
 					.join('\n')
 
 				// Name new CSS entry same as the entry
