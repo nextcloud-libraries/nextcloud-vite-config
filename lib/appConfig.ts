@@ -240,7 +240,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 								return `js/${assetsPrefix}[name].mjs`
 							},
 							chunkFileNames: () => {
-								return 'js/[name]-[hash].chunk.mjs'
+								return 'js/chunks/[name]-[hash].chunk.mjs'
 							},
 							manualChunks: {
 								...(options?.coreJS ? { polyfill: ['core-js'] } : {}),
