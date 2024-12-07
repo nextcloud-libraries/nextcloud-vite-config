@@ -39,7 +39,7 @@
 		"@vitejs/plugin-vue2": "^2.3.3",
 		"browserslist-to-esbuild": "^2.1.1",
 		"magic-string": "^0.30.14",
-		"rollup-plugin-corejs": "^1.0.0",
+		"rollup-plugin-corejs": "^1.0.1",
 		"rollup-plugin-esbuild-minify": "^1.1.2",
 		"rollup-plugin-license": "^3.5.3",
 		"rollup-plugin-node-externals": "^7.1.3",
