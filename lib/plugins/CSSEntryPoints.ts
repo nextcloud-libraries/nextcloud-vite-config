@@ -44,9 +44,12 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 					// If the original assets name option is a function we need to call it otherwise just use the template string
 					const name = typeof config === 'function' ? config(info) : config
 					// Only handle CSS files not extracted by this plugin
-					if (info.name.endsWith('.css') && !String(info.source).startsWith('/* extracted by css-entry-points-plugin */')) {
-						// The new name should have the same path but instead of the .css extension it is .chunk.css
-						return name.replace(/(.css|.\[ext\]|\[extname\])$/, '.chunk.css')
+					if (info.name.endsWith('.css')
+						&& !String(info.source).startsWith('/* extracted by css-entry-points-plugin */')
+						&& !info.name.endsWith('extracted-by-css-entry-points-plugin.css')
+					) {
+						// The new name should have the same path but in chunks subdirectory with .chunk.css extension
+						return name.replace(/\/(.+?)(?:.css|.\[ext\]|\[extname\])$/, 'chunks/$1.chunk.css')
 					}
 					return name
 				}
@@ -101,7 +104,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 				}
 
 				const source = [...importedCSS.values()]
-					.map((css) => `@import './${basename(css)}';`)
+					.map((css) => `@import './chunks/${basename(css)}';`)
 					.join('\n')
 
 				// Name new CSS entry same as the entry
@@ -112,7 +115,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 				const path = dirname(
 					typeof options.assetFileNames === 'string'
 						? options.assetFileNames
-						: options.assetFileNames({ type: 'asset', source: '', name: 'name.css' })
+						: options.assetFileNames({ type: 'asset', source: '', name: 'extracted-by-css-entry-points-plugin.css' }),
 				)
 
 				this.emitFile({
