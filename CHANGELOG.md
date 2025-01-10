@@ -1,5 +1,29 @@
 # Changelog
 
+## [v2.3.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.2.2...v2.3.0)
+
+### Added
+* Support for Vite 6
+  * Dropped support for Vite 4 as the vue plugin is no longer compatible with v4 and v6.
+
+### Fixed
+* fix(REUSELicensesPlugin): remove duplicates in license files [\#293](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/293) \([ShGKme](https://github.com/ShGKme)\)
+
+### Changed
+* ci: Update dependabot-approve-merge.yml [\#315](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/315) \([AndyScherzinger](https://github.com/AndyScherzinger)\)
+* Updated development dependencies
+* chore(deps): Bump elliptic to 6.6.0
+* chore(deps): Bump magic-string to 0.30.17
+* chore(deps): Bump nanoid to 3.3.8
+* chore(deps): Bump rollup-plugin-corejs to 1.0.1
+* chore(deps): Bump rollup-plugin-esbuild-minify to 1.2.0
+* chore(deps): Bump rollup-plugin-license to 3.5.3
+* chore(deps): Bump rollup-plugin-node-externals to 8.0.0
+* chore(deps): Bump vite-plugin-css-injected-by-js to 3.5.2
+* chore(deps): Bump vite-plugin-dts to 4.4.0
+* chore(deps): Bump @rollup/plugin-replace to 6.0.2
+* chore(deps): Bump @vitejs/plugin-vue to 5.2.1
+
 ## [v2.2.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v2.2.2)
 ### Fixed
 * fix(REUSELicensesPlugin): Emit files in `generateBundle` hook to have real filenames [\#283](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/283) \([susnux](https://github.com/susnux)\)
