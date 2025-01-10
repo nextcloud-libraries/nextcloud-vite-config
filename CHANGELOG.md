@@ -1,5 +1,25 @@
 # Changelog
 
+## [v1.5.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.4.2...v1.5.0) (2025-01-10)
+
+### Added
+* Vite 6 support
+
+### Fixed
+* fix(REUSELicensesPlugin): remove duplicates in license files
+
+### Changed
+* Updated development dependencies
+* chore(deps): Bump magic-string from 0.30.15 to 0.30.17
+* chore(deps): Bump rollup-plugin-corejs to 1.0.1
+* chore(deps): Bump rollup-plugin-license to 3.5.3
+* chore(deps): Bump rollup-plugin-esbuild-minify to 1.2.0
+* chore(deps): Bump rollup-plugin-node-externals to 8.0.0
+* chore(deps): Bump vite-plugin-css-injected-by-js to 3.5.2
+* chore(deps): Bump vite-plugin-dts to 4.4.0
+* chore(deps): Bump @vitejs/plugin-vue2 to 2.3.3
+* chore(deps): Bump @rollup/plugin-replace to 6.0.2
+
 ## [v1.4.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/tree/v1.4.2) (2024-08-07)
 ### Fixed
 * [stable1] fix(REUSELicensesPlugin): Emit files in `generateBundle` hook to have real filenames [\#284](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/284)
