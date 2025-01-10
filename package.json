@@ -1,25 +1,30 @@
 {
 	"name": "@nextcloud/vite-config",
+	"version": "1.4.2",
 	"description": "Shared Vite configuration for Nextcloud apps and libraries",
+	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
+	"bugs": {
+		"url": "https://github.com/nextcloud/nextcloud-vite-config/issues"
+	},
+	"license": "AGPL-3.0-or-later",
 	"author": {
 		"name": "Ferdinand Thiessen",
 		"email": "opensource@fthiessen.de"
 	},
-	"bugs": {
-		"url": "https://github.com/nextcloud/nextcloud-vite-config/issues"
-	},
-	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
-	"license": "AGPL-3.0-or-later",
-	"version": "1.4.2",
 	"type": "module",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
 		}
 	},
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist/",
+		"LICENSES",
+		"banner-template.txt"
+	],
 	"scripts": {
 		"build": "tsc",
 		"build:doc": "typedoc --out dist/doc lib/index.ts && touch dist/doc/.nojekyll",
@@ -29,10 +34,8 @@
 		"test": "vitest run",
 		"test:coverage": "vitest run --coverage.enabled --coverage.all"
 	},
-	"peerDependencies": {
-		"browserslist": ">=4.0",
-		"sass": ">=1.60",
-		"vite": "^4 || ^5"
+	"eslintConfig": {
+		"extends": "@nextcloud/eslint-config/typescript"
 	},
 	"dependencies": {
 		"@rollup/plugin-replace": "^6.0.2",
@@ -53,20 +56,22 @@
 		"@types/node": "^22.10.5",
 		"@vitest/coverage-v8": "^2.1.8",
 		"typedoc": "^0.27.6",
-		"typescript": "^5.7.2",
+		"typescript": "^5.7.3",
 		"vite": "^6.0.7",
-		"vitest": "^2.0.3"
+		"vitest": "^2.1.8"
 	},
-	"files": [
-		"dist/",
-		"LICENSES",
-		"banner-template.txt"
-	],
+	"peerDependencies": {
+		"browserslist": ">=4.0",
+		"sass": ">=1.60",
+		"vite": "^4 || ^5 || ^6"
+	},
 	"engines": {
-		"node": "^20",
+		"node": "^20 || ^22",
 		"npm": "^10"
 	},
-	"eslintConfig": {
-		"extends": "@nextcloud/eslint-config/typescript"
+	"overrides": {
+		"vite-plugin-node-polyfills": {
+			"vite": "^4 || ^5 || ^6"
+		}
 	}
 }
