@@ -112,7 +112,14 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 				const path = dirname(
 					typeof options.assetFileNames === 'string'
 						? options.assetFileNames
-						: options.assetFileNames({ type: 'asset', source: '', name: 'name.css' })
+						: options.assetFileNames({
+							type: 'asset',
+							source: '',
+							name: 'name.css',
+							names: ['name.css'],
+							originalFileName: null,
+							originalFileNames: [],
+						}),
 				)
 
 				this.emitFile({
