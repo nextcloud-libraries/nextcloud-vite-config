@@ -47,6 +47,14 @@ export interface LibraryOptions extends BaseOptions {
 	 * @default ['es']
 	 */
 	libraryFormats?: LibraryFormats[]
+
+	/**
+	 * Filename of the css output when a single CSS file should be extracted (`inlineCSS: false`)
+	 * Note this only works with Vite 6.
+	 *
+	 * @default `style.css`
+	 */
+	cssFileName?: string
 }
 
 /**
@@ -63,6 +71,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 		minify: false,
 		nodeExternalsOptions: {},
 		libraryFormats: ['es'],
+		cssFileName: 'style',
 		...options,
 	}
 
@@ -147,6 +156,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 							...entries,
 						},
 						formats: options.libraryFormats,
+						cssFileName: options.cssFileName,
 					},
 					// workaround, see above
 					minify: (options.minify ?? env.mode === 'production') ? 'esbuild' : false,
