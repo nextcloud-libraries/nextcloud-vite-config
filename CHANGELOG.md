@@ -7,6 +7,7 @@
 ### Changed
 * Updated development dependencies
 * chore(deps): Bump vite-plugin-dts to 4.5.0
+* chore(deps): Bump vite-plugin-node-polyfills to 0.23.0
 
 ## [v2.3.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.2.2...v2.3.0)
 ### Added
