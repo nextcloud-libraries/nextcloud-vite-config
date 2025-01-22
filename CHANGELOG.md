@@ -1,7 +1,14 @@
 # Changelog
 
-## [v1.5.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.4.2...v1.5.0) (2025-01-10)
+## [v1.5.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.0...v1.5.1) (2025-01-22)
+## Fixed
+* fix: Vite 6 made the CSS output file breaking [\#468](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/468)
 
+## Changed
+* Updated development dependencies
+* chore(deps): Bump vite-plugin-dts to 4.5.0
+
+## [v1.5.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.4.2...v1.5.0) (2025-01-10)
 ### Added
 * Vite 6 support
 
