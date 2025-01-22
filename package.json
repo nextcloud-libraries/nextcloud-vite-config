@@ -1,16 +1,22 @@
 {
 	"name": "@nextcloud/vite-config",
-	"version": "2.3.0",
+	"version": "2.3.1",
 	"description": "Shared Vite configuration for Nextcloud apps and libraries",
 	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
 	"bugs": {
 		"url": "https://github.com/nextcloud/nextcloud-vite-config/issues"
 	},
 	"license": "AGPL-3.0-or-later",
-	"author": {
-		"name": "Ferdinand Thiessen",
-		"email": "opensource@fthiessen.de"
-	},
+	"author": "Nextcloud GmbH and Nextcloud contributors",
+	"contributors": [
+		"Andy Scherzinger <info@andy-scherzinger.de>",
+		"Ferdinand Thiessen <opensource@fthiessen.de>",
+		"Grigorii K. Shartsev <me@shgk.me>",
+		"John Molakvoæ <skjnldsv@protonmail.com>",
+		"Julius Knorr <jus@bitgrid.net>",
+		"Raimund Schlüßler <raimund.schluessler+github@mailbox.org>",
+		"Richard Steinmetz <richard@steinmetz.cloud>"
+	],
 	"type": "module",
 	"exports": {
 		".": {
