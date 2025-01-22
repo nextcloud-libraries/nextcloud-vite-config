@@ -54,11 +54,11 @@
 	"devDependencies": {
 		"@nextcloud/eslint-config": "^8.4.1",
 		"@types/node": "^22.10.7",
-		"@vitest/coverage-v8": "^2.1.8",
+		"@vitest/coverage-v8": "^3.0.3",
 		"typedoc": "^0.27.6",
 		"typescript": "^5.7.3",
 		"vite": "^6.0.11",
-		"vitest": "^2.1.8"
+		"vitest": "^3.0.3"
 	},
 	"peerDependencies": {
 		"browserslist": ">=4.0",
@@ -68,10 +68,5 @@
 	"engines": {
 		"node": "^20 || ^22",
 		"npm": "^10"
-	},
-	"overrides": {
-		"vite-plugin-node-polyfills": {
-			"vite": "^4 || ^5 || ^6"
-		}
 	}
 }
