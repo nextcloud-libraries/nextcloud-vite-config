@@ -132,7 +132,7 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 		config: async (env) => {
 			console.info(`Building ${options.appName} for ${env.mode}`)
 
-			const assetsPrefix = (options.assetsPrefix ?? `${options.appName}-`).replace(/[/\\]/, '-')
+			const assetsPrefix = (options.assetsPrefix ?? `${options.appName}-`).replaceAll(/[/\\]/g, '-')
 
 			// This config is used to extend or override our base config
 			// Make sure we get a user config and not a promise or a user config function
