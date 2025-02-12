@@ -1,10 +1,16 @@
 # Changelog
 
+## [v1.5.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.1...v1.5.2) (2025-02-13)
+### Changed
+* chore(deps): Bump vite-plugin-node-polyfills from 0.22.0 to 0.23.0
+  * Required for vite 6 support
+* Updated development dependencies
+
 ## [v1.5.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.0...v1.5.1) (2025-01-22)
-## Fixed
+### Fixed
 * fix: Vite 6 made the CSS output file breaking [\#468](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/468)
 
-## Changed
+### Changed
 * Updated development dependencies
 * chore(deps): Bump vite-plugin-dts to 4.5.0
 
