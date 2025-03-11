@@ -144,7 +144,7 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 			build: {
 				minify: !!options.minify,
 				cssTarget: browserslistToEsbuild(),
-				sourcemap: isDev || 'hidden',
+				sourcemap: true,
 				target: browserslistToEsbuild(),
 			},
 		}),
