@@ -1,5 +1,14 @@
 # Changelog
 
+## [v2.3.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.1...v2.3.2) (2025-03-12)
+### Fixed
+* fix: Incomplete string escaping or encoding [\#501](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/501) \([susnux](https://github.com/susnux)\)
+* fix: Do not hide sourcemaps in production build [\#546](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/546) \([juliusknorr](https://github.com/juliusknorr)\)
+
+### Changed
+* Updated dependencies
+
+
 ## [v2.3.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.0...v2.3.1)
 ### Fixed
 * fix: Vite 6 made the CSS output file breaking [\#470](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/470)
