@@ -1,4 +1,9 @@
 # Changelog
+
+## [v1.5.4](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.3...v1.5.4) (2025-04-29)
+### Changed
+* chore(deps): Bump rollup-plugin-esbuild-minify from 1.2.0 to 1.3.0
+
 ## [v1.5.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.2...v1.5.3) (2025-03-12)
 ### Fixed
 * fix: Do not hide sourcemaps in production build [\#547](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/547)
