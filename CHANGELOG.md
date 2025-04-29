@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2.3.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.3...v2.3.4) (2025-04-28)
+### Changed
+* chore(deps): Bump @vitejs/plugin-vue from 5.2.1 to 5.2.3
+* chore(deps): Bump rollup-plugin-esbuild-minify from 1.2.0 to 1.3.0
+* chore(deps): Bump esbuild and rollup-plugin-esbuild-minify
+
 ## [v2.3.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.1...v2.3.2) (2025-03-12)
 ### Fixed
 * fix: Incomplete string escaping or encoding [\#501](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/501) \([susnux](https://github.com/susnux)\)
@@ -7,7 +13,6 @@
 
 ### Changed
 * Updated dependencies
-
 
 ## [v2.3.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.0...v2.3.1)
 ### Fixed
