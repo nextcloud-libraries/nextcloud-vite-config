@@ -172,21 +172,41 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 	function sanitizeName(name: string): string {
 		if (name.startsWith('\0')) {
 			name = name.slice(1)
-			if (!isAbsolute(name)) {
-				try {
-					name = import.meta.resolve(name)
-				} catch (e) {
-					try {
-						name = import.meta.resolve(name.split('/')[0])
-					} catch (e) {
-						// handle vite interals like commonjs helpers
-						name = import.meta.resolve('vite')
-					}
-				}
-				name = fileURLToPath(name)
+			// try to resolve the name itself
+			name = tryResolve(name, name)
+			// try root module
+			name = tryResolve(name, name.split('/')[0])
+			// special handling of plugins
+			if (name.includes(':')) {
+				name = tryResolve(name, `@vitejs/${name.split(':')[0]}`)
 			}
+			// internal vite modules
+			name = tryResolve(name, 'vite')
 		}
 		return parse(name).dir
+	}
+
+	/**
+	 * Try to resolve a name if the current is not a absolute path.
+	 * If resolving failed the current name is returned.
+	 *
+	 * @param name - Current name
+	 * @param alternative - Alternative name to try to resolve
+	 */
+	function tryResolve(name: string, alternative: string): string {
+		if (isAbsolute(name)) {
+			return name
+		}
+
+		try {
+			name = import.meta.resolve(alternative)
+			if (name.startsWith('file:')) {
+				return fileURLToPath(name)
+			}
+		} catch {
+			// nop
+		}
+		return name
 	}
 
 	return {
