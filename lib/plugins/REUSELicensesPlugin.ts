@@ -9,6 +9,7 @@ import { access, constants, readFile } from 'fs/promises'
 import { dirname, isAbsolute, parse } from 'path'
 import { cwd } from 'process'
 import parseExpression from 'spdx-expression-parse'
+import { fileURLToPath } from 'url'
 
 interface PackageJSON {
 	author?: string | { name?: string, mail?: string }
@@ -178,9 +179,11 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 					try {
 						name = import.meta.resolve(name.split('/')[0])
 					} catch (e) {
-						// nop
+						// handle vite interals like commonjs helpers
+						name = import.meta.resolve('vite')
 					}
 				}
+				name = fileURLToPath(name)
 			}
 		}
 		return parse(name).dir
