@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.5.6](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.5...v1.5.6) (2025-05-07)
+### 🐛 Fixed bugs
+* fix(SPDX): correctly handle vite plugins
+
 ## [v1.5.5](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.4...v1.5.5) (2025-05-07)
 ### 🐛 Fixed bugs
 * fix(SPDX): handle vite internal modules and sanitize name [\#606](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/606) \([susnux](https://github.com/susnux)\)
