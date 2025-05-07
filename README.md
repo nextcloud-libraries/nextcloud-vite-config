@@ -82,9 +82,9 @@ export default createLibConfig({
 })
 ```
 
-## Notes
+### Notes
 
-### Inlining / injecting CSS
+#### Inlining / injecting CSS
 You can enable inlining CSS code, but please note that this is handled differently for apps and libraries.
 * Apps will inline the CSS by dynamically inject it as `script` tags
 * Libraries will extract the CSS to the dist/assets directory and import it in the entry point
@@ -94,3 +94,27 @@ But this only works in DOM environments, so for libraries this might not work (e
 
 So for libraries the CSS will still be extracted by Vite, but the extracted CSS assets will be imported.
 This way the library user can decide how to handle the imported CSS without relying on a DOM environment.
+
+## Development
+
+### 📤 Releasing a new version
+
+- Pull the latest changes from `main` or `stableX`
+- Checkout a new branch with the tag name (e.g `v4.0.1`): `git checkout -b v<version>`
+- Run `npm version patch --no-git-tag-version` (`npm version minor --no-git-tag-version` if minor).
+  This will return a new version name, make sure it matches what you expect
+- Generate the changelog content from the [release](https://github.com/nextcloud-libraries/nextcloud-vite-config/releases) page.
+  Create a draft release, select the previous tag, click `generate` then paste the content to the `CHANGELOG.md` file
+  1. adjust the links to the merged pull requests and authors so that the changelog also works outside of GitHub
+     by running `npm run prerelease:format-changelog`.
+     This will apply this regex: `by @([^ ]+) in ((https://github.com/)nextcloud-libraries/nextcloud-vite-config/pull/(\d+))`
+     Which this as the replacement: `[\#$4]($2) \([$1]($3$1)\)`
+  2. use the the version as tag AND title (e.g `v4.0.1`)
+  3. add the changelog content as description (https://github.com/nextcloud-libraries/nextcloud-vite-config/releases)
+- Commit, push and create PR
+- Get your PR reviewed and merged
+- Create a milestone with the follow-up version at https://github.com/nextcloud-libraries/nextcloud-vite-config/milestones
+- Move all open tickets and PRs to the follow-up
+- Close the milestone of the version you release
+- Publish the previously drafted release on GitHub
+  ![image](https://user-images.githubusercontent.com/14975046/124442568-2a952500-dd7d-11eb-82a2-402f9170231a.png)

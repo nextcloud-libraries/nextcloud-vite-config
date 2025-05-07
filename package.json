@@ -1,6 +1,6 @@
 {
 	"name": "@nextcloud/vite-config",
-	"version": "2.3.3",
+	"version": "2.3.4",
 	"description": "Shared Vite configuration for Nextcloud apps and libraries",
 	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
 	"bugs": {
@@ -35,6 +35,7 @@
 		"build": "tsc",
 		"build:doc": "typedoc --out dist/doc lib/index.ts && touch dist/doc/.nojekyll",
 		"dev": "tsc --watch",
+		"prerelease:format-changelog": "node build/format-changelog.mjs",
 		"lint": "eslint lib",
 		"lint:fix": "eslint --fix lib",
 		"test": "vitest run",

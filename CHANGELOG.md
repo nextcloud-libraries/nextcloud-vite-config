@@ -1,6 +1,13 @@
 # Changelog
 
-## [v2.3.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.3...v2.3.4) (2025-04-28)
+## [v2.3.4](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.3...v2.3.4) (2025-05-07)
+### 🐛 Fixed bugs
+* fix(SPDX): handle vite internal modules and sanitize name [\#606](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/606) \([susnux](https://github.com/susnux)\)
+
+### Changed
+* chore(deps-dev): Bump vite to 6.3.4
+
+## [v2.3.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.2...v2.3.3) (2025-04-28)
 ### Changed
 * chore(deps): Bump @vitejs/plugin-vue from 5.2.1 to 5.2.3
 * chore(deps): Bump rollup-plugin-esbuild-minify from 1.2.0 to 1.3.0
