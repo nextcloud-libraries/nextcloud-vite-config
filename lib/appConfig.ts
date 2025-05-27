@@ -198,14 +198,14 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 							return relative('../css', `../${filename}`)
 						}
 						return {
-							// already contains the "js/" prefix as it is our output file configuration
-							runtime: `window.OC.filePath('${options.appName}', '', '${filename}')`,
+							runtime: `window.OC.filePath('${options.appName}', 'js', '${filename}')`,
 						}
 					},
 				},
 				build: {
 					// Output dir is the project root to allow main style to be generated within `/css`
-					outDir: '',
+					outDir: 'js',
+					assetsDir: '../',
 					emptyOutDir: false, // ensure project root is NOT emptied!
 					rollupOptions: {
 						input: {
@@ -238,10 +238,10 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 								return 'dist/[name]-[hash][extname]'
 							},
 							entryFileNames: () => {
-								return `js/${assetsPrefix}[name].mjs`
+								return `${assetsPrefix}[name].mjs`
 							},
 							chunkFileNames: () => {
-								return 'js/[name]-[hash].chunk.mjs'
+								return '[name]-[hash].chunk.mjs'
 							},
 							manualChunks: {
 								...(options?.coreJS ? { polyfill: ['core-js'] } : {}),
