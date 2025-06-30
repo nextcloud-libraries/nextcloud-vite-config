@@ -70,10 +70,26 @@
 	"peerDependencies": {
 		"browserslist": ">=4.0",
 		"sass": ">=1.60",
-		"vite": "^5 || ^6"
+		"vite": "^5 || ^6 || ^7"
+	},
+	"overrides": {
+		"vite-plugin-node-polyfills": {
+			"vite": "^5 || ^6 || ^7"
+		}
 	},
 	"engines": {
-		"node": "^20 || ^22",
-		"npm": "^10"
+		"node": "^20 || ^22 || ^24"
+	},
+	"devEngines": {
+		"packageManager": {
+			"name": "npm",
+			"version": "^10",
+			"onFail": "error"
+		},
+		"runtime": {
+			"name": "node",
+			"version": "^22",
+			"onFail": "error"
+		}
 	}
 }
