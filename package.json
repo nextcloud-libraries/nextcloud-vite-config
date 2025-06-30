@@ -73,6 +73,9 @@
 		"vite": "^5 || ^6 || ^7"
 	},
 	"overrides": {
+		"vite": {
+			"rollup": "^4.42.0"
+		},
 		"vite-plugin-node-polyfills": {
 			"vite": "^5 || ^6 || ^7"
 		}
