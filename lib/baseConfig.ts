@@ -47,11 +47,10 @@ export interface BaseOptions {
 	coreJS?: CoreJSPluginOptions
 	/**
 	 * Location of license summary file of third party dependencies
-	 * Pass `false` to disable generating a license file.
 	 *
-	 * @default 'dist/vendor.LICENSE.txt'
+	 * @default false
 	 */
-	thirdPartyLicense?: false | string
+	thirdPartyLicense?: string
 	/**
 	 * Customize the asset file names.
 	 * Similar to `output.assetFileNames` in rollup config,
@@ -105,13 +104,13 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 		}
 
 		// Add license header with all dependencies
-		if (options.thirdPartyLicense !== false) {
+		if (options.thirdPartyLicense) {
 			const licenseTemplate = readFileSync(new URL('../banner-template.txt', import.meta.url), 'utf-8')
 
 			plugins.push(license({
 				thirdParty: {
 					output: {
-						file: options.thirdPartyLicense || 'dist/vendor.LICENSE.txt',
+						file: options.thirdPartyLicense,
 						template: licenseTemplate,
 					},
 				},
