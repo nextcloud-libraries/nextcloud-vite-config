@@ -145,6 +145,12 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 				cssTarget: browserslistToEsbuild(),
 				sourcemap: true,
 				target: browserslistToEsbuild(),
+				// fix watch mode if the output is within the input (base directory)
+				rollupOptions: {
+					watch: {
+						allowInputInsideOutputPath: true,
+					},
+				},
 			},
 		}),
 		// Add overrides from user config
