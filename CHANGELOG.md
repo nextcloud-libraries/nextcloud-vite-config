@@ -1,5 +1,21 @@
 # Changelog
 
+## [v2.4.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.5...v2.4.0) (2025-07-23)
+
+### Added
+* Vite v7 support
+
+### 🐛 Fixed bugs
+* fix(watch): adjust rollup config for watch mode [\#666](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/666) \([susnux](https://github.com/susnux)\)
+
+### Changed
+* chore: remove work-around for already fixed bug [\#664](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/664) \([susnux](https://github.com/susnux)\)
+* chore: adjust defaults to use SPDX over 3rdparty BOM [\#665](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/665) \([susnux](https://github.com/susnux)\)
+* chore(deps): Bump @vitejs/plugin-vue to 6.0.0
+* chore(deps): Bump pbkdf2 to 3.1.3
+* chore(deps): Bump rollup-plugin-node-externals to 8.0.1
+* chore(deps): Bump vite-plugin-dts to 4.5.4
+
 ## [v2.3.5](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.4...v2.3.5) (2025-05-07)
 ### 🐛 Fixed bugs
 * fix(SPDX): correctly handle plugins
