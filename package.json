@@ -1,6 +1,6 @@
 {
 	"name": "@nextcloud/vite-config",
-	"version": "2.3.5",
+	"version": "2.4.0",
 	"description": "Shared Vite configuration for Nextcloud apps and libraries",
 	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
 	"bugs": {
@@ -35,14 +35,22 @@
 		"build": "tsc",
 		"build:doc": "typedoc --out dist/doc lib/index.ts && touch dist/doc/.nojekyll",
 		"dev": "tsc --watch",
-		"prerelease:format-changelog": "node build/format-changelog.mjs",
 		"lint": "eslint lib",
 		"lint:fix": "eslint --fix lib",
+		"prerelease:format-changelog": "node build/format-changelog.mjs",
 		"test": "vitest run",
 		"test:coverage": "vitest run --coverage.enabled --coverage.all"
 	},
 	"eslintConfig": {
 		"extends": "@nextcloud/eslint-config/typescript"
+	},
+	"overrides": {
+		"vite": {
+			"rollup": "^4.42.0"
+		},
+		"vite-plugin-node-polyfills": {
+			"vite": "^5 || ^6 || ^7"
+		}
 	},
 	"dependencies": {
 		"@rollup/plugin-replace": "^6.0.2",
@@ -71,14 +79,6 @@
 		"browserslist": ">=4.0",
 		"sass": ">=1.60",
 		"vite": "^5 || ^6 || ^7"
-	},
-	"overrides": {
-		"vite": {
-			"rollup": "^4.42.0"
-		},
-		"vite-plugin-node-polyfills": {
-			"vite": "^5 || ^6 || ^7"
-		}
 	},
 	"engines": {
 		"node": "^20 || ^22 || ^24"
