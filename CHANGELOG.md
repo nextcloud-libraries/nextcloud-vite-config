@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.6.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.6...v1.6.0) (2025-07-23)
+### Added
+* Vite 7 support
+
+### 🐛 Fixed bugs
+* fix(watch): adjust rollup config for watch mode [\#666](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/666) \([susnux](https://github.com/susnux)\)
+
+### Changed
+* chore(deps): Bump rollup-plugin-node-externals to 8.0.1
+* chore(deps): Bump vite-plugin-dts to 4.5.4
+* chore(deps): Bump vite-plugin-node-polyfills to 0.24.0
+
 ## [v1.5.6](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.5...v1.5.6) (2025-05-07)
 ### 🐛 Fixed bugs
 * fix(SPDX): correctly handle vite plugins
