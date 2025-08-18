@@ -84,11 +84,11 @@
 		"node": "^20 || ^22 || ^24"
 	},
 	"devEngines": {
-		"packageManager": {
+		"packageManager": [{
 			"name": "npm",
-			"version": "^10",
+			"version": "^10.5.1",
 			"onFail": "error"
-		},
+		}],
 		"runtime": {
 			"name": "node",
 			"version": "^22",
