@@ -146,10 +146,8 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 				sourcemap: true,
 				target: browserslistToEsbuild(),
 				// fix watch mode if the output is within the input (base directory)
-				rollupOptions: {
-					watch: {
-						allowInputInsideOutputPath: true,
-					},
+				watch: {
+					allowInputInsideOutputPath: true,
 				},
 			},
 		}),
