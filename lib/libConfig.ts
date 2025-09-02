@@ -75,32 +75,6 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 		...options,
 	}
 
-	const node = nodeExternals({
-		builtins: true, // Mark all node core modules, like `path` as external
-		builtinsPrefix: 'strip', // Strip off `node:` prefix to make packages work with webpack (webpack/webpack#14166 and Richienb/node-polyfill-webpack-plugin#19)
-		devDeps: false, // Development dependencies should not be included in the bundle
-		peerDeps: true, // Peer dependencies should be by definition external
-		deps: true, // Runtime dependencies: Same as with peer dependencies
-		...options.nodeExternalsOptions,
-	}) as Plugin
-
-	// Order is important, run the plugin first
-	node.enforce = 'pre'
-	const plugins = [
-		// Make dependencies external
-		node,
-	]
-
-	// Handle inline CSS, this is different on library than on app mode, because app will have a DOM env so styles can injected in the document while libraries might run in node
-	if (options.inlineCSS) {
-		plugins.push(ImportCSSPlugin())
-	}
-
-	// Handle the DTS plugin
-	if (options?.DTSPluginOptions !== false) {
-		plugins.push(DTSPlugin(options.DTSPluginOptions))
-	}
-
 	return createBaseConfig({
 		...options,
 		// Workaround https://github.com/vitejs/vite/issues/14515
@@ -109,6 +83,32 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 			// This config is used to extend or override our base config
 			// Make sure we get a user config and not a promise or a user config function
 			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
+
+			const node = await nodeExternals({
+				builtins: true, // Mark all node core modules, like `path` as external
+				builtinsPrefix: 'strip', // Strip off `node:` prefix to make packages work with webpack (webpack/webpack#14166 and Richienb/node-polyfill-webpack-plugin#19)
+				devDeps: false, // Development dependencies should not be included in the bundle
+				peerDeps: true, // Peer dependencies should be by definition external
+				deps: true, // Runtime dependencies: Same as with peer dependencies
+				...options.nodeExternalsOptions,
+			}) as Plugin
+
+			// Order is important, run the plugin first
+			node.enforce = 'pre'
+			const plugins = [
+				// Make dependencies external
+				node,
+			]
+
+			// Handle inline CSS, this is different on library than on app mode, because app will have a DOM env so styles can injected in the document while libraries might run in node
+			if (options.inlineCSS) {
+				plugins.push(ImportCSSPlugin())
+			}
+
+			// Handle the DTS plugin
+			if (options?.DTSPluginOptions !== false) {
+				plugins.push(DTSPlugin(options.DTSPluginOptions))
+			}
 
 			const assetFileNames = (assetInfo) => {
 				// Allow to customize the asset file names
