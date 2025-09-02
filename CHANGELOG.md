@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.7.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.6...v1.6.0) (2025-09-02)
+### Added
+* Minimum Vite version is now v7.1.4
+
+### Changed
+* fix: bump vite version to fix running in watch mode [\#694](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/694)
+
 ## [v1.6.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.6...v1.6.0) (2025-07-23)
 ### Added
 * Vite 7 support
