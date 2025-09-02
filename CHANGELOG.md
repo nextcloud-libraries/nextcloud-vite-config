@@ -1,5 +1,23 @@
 # Changelog
 
+## [v2.5.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.4.0...v2.5.0) (2025-09-02)
+
+### Added
+
+* Minimum Vite version is now 7.1.4
+
+### 🐛 Fixed bugs
+* fix: bump vite version to fix running in watch mode [\#693](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/693) \([susnux](https://github.com/susnux)\)
+
+### Other changes
+* chore: update `vite-plugin-node-polyfills` to `0.24.0` [\#678](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/678) \([skjnldsv](https://github.com/skjnldsv)\)
+* chore: various dev deps upgrades [\#680](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/680) \([skjnldsv](https://github.com/skjnldsv)\)
+* chore(deps): Bump @vitejs/plugin-vue from 6.0.0 to 6.0.1 [\#681](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/681)
+* chore(deps): Bump cipher-base from 1.0.4 to 1.0.6 [\#687](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/687)
+* chore(deps): Bump sha.js from 2.4.11 to 2.4.12 [\#688](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/688)
+* chore(deps): Bump magic-string from 0.30.17 to 0.30.18 [\#691](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/691)
+* chore(deps): Bump rollup-plugin-node-externals from 8.0.1 to 8.1.0 [\#690](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/690)
+
 ## [v2.4.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.3.5...v2.4.0) (2025-07-23)
 
 ### Added
