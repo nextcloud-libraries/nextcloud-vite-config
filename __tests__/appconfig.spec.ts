@@ -50,8 +50,8 @@ describe('app config', () => {
 		const output = resolved.build.rollupOptions.output as OutputOptions
 		expect(typeof output?.assetFileNames).toBe('function')
 		const assetFileNames = output?.assetFileNames as ((chunkInfo: unknown) => string)
-		expect(assetFileNames({ name: 'some.css' })).toMatch(/^css\/[^/]+\.css/)
-		expect(assetFileNames({ name: 'other/file.css' })).toMatch(/^css\/[^/]+\.css/)
+		expect(assetFileNames({ names: ['some.css'] })).toMatch(/^css\/[^/]+\.css/)
+		expect(assetFileNames({ names: ['other/file.css'] })).toMatch(/^css\/[^/]+\.css/)
 	})
 
 	it('moves image assets to img/', async () => {
@@ -60,10 +60,10 @@ describe('app config', () => {
 		const output = resolved.build.rollupOptions.output as OutputOptions
 		expect(typeof output?.assetFileNames).toBe('function')
 		const assetFileNames = output?.assetFileNames as ((chunkInfo: unknown) => string)
-		expect(assetFileNames({ name: 'some.png' })).toBe('img/[name][extname]')
-		expect(assetFileNames({ name: 'some.svg' })).toBe('img/[name][extname]')
-		expect(assetFileNames({ name: 'some.jpg' })).toBe('img/[name][extname]')
-		expect(assetFileNames({ name: 'some.ico' })).toBe('img/[name][extname]')
+		expect(assetFileNames({ names: ['some.png'] })).toBe('img/[name][extname]')
+		expect(assetFileNames({ names: ['some.svg'] })).toBe('img/[name][extname]')
+		expect(assetFileNames({ names: ['some.jpg'] })).toBe('img/[name][extname]')
+		expect(assetFileNames({ names: ['some.ico'] })).toBe('img/[name][extname]')
 	})
 
 	it('moves fonts to css/fonts', async () => {
@@ -72,20 +72,20 @@ describe('app config', () => {
 		const output = resolved.build.rollupOptions.output as OutputOptions
 		expect(typeof output?.assetFileNames).toBe('function')
 		const assetFileNames = output?.assetFileNames as ((chunkInfo: unknown) => string)
-		expect(assetFileNames({ name: 'some.woff' })).toBe('css/fonts/[name][extname]')
-		expect(assetFileNames({ name: 'some.woff2' })).toBe('css/fonts/[name][extname]')
-		expect(assetFileNames({ name: 'some.otf' })).toBe('css/fonts/[name][extname]')
-		expect(assetFileNames({ name: 'some.ttf' })).toBe('css/fonts/[name][extname]')
+		expect(assetFileNames({ names: ['some.woff'] })).toBe('css/fonts/[name][extname]')
+		expect(assetFileNames({ names: ['some.woff2'] })).toBe('css/fonts/[name][extname]')
+		expect(assetFileNames({ names: ['some.otf'] })).toBe('css/fonts/[name][extname]')
+		expect(assetFileNames({ names: ['some.ttf'] })).toBe('css/fonts/[name][extname]')
 	})
 
 	it('allow custom asset names', async () => {
-		const resolved = await createConfig('build', 'development', { assetFileNames: (({ name }) => name === 'main.png' ? 'img/main.png' : undefined) as never })
+		const resolved = await createConfig('build', 'development', { assetFileNames: ({ names }) => names[0] === 'main.png' ? 'img/main.png' : undefined })
 
 		const output = resolved.build.rollupOptions.output as OutputOptions
 		expect(typeof output?.assetFileNames).toBe('function')
 		const assetFileNames = output?.assetFileNames as ((chunkInfo: unknown) => string)
-		expect(assetFileNames({ name: 'main.png' })).toBe('img/main.png')
-		expect(assetFileNames({ name: 'foo.png' })).toBe('img/[name][extname]')
+		expect(assetFileNames({ names: ['main.png'] })).toBe('img/main.png')
+		expect(assetFileNames({ names: ['foo.png'] })).toBe('img/[name][extname]')
 	})
 
 	it('extracts CSS by default with CSS entry points', async () => {
