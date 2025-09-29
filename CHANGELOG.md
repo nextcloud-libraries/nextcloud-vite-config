@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.5.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.0...v2.5.1) (2025-09-29)
+### 🐛 Fixed bugs
+* fix: make configuration rolldown compatible [\#717](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/717) \([susnux](https://github.com/susnux)\)
+
+### Other changes
+* chore(deps): Bump rollup-plugin-node-externals to 8.1.1
+* chore(deps): Bump magic-string to 0.30.19
+
 ## [v2.5.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.4.0...v2.5.0) (2025-09-02)
 
 ### Added
