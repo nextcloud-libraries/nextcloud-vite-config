@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.7.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.7.0...v1.7.1) (2025-09-29)
+### Fixed
+* fix: make configuration rolldown compatible [\#718](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/718)
+
+### Changed
+* chore(deps): Bump rollup-plugin-node-externals to 8.1.1
+* chore(deps): Bump magic-string to 0.30.19
+
 ## [v1.7.0](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.5.6...v1.6.0) (2025-09-02)
 ### Added
 * Minimum Vite version is now v7.1.4
