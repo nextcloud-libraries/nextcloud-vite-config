@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { LibraryFormats, UserConfig, UserConfigFn, BuildOptions, Plugin } from 'vite'
+import type { LibraryFormats, UserConfig, UserConfigFn, BuildOptions, Plugin, Rollup } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { mergeConfig } from 'vite'
@@ -108,7 +108,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 			// Make sure we get a user config and not a promise or a user config function
 			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
-			const assetFileNames = (assetInfo) => {
+			const assetFileNames = (assetInfo: Rollup.PreRenderedAsset) => {
 				// Allow to customize the asset file names
 				if (options.assetFileNames) {
 					const customName = options.assetFileNames(assetInfo)
@@ -117,7 +117,8 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 					}
 				}
 
-				const extType = assetInfo.name.split('.').pop()
+				const [name] = assetInfo.names
+				const extType = name.split('.').pop()
 				if (!options.inlineCSS && /css/i.test(extType)) {
 					return '[name].css'
 				}
