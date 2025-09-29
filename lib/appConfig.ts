@@ -1,6 +1,5 @@
 /**
  * SPDX-FileCopyrightText: 2023 Ferdinand Thiessen <opensource@fthiessen.de>
- *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
@@ -12,6 +11,7 @@ import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 import { cwd } from 'node:process'
 import { mergeConfig } from 'vite'
+import * as vite from 'vite'
 import { createBaseConfig } from './baseConfig.js'
 import { findAppinfo } from './utils/appinfo.js'
 
@@ -223,7 +223,8 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 									}
 								}
 
-								const extType = assetInfo.name.split('.').pop()
+								const [name] = assetInfo.names
+								const extType = name.split('.').pop()
 								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
@@ -243,9 +244,19 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 							chunkFileNames: () => {
 								return 'js/[name]-[hash].chunk.mjs'
 							},
-							manualChunks: {
-								...(options?.coreJS ? { polyfill: ['core-js'] } : {}),
-							},
+							...(
+								options?.coreJS
+									? (
+										'rolldownVite' in vite
+											? {
+												advancedChunks: {
+													groups: [{ name: 'polyfill', test: /core-js/ }],
+												},
+											}
+											: { polyfill: ['core-js'] }
+									)
+									: {}
+							),
 						},
 					},
 				},

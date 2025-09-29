@@ -58,7 +58,7 @@ export interface BaseOptions {
 	 * but if returns undefined, then this config defaults is be used.
 	 *
 	 * @example Move CSS styles to `styles/style.css` instead of the default `css/[entrypoint-name].css`:
-	 *          (chunkInfo) => chunkInfo.name.endsWith('.css') ? 'styles/style.css' : undefined
+	 *          (chunkInfo) => chunkInfo.names[0].endsWith('.css') ? 'styles/style.css' : undefined
 	 */
 	assetFileNames?: (chunkInfo: Rollup.PreRenderedAsset) => string | undefined,
 	/**

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import { ESBuildOptions, resolveConfig } from 'vite'
+import { ESBuildOptions, resolveConfig, Rollup } from 'vite'
 import { describe, it, expect } from 'vitest'
 import { LibraryOptions, createLibConfig } from '../lib/libConfig'
 
@@ -50,25 +50,30 @@ describe('library config', () => {
 		it('keep name without inlining the CSS assets ', async () => {
 			const resolved = await createConfig('build', 'development')
 
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames).not.toBe(undefined)
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'some.css' })).toBe('[name].css')
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'some.nfo' })).toBe('assets/[name]-[hash][extname]')
+			const [output] = resolved.build.rollupOptions.output! as Rollup.OutputOptions[]
+			expect(output.assetFileNames).not.toBe(undefined)
+			expect(output.assetFileNames({ names: ['some.css'] })).toBe('[name].css')
+			expect(output.assetFileNames({ names: ['some.nfo'] })).toBe('assets/[name]-[hash][extname]')
 		})
 
 		it('move CSS files to asset directory when inlining CSS', async () => {
 			const resolved = await createConfig('build', 'development', { inlineCSS: true })
 
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames).not.toBe(undefined)
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'some.css' })).toBe('assets/[name]-[hash][extname]')
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'some.nfo' })).toBe('assets/[name]-[hash][extname]')
+			const [output] = resolved.build.rollupOptions.output! as Rollup.OutputOptions[]
+			expect(output.assetFileNames).not.toBe(undefined)
+			expect(output.assetFileNames({ names: ['some.css'] })).toBe('assets/[name]-[hash][extname]')
+			expect(output.assetFileNames({ names: ['some.nfo'] })).toBe('assets/[name]-[hash][extname]')
 		})
 
 		it('allow custom asset names', async () => {
-			const resolved = await createConfig('build', 'development', { assetFileNames: (({ name }) => name === 'foo.css' ? 'bar.css' : undefined) as never })
+			const resolved = await createConfig('build', 'development', {
+				assetFileNames: ((assetInfo: Rollup.PreRenderedAsset) => assetInfo.names.includes('foo.css') ? 'bar.css' : undefined) as never,
+			})
 
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames).not.toBe(undefined)
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'foo.css' })).toBe('bar.css')
-			expect(resolved.build.rollupOptions.output?.[0].assetFileNames({ name: 'baz.css' })).toBe('[name].css')
+			const [output] = resolved.build.rollupOptions.output! as Rollup.OutputOptions[]
+			expect(output.assetFileNames).not.toBe(undefined)
+			expect(output.assetFileNames({ names: ['foo.css'] })).toBe('bar.css')
+			expect(output.assetFileNames({ names: ['baz.css'] })).toBe('[name].css')
 		})
 	})
 

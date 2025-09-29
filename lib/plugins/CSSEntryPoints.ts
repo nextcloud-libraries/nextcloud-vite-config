@@ -1,6 +1,5 @@
 /**
  * SPDX-FileCopyrightText: 2024 Ferdinand Thiessen <opensource@fthiessen.de>
- *
  * SPDX-License-Identifier: MIT
  */
 
@@ -44,7 +43,8 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 					// If the original assets name option is a function we need to call it otherwise just use the template string
 					const name = typeof config === 'function' ? config(info) : config
 					// Only handle CSS files not extracted by this plugin
-					if (info.name.endsWith('.css') && !String(info.source).startsWith('/* extracted by css-entry-points-plugin */')) {
+					const [assetName] = info.names
+					if (assetName.endsWith('.css') && !String(info.source).startsWith('/* extracted by css-entry-points-plugin */')) {
 						// The new name should have the same path but instead of the .css extension it is .chunk.css
 						return name.replace(/(.css|.\[ext\]|\[extname\])$/, '.chunk.css')
 					}
