@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.7.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.7.1...v1.7.2) (2025-10-20)
+### Fixed
+* fix(REUSE): also add correct license headers for facade chunks [\#737](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/737)
+
+### Changed
+* Updated development dependencies
+* chore(deps): Bump @vitejs/plugin-vue2 to 2.3.4 [\#727](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/727)
+
 ## [v1.7.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.7.0...v1.7.1) (2025-09-29)
 ### Fixed
 * fix: make configuration rolldown compatible [\#718](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/718)
