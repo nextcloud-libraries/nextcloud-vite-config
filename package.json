@@ -1,6 +1,6 @@
 {
 	"name": "@nextcloud/vite-config",
-	"version": "1.7.1",
+	"version": "1.7.2",
 	"description": "Shared Vite configuration for Nextcloud apps and libraries",
 	"homepage": "https://github.com/nextcloud/nextcloud-vite-config",
 	"bugs": {
