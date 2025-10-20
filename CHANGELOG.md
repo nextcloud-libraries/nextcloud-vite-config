@@ -1,5 +1,12 @@
 # Changelog
 
+## [v2.5.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.1...v2.5.2) (2025-10-20)
+### 🐛 Fixed bugs
+* fix(REUSE): also add correct license headers for facade chunks [\#736](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/736) \([susnux](https://github.com/susnux)\)
+
+### Other changes
+* Updated development dependencies
+
 ## [v2.5.1](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.0...v2.5.1) (2025-09-29)
 ### 🐛 Fixed bugs
 * fix: make configuration rolldown compatible [\#717](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/717) \([susnux](https://github.com/susnux)\)
