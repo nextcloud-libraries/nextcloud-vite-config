@@ -1,8 +1,18 @@
-# SPDX-FileCopyrightText: Nextcloud contributors
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: CC0-1.0
 
 version: 2
 updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      timezone: Europe/Paris
+    open-pull-requests-limit: 10
+    labels:
+    - 3. to review
+    - dependencies
+
   - package-ecosystem: npm
     target-branch: "main"
     directory: "/"
@@ -13,6 +23,12 @@ updates:
       timezone: "Europe/Paris"
     open-pull-requests-limit: 10
     versioning-strategy: "increase"
+    groups:
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+
   - package-ecosystem: npm
     target-branch: "stable1"
     directory: "/"
@@ -23,3 +39,12 @@ updates:
       timezone: "Europe/Paris"
     open-pull-requests-limit: 10
     versioning-strategy: "increase"
+    groups:
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+    ignore:
+      - dependency-name: "*"
+        # ignore all major updates
+        update-types: ["version-update:semver-major"]
