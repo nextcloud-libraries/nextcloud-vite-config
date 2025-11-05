@@ -258,11 +258,13 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 					licenses.add(license)
 					source += `- ${pkg.name}\n\t- version: ${pkg.version}\n\t- license: ${license}\n`
 				}
+				// REUSE-IgnoreStart
 				source = [...licenses.values()].sort().map((license) => `SPDX-License-Identifier: ${license}`).join('\n')
 					+ '\n'
 					+ [...authors.values()].sort().map((author) => `SPDX-FileCopyrightText: ${author}`).join('\n')
 					+ '\n\n'
 					+ source
+				// REUSE-IgnoreEnd
 
 				this.emitFile({
 					name: `${chunk.name}.license`,
