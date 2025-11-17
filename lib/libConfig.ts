@@ -156,7 +156,6 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 						entry: {
 							...entries,
 						},
-						formats: options.libraryFormats,
 						cssFileName: options.cssFileName,
 					},
 					// workaround, see above
