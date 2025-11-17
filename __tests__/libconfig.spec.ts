@@ -53,7 +53,7 @@ describe('library config', () => {
 			const [output] = resolved.build.rollupOptions.output! as Rollup.OutputOptions[]
 			expect(output.assetFileNames).not.toBe(undefined)
 			expect(output.assetFileNames({ names: ['some.css'] })).toBe('[name].css')
-			expect(output.assetFileNames({ names: ['some.nfo'] })).toBe('assets/[name]-[hash][extname]')
+			expect(output.assetFileNames({ names: ['some.nfo'] })).toBe('assets/[name][extname]')
 		})
 
 		it('move CSS files to asset directory when inlining CSS', async () => {
@@ -61,8 +61,8 @@ describe('library config', () => {
 
 			const [output] = resolved.build.rollupOptions.output! as Rollup.OutputOptions[]
 			expect(output.assetFileNames).not.toBe(undefined)
-			expect(output.assetFileNames({ names: ['some.css'] })).toBe('assets/[name]-[hash][extname]')
-			expect(output.assetFileNames({ names: ['some.nfo'] })).toBe('assets/[name]-[hash][extname]')
+			expect(output.assetFileNames({ names: ['some.css'] })).toBe('assets/[name][extname]')
+			expect(output.assetFileNames({ names: ['some.nfo'] })).toBe('assets/[name][extname]')
 		})
 
 		it('allow custom asset names', async () => {
