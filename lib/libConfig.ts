@@ -124,7 +124,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 				if (!options.inlineCSS && /css/i.test(extType)) {
 					return '[name].css'
 				}
-				return 'assets/[name]-[hash][extname]'
+				return 'assets/[name][extname]'
 			}
 
 			// Manually define output options for file extensions
@@ -137,7 +137,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 					preserveModules: false,
 					assetFileNames,
 					entryFileNames: `[name].${extension}`,
-					chunkFileNames: `chunks/[name]-[hash].${extension}`,
+					chunkFileNames: `chunks/[name].${extension}`,
 				}
 			})
 
