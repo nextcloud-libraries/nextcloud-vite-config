@@ -64,13 +64,13 @@
 		"@vitest/coverage-v8": "^4.0.9",
 		"typedoc": "^0.28.15",
 		"typescript": "^5.9.3",
-		"vite": "^7.2.6",
+		"vite": "^7.2.7",
 		"vitest": "^4.0.7"
 	},
 	"peerDependencies": {
 		"browserslist": ">=4.0",
 		"sass": ">=1.60",
-		"vite": "^7.2.6"
+		"vite": "^7.2.7"
 	},
 	"engines": {
 		"node": "^20 || ^22 || ^24"
