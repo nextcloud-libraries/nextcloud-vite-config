@@ -60,7 +60,7 @@
 	},
 	"devDependencies": {
 		"@nextcloud/eslint-config": "^8.4.2",
-		"@types/node": "^24.10.6",
+		"@types/node": "^24.10.9",
 		"@vitest/coverage-v8": "^4.0.9",
 		"typedoc": "^0.28.15",
 		"typescript": "^5.9.3",
