@@ -3,14 +3,15 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { RollupOutput, OutputOptions, OutputChunk } from 'rollup'
-import { build, resolveConfig } from 'vite'
-import { describe, it, expect } from 'vitest'
+import type { OutputChunk, OutputOptions, RollupOutput } from 'rollup'
 import type { AppOptions } from '../lib/appConfig.ts'
-import { createAppConfig } from '../lib/appConfig.ts'
-import { fileURLToPath } from 'url'
+
 import { resolve } from 'path'
+import { fileURLToPath } from 'url'
+import { build, resolveConfig } from 'vite'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import { describe, expect, it } from 'vitest'
+import { createAppConfig } from '../lib/appConfig.ts'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 

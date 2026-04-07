@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { LibraryFormats, UserConfig, UserConfigFn, BuildOptions, Plugin, Rollup } from 'vite'
+import type { ExternalsOptions } from 'rollup-plugin-node-externals'
+import type { BuildOptions, LibraryFormats, Plugin, Rollup, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
+import { nodeExternals } from 'rollup-plugin-node-externals'
 import { mergeConfig } from 'vite'
-import { createBaseConfig } from './baseConfig.js'
-
 import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
-import { nodeExternals, type ExternalsOptions } from 'rollup-plugin-node-externals'
+import { createBaseConfig } from './baseConfig.js'
 import { ImportCSSPlugin } from './plugins/ImportCSS.js'
 
 type OutputOptions = BuildOptions['rollupOptions']['output']

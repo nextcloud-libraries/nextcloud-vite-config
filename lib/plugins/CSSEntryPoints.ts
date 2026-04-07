@@ -7,7 +7,7 @@
 import type { OutputOptions, PreRenderedAsset } from 'rollup'
 import type { Plugin } from 'vite'
 
-import { basename, dirname, join, normalize, extname } from 'path'
+import { basename, dirname, extname, join, normalize } from 'path'
 
 interface CSSEntryPointsPluginOptions {
 	/**

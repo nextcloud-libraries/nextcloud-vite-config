@@ -4,9 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import { ESBuildOptions, resolveConfig, Rollup } from 'vite'
-import { describe, it, expect } from 'vitest'
-import { LibraryOptions, createLibConfig } from '../lib/libConfig'
+import type { ESBuildOptions, Rollup } from 'vite'
+import type { LibraryOptions } from '../lib/libConfig.ts'
+
+import { resolveConfig } from 'vite'
+import { describe, expect, it } from 'vitest'
+import { createLibConfig } from '../lib/libConfig.ts'
 
 describe('library config', () => {
 	describe('workaround vite#14515 minify bug', () => {
