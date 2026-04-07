@@ -19,7 +19,8 @@ import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
 import replace from '@rollup/plugin-replace'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 import { CSSEntryPointsPlugin } from './plugins/CSSEntryPoints.js'
-import { REUSELicensesPlugin, REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
+import type { REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
+import { REUSELicensesPlugin } from './plugins/REUSELicensesPlugin.js'
 
 type VitePluginInjectCSSOptions = Parameters<typeof injectCSSPlugin>[0]
 
