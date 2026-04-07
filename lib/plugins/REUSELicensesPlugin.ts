@@ -48,7 +48,6 @@ export interface REUSELicensesPluginOptions {
  * @param options Options to pass to the plugin
  */
 export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): Plugin {
-
 	options = {
 		overwriteLicenses: {},
 		...options,
