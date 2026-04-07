@@ -56,19 +56,20 @@
 		"vite-plugin-node-polyfills": "^0.28.0"
 	},
 	"devDependencies": {
-		"@nextcloud/eslint-config": "^9.0.0-rc.9",
-		"@types/node": "^26.0.0",
+		"@nextcloud/eslint-config": "^9.0.0",
+		"@types/node": "^24.13.2",
+		"@types/spdx-expression-parse": "^4.0.0",
 		"@vitest/coverage-v8": "^4.1.9",
-		"eslint": "^10.5.0",
+		"eslint": "^10.6.0",
 		"typedoc": "^0.28.19",
 		"typescript": "^5.9.3",
-		"vite": "^8.0.7",
-		"vitest": "^4.1.3"
+		"vite": "^8.1.1",
+		"vitest": "^4.1.9"
 	},
 	"peerDependencies": {
 		"browserslist": ">=4.0",
-		"sass": ">=1.60",
-		"vite": ">=8.0"
+		"sass": ">=1.80",
+		"vite": ">=8.1"
 	},
 	"engines": {
 		"node": "^20.19 || ^22.12 || ^24"
