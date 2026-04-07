@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { PreRenderedAsset } from 'rolldown'
-import type { OutputOptions, PreRenderedAsset as RollupPreRenderedAsset } from 'rollup'
+import type { OutputOptions, PreRenderedAsset } from 'rolldown'
 import type { Plugin } from 'vite'
 
 import { basename, dirname, extname, join, normalize } from 'path'
-import * as vite from 'vite'
 
 interface CSSEntryPointsPluginOptions {
 	/**
@@ -43,7 +41,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 			 */
 			function fixupAssetFileNames(config: Required<OutputOptions['assetFileNames']>) {
 				// Return a wrapper function
-				return (info: PreRenderedAsset | RollupPreRenderedAsset): string => {
+				return (info: PreRenderedAsset): string => {
 					// If the original assets name option is a function we need to call it otherwise just use the template string
 					const name = typeof config === 'function' ? config(info) : config
 					// Only handle CSS files not extracted by this plugin
@@ -123,15 +121,11 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 							originalFileNames: [],
 						}))
 
-				const emittedFIle = {
+				this.emitFile({
 					type: 'asset',
 					name: `\0${cssName}`,
 					fileName: normalize(join(path, cssName)),
 					source: `/* extracted by css-entry-points-plugin */\n${source}`,
-				} as const
-				this.emitFile({
-					...emittedFIle,
-					...(vite.rolldownVersion ? {} : { needsCodeReference: false }),
 				})
 			}
 		},
