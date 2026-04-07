@@ -10,9 +10,7 @@ import type { Plugin, Rollup, UserConfig, UserConfigExport, UserConfigFn } from 
 import replace from '@rollup/plugin-replace'
 import vue from '@vitejs/plugin-vue'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
-import { readFileSync } from 'node:fs'
 import { corejsPlugin } from 'rollup-plugin-corejs'
-import license from 'rollup-plugin-license'
 import { mergeConfig } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
@@ -46,12 +44,6 @@ export interface BaseOptions {
 	 * By default disabled as Nextcloud core already includes the `core-js/stable` polyfills globally
 	 */
 	coreJS?: CoreJSPluginOptions
-	/**
-	 * Location of license summary file of third party dependencies
-	 *
-	 * @default false
-	 */
-	thirdPartyLicense?: string
 	/**
 	 * Customize the asset file names.
 	 * Similar to `output.assetFileNames` in rollup config,
@@ -105,22 +97,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 			plugins.push(corejsPlugin(options.coreJS) as unknown as Plugin)
 		}
 
-		// Add license header with all dependencies
-		if (options.thirdPartyLicense) {
-			const licenseTemplate = readFileSync(new URL('../banner-template.txt', import.meta.url), 'utf-8')
-
-			plugins.push(license({
-				thirdParty: {
-					output: {
-						file: options.thirdPartyLicense,
-						template: licenseTemplate,
-					},
-				},
-			}) as unknown as Plugin)
-			// Enforce the license is generated at the end so all dependencies are included
-			plugins.at(-1)!.enforce = 'post'
-		}
-
 		return mergeConfig(
 			{
 				plugins: [
@@ -139,7 +115,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 				esbuild: {
 					legalComments: 'inline',
 					target: browserslistToEsbuild(),
-					banner: options.thirdPartyLicense ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
 				},
 				build: {
 					minify: !!options.minify,
