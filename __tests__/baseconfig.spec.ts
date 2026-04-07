@@ -8,14 +8,12 @@ import { describe, expect, it } from 'vitest'
 import { BaseOptions, createBaseConfig } from '../lib/baseConfig.ts'
 import { resolveConfig } from 'vite'
 
-const createConfig = async (
-	command: 'build' | 'serve' = 'build',
-	mode: 'development' | 'production' = 'production',
-	options?: BaseOptions,
-) => await resolveConfig(
-	await createBaseConfig(options)({ command, mode, isSsrBuild: false }),
-	command,
-)
+async function createConfig(command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: BaseOptions) {
+	return await resolveConfig(
+		await createBaseConfig(options)({ command, mode, isSsrBuild: false }),
+		command,
+	)
+}
 
 describe('baseconfig', () => {
 	it('Correctly set minify option to false', async () => {

@@ -94,7 +94,7 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
  *   settings: path.resolve(path.join('src', 'settings.js')),
  * })
  */
-export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn => {
+export function createAppConfig(entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn {
 	// Add default options
 	options = {
 		config: {},
