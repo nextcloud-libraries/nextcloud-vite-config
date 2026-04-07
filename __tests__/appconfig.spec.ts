@@ -6,7 +6,7 @@
 import type { RollupOutput, OutputOptions, OutputChunk } from 'rollup'
 import { build, resolveConfig } from 'vite'
 import { describe, it, expect } from 'vitest'
-import { AppOptions, createAppConfig } from '../lib/appConfig'
+import { AppOptions, createAppConfig } from '../lib/appConfig.ts'
 import { fileURLToPath } from 'url'
 import { resolve } from 'path'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'

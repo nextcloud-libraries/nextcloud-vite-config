@@ -5,7 +5,7 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { BaseOptions, createBaseConfig } from '../lib/baseConfig'
+import { BaseOptions, createBaseConfig } from '../lib/baseConfig.ts'
 import { resolveConfig } from 'vite'
 
 const createConfig = async (

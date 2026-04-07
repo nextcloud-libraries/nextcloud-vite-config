@@ -8,7 +8,7 @@ import type { RollupOutput, OutputAsset } from 'rollup'
 
 import { build } from 'vite'
 import { describe, it, expect } from 'vitest'
-import { CSSEntryPointsPlugin } from '../lib/plugins/CSSEntryPoints'
+import { CSSEntryPointsPlugin } from '../lib/plugins/CSSEntryPoints.ts'
 import { resolve } from 'path'
 
 const root = resolve(import.meta.dirname, '../__fixtures__/css-entry-points')
