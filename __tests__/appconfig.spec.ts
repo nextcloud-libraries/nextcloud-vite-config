@@ -31,7 +31,7 @@ describe('app config', () => {
 		const root = resolve(__dirname, '../__fixtures__/app_process_env')
 
 		const resolved = await createAppConfig({
-			main: resolve(root, 'main.js'),
+			main: resolve(root, 'main.cjs'),
 		})({ command: 'build', mode: 'production' })
 
 		const result = await build({
