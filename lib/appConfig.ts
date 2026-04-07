@@ -247,14 +247,14 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 							...(
 								options?.coreJS
 									? (
-										'rolldownVite' in vite
-											? {
-												advancedChunks: {
-													groups: [{ name: 'polyfill', test: /core-js/ }],
-												},
-											}
-											: { polyfill: ['core-js'] }
-									)
+											'rolldownVite' in vite
+												? {
+														advancedChunks: {
+															groups: [{ name: 'polyfill', test: /core-js/ }],
+														},
+													}
+												: { polyfill: ['core-js'] }
+										)
 									: {}
 							),
 						},
