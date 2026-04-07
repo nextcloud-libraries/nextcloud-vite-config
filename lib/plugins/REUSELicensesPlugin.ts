@@ -77,7 +77,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 		} else if (options.validateLicenses) {
 			try {
 				parseExpression(license)
-			} catch (e) {
+			} catch {
 				onError(`Invalid license information "${license}" for package ${name} @ ${version}`)
 			}
 		}
@@ -149,7 +149,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 		const packageJson = `${dir}/package.json`
 		try {
 			await access(packageJson, constants.F_OK)
-		} catch (e) {
+		} catch {
 			// There is no package.json in this directory so check the one below
 			packageCache.set(dir, await findPackage(dirname(dir)))
 			return packageCache.get(dir)
