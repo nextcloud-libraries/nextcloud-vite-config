@@ -22,6 +22,7 @@ interface PackageJSON {
 export interface REUSELicensesPluginOptions {
 	/**
 	 * Optional mapping of package names and licenses to allow overwriting when packages do not set the license in the package.json correctly
+	 *
 	 * @example
 	 * ```js
 	 * {
@@ -33,11 +34,13 @@ export interface REUSELicensesPluginOptions {
 	overwriteLicenses?: Record<string, string>
 	/**
 	 * Enable license validation (checking that the license is a valid SPDX identifier)
+	 *
 	 * @default false
 	 */
 	validateLicenses?: boolean
 	/**
 	 * Enable `.license` files also for sourcemap files
+	 *
 	 * @default false
 	 */
 	includeSourceMaps?: boolean
@@ -45,6 +48,7 @@ export interface REUSELicensesPluginOptions {
 
 /**
  * Plugin to extract `.license` files for every built chunk
+ *
  * @param options Options to pass to the plugin
  */
 export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): Plugin {
@@ -59,6 +63,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 
 	/**
 	 * Implementation of `verifyLicense`
+	 *
 	 * @param license The license to verify
 	 * @param name The package name
 	 * @param version The package version
@@ -86,6 +91,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 	/**
 	 * Verify a license of a specific package
 	 * This will also handle overwriting licenses
+	 *
 	 * @param license The license to verify
 	 * @param name Package name
 	 * @param version Version
@@ -101,6 +107,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 
 	/**
 	 * Get the needed fields of the package JSON data
+	 *
 	 * @param data package JSON data
 	 */
 	function neededFields(data: PackageJSON) {
@@ -132,6 +139,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 
 	/**
 	 * Find the nearest package.json
+	 *
 	 * @param dir Directory to start checking
 	 */
 	async function findPackage(dir: string) {
@@ -166,6 +174,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 
 	/**
 	 * Get the module path from a module name (handle internal vite modules)
+	 *
 	 * @param name Raw module name
 	 */
 	function sanitizeName(name: string): string {

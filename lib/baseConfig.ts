@@ -25,16 +25,19 @@ export interface BaseOptions {
 	replace?: Record<string, string>
 	/**
 	 * Inject all styles inside the javascript bundle instead of emitting a .css file
+	 *
 	 * @default false
 	 */
 	inlineCSS?: boolean
 	/**
 	 * Whether to minify the output
+	 *
 	 * @default isProduction Minify on production, do not on development
 	 */
 	minify?: boolean
 	/**
 	 * Inject polyfills for node packages
+	 *
 	 * @default false Disabled to reduce buildtime
 	 */
 	nodePolyfills?: boolean | NodePolyfillsOptions
@@ -67,6 +70,7 @@ export interface BaseOptions {
 
 /**
  * Create a basic configuration
+ *
  * @param options Options to use
  */
 export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {

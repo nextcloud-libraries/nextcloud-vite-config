@@ -32,12 +32,14 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 
 	/**
 	 * Prefix to use for assets and chunks
+	 *
 	 * @default '{appName}-'
 	 */
 	assetsPrefix?: string
 
 	/**
 	 * Inject all styles inside the javascript bundle instead of emitting a .css file
+	 *
 	 * @default false
 	 */
 	inlineCSS?: boolean | VitePluginInjectCSSOptions
@@ -54,6 +56,7 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	 * Whether to empty the 'js' directory
 	 * Pass `false` to disable clearing the directory,
 	 * it is also possible to pass options to the plugin.
+	 *
 	 * @default true
 	 */
 	emptyOutputDirectory?: boolean | EmptyJSDirPluginOptions
