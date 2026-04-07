@@ -13,9 +13,7 @@ const createConfig = async (
 	mode: 'development' | 'production' = 'production',
 	options?: BaseOptions,
 ) => await resolveConfig(
-	await createBaseConfig(
-		options,
-	)({ command, mode, isSsrBuild: false }),
+	await createBaseConfig(options)({ command, mode, isSsrBuild: false }),
 	command,
 )
 

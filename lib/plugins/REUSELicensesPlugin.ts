@@ -238,11 +238,9 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 				}
 
 				// Get all package license data of the modules
-				const allPackages = (await Promise.all(
-					[...modules.values()]
-						.map(sanitizeName)
-						.map(findPackage),
-				)).filter(Boolean)
+				const allPackages = (await Promise.all([...modules.values()]
+					.map(sanitizeName)
+					.map(findPackage))).filter(Boolean)
 
 				// Remove duplicates by serialized package license data
 				const packages = [...new Map(allPackages.map((item) => [JSON.stringify(item), item])).values()]

@@ -119,41 +119,43 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 			plugins.at(-1).enforce = 'post'
 		}
 
-		return mergeConfig(defineConfig({
-			plugins: [
+		return mergeConfig(
+			defineConfig({
+				plugins: [
 				// Fix build in watch mode with commonjs files
-				RemoveEnsureWatchPlugin,
-				// Add vue 3 support
-				vue({
-					isProduction: !isDev,
-					style: {
-						trim: true,
-					},
-				}),
-				// Add custom plugins
-				...plugins,
-				// Remove unneeded whitespace
-				options?.minify ? minifyPlugin() : undefined,
-			],
-			esbuild: {
-				legalComments: 'inline',
-				target: browserslistToEsbuild(),
-				banner: options.thirdPartyLicense ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
-			},
-			build: {
-				minify: !!options.minify,
-				cssTarget: browserslistToEsbuild(),
-				sourcemap: true,
-				target: browserslistToEsbuild(),
-				// fix watch mode if the output is within the input (base directory)
-				rollupOptions: {
-					watch: {
-						allowInputInsideOutputPath: true,
+					RemoveEnsureWatchPlugin,
+					// Add vue 3 support
+					vue({
+						isProduction: !isDev,
+						style: {
+							trim: true,
+						},
+					}),
+					// Add custom plugins
+					...plugins,
+					// Remove unneeded whitespace
+					options?.minify ? minifyPlugin() : undefined,
+				],
+				esbuild: {
+					legalComments: 'inline',
+					target: browserslistToEsbuild(),
+					banner: options.thirdPartyLicense ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
+				},
+				build: {
+					minify: !!options.minify,
+					cssTarget: browserslistToEsbuild(),
+					sourcemap: true,
+					target: browserslistToEsbuild(),
+					// fix watch mode if the output is within the input (base directory)
+					rollupOptions: {
+						watch: {
+							allowInputInsideOutputPath: true,
+						},
 					},
 				},
-			},
-		}),
-		// Add overrides from user config
-		userConfig)
+			}),
+			// Add overrides from user config
+			userConfig,
+		)
 	}
 }
