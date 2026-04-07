@@ -5,7 +5,8 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { BaseOptions, createBaseConfig } from '../lib/baseConfig.ts'
+import type { BaseOptions } from '../lib/baseConfig.ts'
+import { createBaseConfig } from '../lib/baseConfig.ts'
 import { resolveConfig } from 'vite'
 
 async function createConfig(command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: BaseOptions) {
