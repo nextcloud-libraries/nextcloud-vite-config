@@ -62,7 +62,7 @@ export interface LibraryOptions extends BaseOptions {
  *
  * @param entries Entry points of your app
  * @param options Options to use
- * @return {UserConfigFn} The vite config
+ * @return The vite config
  */
 export function createLibConfig(entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfigFn {
 	// Add default values for options

@@ -9,8 +9,7 @@ import { join, resolve, sep } from 'node:path'
 /**
  * Check if a given path exists and is a directory
  *
- * @param {string} filePath The path
- * @return {boolean}
+ * @param filePath - The path
  */
 function isDirectory(filePath: string): boolean {
 	const stats = lstatSync(filePath, { throwIfNoEntry: false })
@@ -20,8 +19,7 @@ function isDirectory(filePath: string): boolean {
 /**
  * Check if a given path exists and is a directory
  *
- * @param {string} filePath The path
- * @return {boolean}
+ * @param filePath - The path
  */
 function isFile(filePath: string): boolean {
 	const stats = lstatSync(filePath, { throwIfNoEntry: false })
@@ -31,10 +29,10 @@ function isFile(filePath: string): boolean {
 /**
  * Find the path of nearest `appinfo/info.xml` relative to given path
  *
- * @param {string} currentPath The path to check for appinfo
- * @return {string|undefined} Either the full path including the `info.xml` part or `undefined` if no found
+ * @param currentPath - The path to check for appinfo
+ * @return Either the full path including the `info.xml` part or `undefined` if no found
  */
-export function findAppinfo(currentPath: string): string | null {
+export function findAppinfo(currentPath: string): string | undefined {
 	while (currentPath && currentPath !== sep) {
 		const appinfoPath = join(currentPath, 'appinfo')
 		if (isDirectory(appinfoPath) && isFile(join(appinfoPath, 'info.xml'))) {
