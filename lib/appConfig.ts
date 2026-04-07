@@ -40,7 +40,7 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	 * Inject all styles inside the javascript bundle instead of emitting a .css file
 	 * @default false
 	 */
-	inlineCSS?: boolean | VitePluginInjectCSSOptions,
+	inlineCSS?: boolean | VitePluginInjectCSSOptions
 
 	/**
 	 * When not using inline css and using `cssCodeSplit` this option allows to create
