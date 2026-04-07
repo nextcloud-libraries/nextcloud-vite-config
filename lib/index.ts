@@ -5,7 +5,7 @@
  */
 
 export type { BaseOptions } from './baseConfig.js'
-export type { AppOptions } from './appConfig'
+export type { AppOptions } from './appConfig.ts'
 export type { LibraryOptions } from './libConfig.js'
 
 export { createBaseConfig } from './baseConfig.js'
