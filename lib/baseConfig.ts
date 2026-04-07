@@ -5,16 +5,15 @@
  */
 
 import type { CoreJSPluginOptions } from 'rollup-plugin-corejs'
-import type { Rollup, UserConfigExport, UserConfigFn } from 'vite'
+import type { Plugin, Rollup, UserConfig, UserConfigExport, UserConfigFn } from 'vite'
 
 import replace from '@rollup/plugin-replace'
 import vue from '@vitejs/plugin-vue'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { readFileSync } from 'node:fs'
 import { corejsPlugin } from 'rollup-plugin-corejs'
-import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify'
 import license from 'rollup-plugin-license'
-import { defineConfig, mergeConfig } from 'vite'
+import { mergeConfig } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
 
@@ -85,25 +84,25 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 		// Make sure we get a user config and not a promise or a user config function
 		const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
-		const plugins = []
+		const plugins: Plugin[] = []
 		// Add polyfills for node packages
 		if (options?.nodePolyfills) {
 			plugins.push(nodePolyfills(typeof options.nodePolyfills === 'object' ? options.nodePolyfills : {}))
 		}
 
 		// Replace global variables, built-in `define` option does not work (replaces also strings in 'node_modules/`)
-		if (Object.keys(options.replace).length > 0) {
+		if (Object.keys(options.replace ?? {}).length > 0) {
 			plugins.push(replace({
 				preventAssignment: true,
 				delimiters: ['\\b', '\\b'],
 				include: ['src/**/*', 'lib/**/*', 'node_modules/@nextcloud/vue/**/*'],
 				values: options.replace,
-			}))
+			}) as unknown as Plugin)
 		}
 
 		// Add required polyfills, by default browserslist config is used
 		if (options.coreJS !== undefined) {
-			plugins.push(corejsPlugin(options.coreJS))
+			plugins.push(corejsPlugin(options.coreJS) as unknown as Plugin)
 		}
 
 		// Add license header with all dependencies
@@ -117,13 +116,13 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 						template: licenseTemplate,
 					},
 				},
-			}))
+			}) as unknown as Plugin)
 			// Enforce the license is generated at the end so all dependencies are included
-			plugins.at(-1).enforce = 'post'
+			plugins.at(-1)!.enforce = 'post'
 		}
 
 		return mergeConfig(
-			defineConfig({
+			{
 				plugins: [
 				// Fix build in watch mode with commonjs files
 					RemoveEnsureWatchPlugin,
@@ -136,8 +135,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 					}),
 					// Add custom plugins
 					...plugins,
-					// Remove unneeded whitespace
-					options?.minify ? minifyPlugin() : undefined,
 				],
 				esbuild: {
 					legalComments: 'inline',
@@ -156,9 +153,9 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 						},
 					},
 				},
-			}),
+			},
 			// Add overrides from user config
-			userConfig,
+			userConfig as UserConfig,
 		)
 	}
 }
