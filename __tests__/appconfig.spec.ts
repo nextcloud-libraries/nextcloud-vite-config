@@ -1,11 +1,8 @@
-/**
- * SPDX-FileCopyrightText: 2023 Ferdinand Thiessen <opensource@fthiessen.de>
- *
+/*!
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-// ok as this is just for tests
-// eslint-disable-next-line n/no-extraneous-import
 import type { RollupOutput, OutputOptions, OutputChunk } from 'rollup'
 import { build, resolveConfig } from 'vite'
 import { describe, it, expect } from 'vitest'
