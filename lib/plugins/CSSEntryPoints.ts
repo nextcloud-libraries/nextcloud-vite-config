@@ -113,13 +113,13 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 					typeof options.assetFileNames === 'string'
 						? options.assetFileNames
 						: options.assetFileNames({
-							type: 'asset',
-							source: '',
-							name: 'name.css',
-							names: ['name.css'],
-							originalFileName: null,
-							originalFileNames: [],
-						}),
+								type: 'asset',
+								source: '',
+								name: 'name.css',
+								names: ['name.css'],
+								originalFileName: null,
+								originalFileNames: [],
+							}),
 				)
 
 				this.emitFile({

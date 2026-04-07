@@ -13,11 +13,11 @@ const createConfig = async (
 	mode: 'development' | 'production' = 'production',
 	options?: BaseOptions,
 ) => await resolveConfig(
-		await createBaseConfig(
-			options,
-		)({ command, mode, isSsrBuild: false }),
-		command,
-	)
+	await createBaseConfig(
+		options,
+	)({ command, mode, isSsrBuild: false }),
+	command,
+)
 
 describe('baseconfig', () => {
 	it('Correctly set minify option to false', async () => {
