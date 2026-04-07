@@ -87,7 +87,7 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
  *
  * @param entries Entry points of your app
  * @param options App related options for the vite config
- * @return {UserConfigFn} The vite config
+ * @return The vite config
  * @example
  * export default createAppConfig({
  *   main: path.resolve(path.join('src', 'main.js')),
