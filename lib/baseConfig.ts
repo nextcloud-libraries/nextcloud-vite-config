@@ -47,11 +47,10 @@ export interface BaseOptions {
 	coreJS?: CoreJSPluginOptions
 	/**
 	 * Location of license summary file of third party dependencies
-	 * Pass `false` to disable generating a license file.
 	 *
-	 * @default 'dist/vendor.LICENSE.txt'
+	 * @default false
 	 */
-	thirdPartyLicense?: false | string
+	thirdPartyLicense?: string
 	/**
 	 * Customize the asset file names.
 	 * Similar to `output.assetFileNames` in rollup config,
@@ -105,23 +104,24 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 		}
 
 		// Add license header with all dependencies
-		if (options.thirdPartyLicense !== false) {
+		if (options.thirdPartyLicense && typeof options.thirdPartyLicense === 'string') {
 			const licenseTemplate = readFileSync(new URL('../banner-template.txt', import.meta.url), 'utf-8')
 
 			plugins.push(license({
 				thirdParty: {
 					output: {
-						file: options.thirdPartyLicense || 'dist/vendor.LICENSE.txt',
+						file: options.thirdPartyLicense,
 						template: licenseTemplate,
 					},
 				},
 			}))
 			// Enforce the license is generated at the end so all dependencies are included
-			plugins.at(-1).enforce = 'post'
+			plugins.at(-1)!.enforce = 'post'
 		}
 
-		return mergeConfig(defineConfig({
-			plugins: [
+		return mergeConfig(
+			defineConfig({
+				plugins: [
 				// Fix build in watch mode with commonjs files
 				RemoveEnsureWatchPlugin,
 				// Add vue2 support
@@ -139,7 +139,7 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 			esbuild: {
 				legalComments: 'inline',
 				target: browserslistToEsbuild(),
-				banner: options.thirdPartyLicense ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
+				banner: (options.thirdPartyLicense && typeof options.thirdPartyLicense === 'string') ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
 			},
 			build: {
 				minify: !!options.minify,
@@ -152,9 +152,9 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 						allowInputInsideOutputPath: true,
 					},
 				},
-			},
-		}),
-		// Add overrides from user config
-		userConfig)
+			}),
+			// Add overrides from user config
+			userConfig,
+		)
 	}
 }

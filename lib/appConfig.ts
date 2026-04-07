@@ -68,17 +68,18 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 
 	/**
 	 * Location of license summary file of third party dependencies
-	 * Pass `false` to disable generating a license file.
 	 *
-	 * @default 'js/vendor.LICENSE.txt'
+	 * @default undefined (no BOM generated)
 	 */
-	thirdPartyLicense?: false | string
+	thirdPartyLicense?: string
 
 	/**
 	 * Extract license information from built assets into `.license` files
-	 * This is needed to be REUSE complient
+	 * This is needed to be REUSE complient.
+	 *
+	 * @default {}
 	 */
-	extractLicenseInformation?: true | REUSELicensesPluginOptions
+	extractLicenseInformation?: REUSELicensesPluginOptions | false
 }
 
 /**
@@ -100,7 +101,6 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 		nodePolyfills: {
 			protocolImports: true,
 		},
-		thirdPartyLicense: options.thirdPartyLicense === undefined ? 'js/vendor.LICENSE.txt' : options.thirdPartyLicense,
 		...options,
 	}
 
@@ -153,24 +153,18 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 				plugins.push(CSSEntryPointsPlugin({ createEmptyEntryPoints: options.createEmptyCSSEntryPoints }))
 			}
 
-			if (options.extractLicenseInformation && env.mode !== 'development') {
-				plugins.push(REUSELicensesPlugin(
-					typeof options.extractLicenseInformation === 'object'
-						? options.extractLicenseInformation
-						: {},
-				))
+			if (options.extractLicenseInformation !== false && env.mode !== 'development') {
+				plugins.push(REUSELicensesPlugin(typeof options.extractLicenseInformation === 'object'
+					? options.extractLicenseInformation
+					: {}))
 			}
 
 			// defaults to true so only not adding if explicitly set to false
 			if (options?.emptyOutputDirectory !== false) {
 				// Ensure `js/` is empty as we can not use the build in option (see below)
-				plugins.push(
-					EmptyJSDirPlugin(
-						typeof options.emptyOutputDirectory === 'object'
-							? options.emptyOutputDirectory
-							: undefined,
-					),
-				)
+				plugins.push(EmptyJSDirPlugin(typeof options.emptyOutputDirectory === 'object'
+					? options.emptyOutputDirectory
+					: undefined))
 			}
 
 			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
