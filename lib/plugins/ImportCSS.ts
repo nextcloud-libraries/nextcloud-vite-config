@@ -5,6 +5,7 @@
  */
 
 import type { Plugin } from 'vite'
+
 import MagicString from 'magic-string'
 import { dirname, relative } from 'node:path'
 

@@ -6,21 +6,20 @@
 import type { Plugin, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 import type { EmptyJSDirPluginOptions } from './plugins/EmptyJSDir.js'
+import type { REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
 
+import replace from '@rollup/plugin-replace'
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 import { cwd } from 'node:process'
 import { mergeConfig } from 'vite'
 import * as vite from 'vite'
-import { createBaseConfig } from './baseConfig.js'
-import { findAppinfo } from './utils/appinfo.js'
-
-import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
-import replace from '@rollup/plugin-replace'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
+import { createBaseConfig } from './baseConfig.js'
 import { CSSEntryPointsPlugin } from './plugins/CSSEntryPoints.js'
-import type { REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
+import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
 import { REUSELicensesPlugin } from './plugins/REUSELicensesPlugin.js'
+import { findAppinfo } from './utils/appinfo.js'
 
 type VitePluginInjectCSSOptions = Parameters<typeof injectCSSPlugin>[0]
 

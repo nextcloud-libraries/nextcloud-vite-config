@@ -5,19 +5,18 @@
  */
 
 import type { CoreJSPluginOptions } from 'rollup-plugin-corejs'
-import type { UserConfigExport, UserConfigFn, Rollup } from 'vite'
-
-import { readFileSync } from 'node:fs'
-import { corejsPlugin } from 'rollup-plugin-corejs'
-import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import { defineConfig, mergeConfig } from 'vite'
-import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
+import type { Rollup, UserConfigExport, UserConfigFn } from 'vite'
 
 import replace from '@rollup/plugin-replace'
 import vue from '@vitejs/plugin-vue'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
+import { readFileSync } from 'node:fs'
+import { corejsPlugin } from 'rollup-plugin-corejs'
+import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify'
 import license from 'rollup-plugin-license'
+import { defineConfig, mergeConfig } from 'vite'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
 
 export type NodePolyfillsOptions = Parameters<typeof nodePolyfills>[0]
 
