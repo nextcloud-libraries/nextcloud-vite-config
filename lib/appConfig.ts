@@ -70,13 +70,6 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	nodePolyfills?: boolean | NodePolyfillsOptions
 
 	/**
-	 * Location of license summary file of third party dependencies
-	 *
-	 * @default undefined (no BOM generated)
-	 */
-	thirdPartyLicense?: string
-
-	/**
 	 * Extract license information from built assets into `.license` files
 	 * This is needed to be REUSE complient.
 	 *

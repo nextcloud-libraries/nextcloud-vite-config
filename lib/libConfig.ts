@@ -5,7 +5,7 @@
  */
 
 import type { ExternalsOptions } from 'rollup-plugin-node-externals'
-import type { LibraryFormats, UserConfig, UserConfigFn, Rolldown, Plugin, Rollup } from 'vite'
+import type { LibraryFormats, Plugin, Rolldown, Rollup, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { nodeExternals } from 'rollup-plugin-node-externals'
@@ -126,7 +126,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 			}
 
 			// Manually define output options for file extensions
-			const outputOptions: Rolldown.OutputOptions[] = options.libraryFormats!.map(format => {
+			const outputOptions: Rolldown.OutputOptions[] = options.libraryFormats!.map((format) => {
 				const extension = format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)
 				return {
 					format,
