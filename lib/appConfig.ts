@@ -112,8 +112,8 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 	const appinfo = findAppinfo(cwd())
 	if (appinfo) {
 		const content = String(readFileSync(appinfo))
-		const version = content.match(/<version>([^<]+)<\/version>/i)[1]
-		const id = content.match(/<id>([^<]+)<\/id>/i)[1]
+		const version = content.match(/<version>([^<]+)<\/version>/i)![1]
+		const id = content.match(/<id>([^<]+)<\/id>/i)![1]
 
 		if (version) {
 			appVersion = version
@@ -122,12 +122,12 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 			options.appName = id
 		}
 	} else {
-		appVersion = process.env.npm_package_version
+		appVersion = process.env.npm_package_version ?? '0.0.0'
 	}
 
 	if (!options.appName) {
 		console.warn('No app name configured, falling back to name from `package.json`')
-		options.appName = process.env.npm_package_name
+		options.appName = process.env.npm_package_name ?? 'unknown'
 	}
 
 	return createBaseConfig({
@@ -139,7 +139,7 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 
 			// This config is used to extend or override our base config
 			// Make sure we get a user config and not a promise or a user config function
-			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
+			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config) ?? {}
 
 			const plugins = [] as Plugin[]
 			// Inject all imported styles into the javascript bundle by creating dynamic styles on the document
@@ -171,8 +171,11 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 			}
 
 			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
-			if (env.command === 'serve') {
-				plugins.push(replace({
+			if (env.command === 'serve' && !vite.rolldownVersion) {
+				// Only needed for vite <= 7
+				const { default: replacePlugin } = await import('@rollup/plugin-replace')
+				// @ts-expect-error - types do not match with vite 8
+				plugins.push(replacePlugin({
 					delimiters: ['\\b', '\\b'],
 					include: ['src/**'],
 					preventAssignment: true,
@@ -221,7 +224,7 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 								}
 
 								const [name] = assetInfo.names
-								const extType = name.split('.').pop()
+								const extType = name.split('.').pop()!
 								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
