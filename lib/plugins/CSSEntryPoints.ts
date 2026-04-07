@@ -1,9 +1,9 @@
-/**
+/*!
+ * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2024 Ferdinand Thiessen <opensource@fthiessen.de>
  * SPDX-License-Identifier: MIT
  */
 
-// eslint-disable-next-line n/no-extraneous-import
 import type { OutputOptions, PreRenderedAsset } from 'rollup'
 import type { Plugin } from 'vite'
 
