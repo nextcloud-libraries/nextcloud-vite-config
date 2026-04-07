@@ -12,6 +12,7 @@ import { basename, dirname, extname, join, normalize } from 'path'
 interface CSSEntryPointsPluginOptions {
 	/**
 	 * Also create empty CSS entry points for JS entry points without styles
+	 *
 	 * @default false
 	 */
 	createEmptyEntryPoints?: boolean
@@ -35,6 +36,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 		config(config) {
 			/**
 			 * Create a wrapper function to rename non entry css assets
+			 *
 			 * @param config Original assets file name config
 			 */
 			function fixupAssetFileNames(config: Required<OutputOptions['assetFileNames']>) {

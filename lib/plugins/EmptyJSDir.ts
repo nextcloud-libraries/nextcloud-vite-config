@@ -12,6 +12,7 @@ import * as path from 'node:path'
 export interface EmptyJSDirPluginOptions {
 	/**
 	 * Additional directories to clear (e.g. 'css')
+	 *
 	 * @default []
 	 */
 	additionalDirectories?: string[]

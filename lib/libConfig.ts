@@ -19,6 +19,7 @@ type OutputOptions = BuildOptions['rollupOptions']['output']
 export interface LibraryOptions extends BaseOptions {
 	/**
 	 * Whether to minify the output
+	 *
 	 * @default false For libraries the code is not minified by default for better DX. Usually it is not needed: a library will be minified as a part of an app bundling.
 	 */
 	minify?: boolean
@@ -44,6 +45,7 @@ export interface LibraryOptions extends BaseOptions {
 
 	/**
 	 * Formats you like your library to be built
+	 *
 	 * @default ['es']
 	 */
 	libraryFormats?: LibraryFormats[]
