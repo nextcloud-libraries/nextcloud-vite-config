@@ -59,7 +59,7 @@ export interface BaseOptions {
 	 * @example Move CSS styles to `styles/style.css` instead of the default `css/[entrypoint-name].css`:
 	 *          (chunkInfo) => chunkInfo.names[0].endsWith('.css') ? 'styles/style.css' : undefined
 	 */
-	assetFileNames?: (chunkInfo: Rollup.PreRenderedAsset) => string | undefined,
+	assetFileNames?: (chunkInfo: Rollup.PreRenderedAsset) => string | undefined
 	/**
 	 * Vite config to override or extend the base config
 	 */
