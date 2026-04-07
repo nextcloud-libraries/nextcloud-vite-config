@@ -126,7 +126,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 			}
 
 			// Manually define output options for file extensions
-			const outputOptions: OutputOptions = options.libraryFormats.map(format => {
+			const outputOptions: OutputOptions = options.libraryFormats.map((format) => {
 				const extension = format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)
 				return {
 					format,
