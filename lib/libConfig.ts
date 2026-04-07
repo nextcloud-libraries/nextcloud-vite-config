@@ -5,7 +5,7 @@
  */
 
 import type { ExternalsOptions } from 'rollup-plugin-node-externals'
-import type { BuildOptions, LibraryFormats, Plugin, Rollup, UserConfig, UserConfigFn } from 'vite'
+import type { LibraryFormats, UserConfig, UserConfigFn, Rolldown, Plugin, Rollup } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { nodeExternals } from 'rollup-plugin-node-externals'
@@ -13,8 +13,6 @@ import { mergeConfig } from 'vite'
 import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
 import { createBaseConfig } from './baseConfig.js'
 import { ImportCSSPlugin } from './plugins/ImportCSS.js'
-
-type OutputOptions = BuildOptions['rollupOptions']['output']
 
 export interface LibraryOptions extends BaseOptions {
 	/**
@@ -120,7 +118,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 				}
 
 				const [name] = assetInfo.names
-				const extType = name.split('.').pop()
+				const extType = name.split('.').pop()!
 				if (!options.inlineCSS && /css/i.test(extType)) {
 					return '[name].css'
 				}
@@ -128,7 +126,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 			}
 
 			// Manually define output options for file extensions
-			const outputOptions: OutputOptions = options.libraryFormats.map((format) => {
+			const outputOptions: Rolldown.OutputOptions[] = options.libraryFormats!.map(format => {
 				const extension = format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)
 				return {
 					format,
@@ -157,7 +155,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 						output: outputOptions,
 					},
 				},
-			} as UserConfig, userConfig)
+			} as UserConfig, userConfig as UserConfig)
 		},
 	})
 }
