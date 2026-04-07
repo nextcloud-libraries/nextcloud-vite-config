@@ -77,11 +77,11 @@ describe('library config', () => {
 		})
 	})
 
-	const createConfig = async (
+	async function createConfig(
 		command: 'build' | 'serve' = 'build',
 		mode: 'development' | 'production' = 'production',
 		options?: LibraryOptions,
-	) => {
+	) {
 		return await resolveConfig(
 			await createLibConfig(
 				{
