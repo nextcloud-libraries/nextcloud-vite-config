@@ -1,17 +1,18 @@
-/**
+/*!
+ * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2024 Ferdinand Thiessen <opensource@fthiessen.de>
  * SPDX-License-Identifier: MIT
  */
 
-// eslint-disable-next-line n/no-extraneous-import
 import type { OutputOptions, PreRenderedAsset } from 'rollup'
 import type { Plugin } from 'vite'
 
-import { basename, dirname, join, normalize, extname } from 'path'
+import { basename, dirname, extname, join, normalize } from 'path'
 
 interface CSSEntryPointsPluginOptions {
 	/**
 	 * Also create empty CSS entry points for JS entry points without styles
+	 *
 	 * @default false
 	 */
 	createEmptyEntryPoints?: boolean
@@ -35,6 +36,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 		config(config) {
 			/**
 			 * Create a wrapper function to rename non entry css assets
+			 *
 			 * @param config Original assets file name config
 			 */
 			function fixupAssetFileNames(config: Required<OutputOptions['assetFileNames']>) {
@@ -109,18 +111,16 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 				const cssName = `${entryName}.css`
 
 				// Keep original path
-				const path = dirname(
-					typeof options.assetFileNames === 'string'
-						? options.assetFileNames
-						: options.assetFileNames({
+				const path = dirname(typeof options.assetFileNames === 'string'
+					? options.assetFileNames
+					: options.assetFileNames({
 							type: 'asset',
 							source: '',
 							name: 'name.css',
 							names: ['name.css'],
 							originalFileName: null,
 							originalFileNames: [],
-						}),
-				)
+						}))
 
 				this.emitFile({
 					type: 'asset',
