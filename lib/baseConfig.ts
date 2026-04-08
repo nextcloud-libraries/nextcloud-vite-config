@@ -125,34 +125,35 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 		return mergeConfig(
 			defineConfig({
 				plugins: [
-				// Fix build in watch mode with commonjs files
-				RemoveEnsureWatchPlugin,
-				// Add vue2 support
-				vue2({
-					isProduction: !isDev,
-					style: {
-						trim: true,
-					},
-				}),
-				// Add custom plugins
-				...plugins,
-				// Remove unneeded whitespace
-				options?.minify ? minifyPlugin() : undefined,
-			],
-			esbuild: {
-				legalComments: 'inline',
-				target: browserslistToEsbuild(),
-				banner: (options.thirdPartyLicense && typeof options.thirdPartyLicense === 'string') ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
-			},
-			build: {
-				minify: !!options.minify,
-				cssTarget: browserslistToEsbuild(),
-				sourcemap: true,
-				target: browserslistToEsbuild(),
-				// fix watch mode if the output is within the input (base directory)
-				rollupOptions: {
-					watch: {
-						allowInputInsideOutputPath: true,
+					// Fix build in watch mode with commonjs files
+					RemoveEnsureWatchPlugin,
+					// Add vue2 support
+					vue2({
+						isProduction: !isDev,
+						style: {
+							trim: true,
+						},
+					}),
+					// Add custom plugins
+					...plugins,
+					// Remove unneeded whitespace
+					options?.minify ? minifyPlugin() : undefined,
+				],
+				esbuild: {
+					legalComments: 'inline',
+					target: browserslistToEsbuild(),
+					banner: (options.thirdPartyLicense && typeof options.thirdPartyLicense === 'string') ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
+				},
+				build: {
+					minify: !!options.minify,
+					cssTarget: browserslistToEsbuild(),
+					sourcemap: true,
+					target: browserslistToEsbuild(),
+					// fix watch mode if the output is within the input (base directory)
+					rollupOptions: {
+						watch: {
+							allowInputInsideOutputPath: true,
+						},
 					},
 				},
 			}),
