@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import type { OutputOptions } from 'rolldown'
 import type { Plugin, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 import type { EmptyJSDirPluginOptions } from './plugins/EmptyJSDir.js'
@@ -195,7 +196,7 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 					// Output dir is the project root to allow main style to be generated within `/css`
 					outDir: '',
 					emptyOutDir: false, // ensure project root is NOT emptied!
-					rollupOptions: {
+					rolldownOptions: {
 						input: {
 							...entries,
 						},
@@ -234,15 +235,11 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 							},
 							...(
 								options?.coreJS
-									? (
-											'rolldownVite' in vite
-												? {
-														advancedChunks: {
-															groups: [{ name: 'polyfill', test: /core-js/ }],
-														},
-													}
-												: { polyfill: ['core-js'] }
-										)
+									? {
+											codeSplitting: {
+												groups: [{ name: 'polyfill', test: /core-js/ }],
+											},
+										} as Partial<OutputOptions>
 									: {}
 							),
 						},
