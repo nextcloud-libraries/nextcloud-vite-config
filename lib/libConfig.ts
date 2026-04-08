@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import type { Options as DTSOptions } from 'rolldown-plugin-dts'
 import type { ExternalsOptions } from 'rollup-plugin-node-externals'
 import type { LibraryFormats, Plugin, Rolldown, Rollup, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
+import { dts as dtsPlugin } from 'rolldown-plugin-dts'
 import { nodeExternals } from 'rollup-plugin-node-externals'
 import { mergeConfig } from 'vite'
-import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
 import { createBaseConfig } from './baseConfig.js'
 import { ImportCSSPlugin } from './plugins/ImportCSS.js'
 
@@ -101,7 +102,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 
 			// Handle the DTS plugin
 			if (options?.DTSPluginOptions !== false) {
-				plugins.push(DTSPlugin(options.DTSPluginOptions))
+				plugins.push(...(dtsPlugin(options.DTSPluginOptions)) as Plugin[])
 			}
 
 			// This config is used to extend or override our base config
