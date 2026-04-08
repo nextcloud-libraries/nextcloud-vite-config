@@ -1,6 +1,5 @@
 /**
- * SPDX-FileCopyrightText: 2023 Ferdinand Thiessen <opensource@fthiessen.de>
- *
+ * SPDX-FileCopyrightText: Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
@@ -8,9 +7,9 @@ import type { ExternalsOptions } from 'rollup-plugin-node-externals'
 import type { LibraryFormats, Plugin, Rolldown, Rollup, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
+import { dts as dtsPlugin } from 'rolldown-plugin-dts'
 import { nodeExternals } from 'rollup-plugin-node-externals'
 import { mergeConfig } from 'vite'
-import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
 import { createBaseConfig } from './baseConfig.js'
 import { ImportCSSPlugin } from './plugins/ImportCSS.js'
 
@@ -39,7 +38,10 @@ export interface LibraryOptions extends BaseOptions {
 	 * This plugin allows to create .d.ts files for your library including the .vue files
 	 * Pass `false` to disable the plugin
 	 */
-	DTSPluginOptions?: DTSOptions | false
+	DtsPluginOptions?: false | {
+		/** If set to false no Vue types will be generated */
+		vue?: boolean
+	}
 
 	/**
 	 * Formats you like your library to be built
@@ -100,8 +102,12 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 			}
 
 			// Handle the DTS plugin
-			if (options?.DTSPluginOptions !== false) {
-				plugins.push(DTSPlugin(options.DTSPluginOptions))
+			if (options?.DtsPluginOptions !== false) {
+				plugins.push(...(dtsPlugin({
+					vue: options.DtsPluginOptions?.vue ?? true,
+					parallel: options.DtsPluginOptions?.vue ?? true,
+					oxc: options.DtsPluginOptions?.vue === false, // Oxc is faster but does not support .vue files
+				})) as Plugin[])
 			}
 
 			// This config is used to extend or override our base config
@@ -141,6 +147,13 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 
 			return mergeConfig({
 				plugins,
+				...(options.DtsPluginOptions === false
+					? {}
+					: {
+							oxc: {
+								exclude: [/\.js$/, /\.d\.[cm]?ts$/],
+							},
+						}),
 				build: {
 					lib: {
 						entry: {
