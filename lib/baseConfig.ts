@@ -7,9 +7,9 @@
 import type { CoreJSPluginOptions } from 'rollup-plugin-corejs'
 import type { Plugin, Rollup, UserConfig, UserConfigExport, UserConfigFn } from 'vite'
 
-import replace from '@rollup/plugin-replace'
 import vue from '@vitejs/plugin-vue'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
+import { replacePlugin } from 'rolldown/plugins'
 import { corejsPlugin } from 'rollup-plugin-corejs'
 import { mergeConfig } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
@@ -83,11 +83,9 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 
 		// Replace global variables, built-in `define` option does not work (replaces also strings in 'node_modules/`)
 		if (Object.keys(options.replace ?? {}).length > 0) {
-			plugins.push(replace({
+			plugins.push(replacePlugin(options.replace, {
 				preventAssignment: true,
 				delimiters: ['\\b', '\\b'],
-				include: ['src/**/*', 'lib/**/*', 'node_modules/@nextcloud/vue/**/*'],
-				values: options.replace,
 			}) as unknown as Plugin)
 		}
 
