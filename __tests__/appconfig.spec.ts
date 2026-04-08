@@ -1,18 +1,17 @@
-/**
- * SPDX-FileCopyrightText: 2023 Ferdinand Thiessen <opensource@fthiessen.de>
- *
+/*!
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-// ok as this is just for tests
-// eslint-disable-next-line n/no-extraneous-import
-import type { RollupOutput, OutputOptions, OutputChunk } from 'rollup'
-import { build, resolveConfig } from 'vite'
-import { describe, it, expect } from 'vitest'
-import { AppOptions, createAppConfig } from '../lib/appConfig'
-import { fileURLToPath } from 'url'
+import type { OutputChunk, OutputOptions, RollupOutput } from 'rollup'
+import type { AppOptions } from '../lib/appConfig.ts'
+
 import { resolve } from 'path'
+import { fileURLToPath } from 'url'
+import { build, resolveConfig } from 'vite'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import { describe, expect, it } from 'vitest'
+import { createAppConfig } from '../lib/appConfig.ts'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -31,7 +30,7 @@ describe('app config', () => {
 		const root = resolve(__dirname, '../__fixtures__/app_process_env')
 
 		const resolved = await createAppConfig({
-			main: resolve(root, 'main.js'),
+			main: resolve(root, 'main.cjs'),
 		})({ command: 'build', mode: 'production' })
 
 		const result = await build({
@@ -127,7 +126,9 @@ describe('app config', () => {
 		})
 	})
 
-	const createConfig = async (command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: AppOptions) => await resolveConfig(await createAppConfig({
-		main: 'src/main.js',
-	}, options)({ command, mode, isSsrBuild: false }), command)
+	async function createConfig(command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: AppOptions) {
+		return await resolveConfig(await createAppConfig({
+			main: 'src/main.js',
+		}, options)({ command, mode, isSsrBuild: false }), command)
+	}
 })

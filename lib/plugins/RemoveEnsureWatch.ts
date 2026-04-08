@@ -14,6 +14,6 @@ export const RemoveEnsureWatchPlugin = {
 	name: 'remove-ensure-watch-plugin',
 	enforce: 'post',
 	configResolved: (config) => {
-		config.plugins = config.plugins.filter(p => p?.name !== 'vite:ensure-watch')
+		config.plugins = config.plugins.filter((p) => p?.name !== 'vite:ensure-watch')
 	},
 }

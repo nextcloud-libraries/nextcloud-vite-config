@@ -1,16 +1,15 @@
 /**
+ * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2024 Ferdinand Thiessen <opensource@fthiessen.de>
- *
  * SPDX-License-Identifier: MIT
  */
 
-// eslint-disable-next-line n/no-extraneous-import
-import type { RollupOutput, OutputAsset } from 'rollup'
+import type { OutputAsset, RollupOutput } from 'rollup'
 
-import { build } from 'vite'
-import { describe, it, expect } from 'vitest'
-import { CSSEntryPointsPlugin } from '../lib/plugins/CSSEntryPoints'
 import { resolve } from 'path'
+import { build } from 'vite'
+import { describe, expect, it } from 'vitest'
+import { CSSEntryPointsPlugin } from '../lib/plugins/CSSEntryPoints.ts'
 
 const root = resolve(import.meta.dirname, '../__fixtures__/css-entry-points')
 

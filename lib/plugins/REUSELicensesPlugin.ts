@@ -22,6 +22,7 @@ interface PackageJSON {
 export interface REUSELicensesPluginOptions {
 	/**
 	 * Optional mapping of package names and licenses to allow overwriting when packages do not set the license in the package.json correctly
+	 *
 	 * @example
 	 * ```js
 	 * {
@@ -33,11 +34,13 @@ export interface REUSELicensesPluginOptions {
 	overwriteLicenses?: Record<string, string>
 	/**
 	 * Enable license validation (checking that the license is a valid SPDX identifier)
+	 *
 	 * @default false
 	 */
 	validateLicenses?: boolean
 	/**
 	 * Enable `.license` files also for sourcemap files
+	 *
 	 * @default false
 	 */
 	includeSourceMaps?: boolean
@@ -45,10 +48,10 @@ export interface REUSELicensesPluginOptions {
 
 /**
  * Plugin to extract `.license` files for every built chunk
+ *
  * @param options Options to pass to the plugin
  */
 export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): Plugin {
-
 	options = {
 		overwriteLicenses: {},
 		...options,
@@ -60,6 +63,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 
 	/**
 	 * Implementation of `verifyLicense`
+	 *
 	 * @param license The license to verify
 	 * @param name The package name
 	 * @param version The package version
@@ -77,7 +81,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 		} else if (options.validateLicenses) {
 			try {
 				parseExpression(license)
-			} catch (e) {
+			} catch {
 				onError(`Invalid license information "${license}" for package ${name} @ ${version}`)
 			}
 		}
@@ -87,6 +91,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 	/**
 	 * Verify a license of a specific package
 	 * This will also handle overwriting licenses
+	 *
 	 * @param license The license to verify
 	 * @param name Package name
 	 * @param version Version
@@ -102,6 +107,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 
 	/**
 	 * Get the needed fields of the package JSON data
+	 *
 	 * @param data package JSON data
 	 */
 	function neededFields(data: PackageJSON) {
@@ -133,6 +139,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 
 	/**
 	 * Find the nearest package.json
+	 *
 	 * @param dir Directory to start checking
 	 */
 	async function findPackage(dir: string) {
@@ -149,7 +156,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 		const packageJson = `${dir}/package.json`
 		try {
 			await access(packageJson, constants.F_OK)
-		} catch (e) {
+		} catch {
 			// There is no package.json in this directory so check the one below
 			packageCache.set(dir, await findPackage(dirname(dir)))
 			return packageCache.get(dir)
@@ -167,6 +174,7 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 
 	/**
 	 * Get the module path from a module name (handle internal vite modules)
+	 *
 	 * @param name Raw module name
 	 */
 	function sanitizeName(name: string): string {
@@ -239,11 +247,9 @@ export function REUSELicensesPlugin(options: REUSELicensesPluginOptions = {}): P
 				}
 
 				// Get all package license data of the modules
-				const allPackages = (await Promise.all(
-					[...modules.values()]
-						.map(sanitizeName)
-						.map(findPackage),
-				)).filter(Boolean)
+				const allPackages = (await Promise.all([...modules.values()]
+					.map(sanitizeName)
+					.map(findPackage))).filter(Boolean)
 
 				// Remove duplicates by serialized package license data
 				const packages = [...new Map(allPackages.map((item) => [JSON.stringify(item), item])).values()]

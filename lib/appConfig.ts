@@ -6,20 +6,20 @@
 import type { Plugin, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 import type { EmptyJSDirPluginOptions } from './plugins/EmptyJSDir.js'
+import type { REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
 
+import replace from '@rollup/plugin-replace'
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 import { cwd } from 'node:process'
 import { mergeConfig } from 'vite'
 import * as vite from 'vite'
-import { createBaseConfig } from './baseConfig.js'
-import { findAppinfo } from './utils/appinfo.js'
-
-import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
-import replace from '@rollup/plugin-replace'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
+import { createBaseConfig } from './baseConfig.js'
 import { CSSEntryPointsPlugin } from './plugins/CSSEntryPoints.js'
-import { REUSELicensesPlugin, REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
+import EmptyJSDirPlugin from './plugins/EmptyJSDir.js'
+import { REUSELicensesPlugin } from './plugins/REUSELicensesPlugin.js'
+import { findAppinfo } from './utils/appinfo.js'
 
 type VitePluginInjectCSSOptions = Parameters<typeof injectCSSPlugin>[0]
 
@@ -32,15 +32,17 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 
 	/**
 	 * Prefix to use for assets and chunks
+	 *
 	 * @default '{appName}-'
 	 */
 	assetsPrefix?: string
 
 	/**
 	 * Inject all styles inside the javascript bundle instead of emitting a .css file
+	 *
 	 * @default false
 	 */
-	inlineCSS?: boolean | VitePluginInjectCSSOptions,
+	inlineCSS?: boolean | VitePluginInjectCSSOptions
 
 	/**
 	 * When not using inline css and using `cssCodeSplit` this option allows to create
@@ -54,6 +56,7 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	 * Whether to empty the 'js' directory
 	 * Pass `false` to disable clearing the directory,
 	 * it is also possible to pass options to the plugin.
+	 *
 	 * @default true
 	 */
 	emptyOutputDirectory?: boolean | EmptyJSDirPluginOptions
@@ -68,17 +71,18 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 
 	/**
 	 * Location of license summary file of third party dependencies
-	 * Pass `false` to disable generating a license file.
 	 *
-	 * @default 'js/vendor.LICENSE.txt'
+	 * @default undefined (no BOM generated)
 	 */
-	thirdPartyLicense?: false | string
+	thirdPartyLicense?: string
 
 	/**
 	 * Extract license information from built assets into `.license` files
-	 * This is needed to be REUSE complient
+	 * This is needed to be REUSE complient.
+	 *
+	 * @default {}
 	 */
-	extractLicenseInformation?: true | REUSELicensesPluginOptions
+	extractLicenseInformation?: REUSELicensesPluginOptions | false
 }
 
 /**
@@ -86,21 +90,20 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
  *
  * @param entries Entry points of your app
  * @param options App related options for the vite config
- * @return {UserConfigFn} The vite config
+ * @return The vite config
  * @example
  * export default createAppConfig({
  *   main: path.resolve(path.join('src', 'main.js')),
  *   settings: path.resolve(path.join('src', 'settings.js')),
  * })
  */
-export const createAppConfig = (entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn => {
+export function createAppConfig(entries: { [entryAlias: string]: string }, options: AppOptions = {}): UserConfigFn {
 	// Add default options
 	options = {
 		config: {},
 		nodePolyfills: {
 			protocolImports: true,
 		},
-		thirdPartyLicense: options.thirdPartyLicense === undefined ? 'js/vendor.LICENSE.txt' : options.thirdPartyLicense,
 		...options,
 	}
 
@@ -153,24 +156,18 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 				plugins.push(CSSEntryPointsPlugin({ createEmptyEntryPoints: options.createEmptyCSSEntryPoints }))
 			}
 
-			if (options.extractLicenseInformation && env.mode !== 'development') {
-				plugins.push(REUSELicensesPlugin(
-					typeof options.extractLicenseInformation === 'object'
-						? options.extractLicenseInformation
-						: {},
-				))
+			if (options.extractLicenseInformation !== false && env.mode !== 'development') {
+				plugins.push(REUSELicensesPlugin(typeof options.extractLicenseInformation === 'object'
+					? options.extractLicenseInformation
+					: {}))
 			}
 
 			// defaults to true so only not adding if explicitly set to false
 			if (options?.emptyOutputDirectory !== false) {
 				// Ensure `js/` is empty as we can not use the build in option (see below)
-				plugins.push(
-					EmptyJSDirPlugin(
-						typeof options.emptyOutputDirectory === 'object'
-							? options.emptyOutputDirectory
-							: undefined,
-					),
-				)
+				plugins.push(EmptyJSDirPlugin(typeof options.emptyOutputDirectory === 'object'
+					? options.emptyOutputDirectory
+					: undefined))
 			}
 
 			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
@@ -247,14 +244,14 @@ export const createAppConfig = (entries: { [entryAlias: string]: string }, optio
 							...(
 								options?.coreJS
 									? (
-										'rolldownVite' in vite
-											? {
-												advancedChunks: {
-													groups: [{ name: 'polyfill', test: /core-js/ }],
-												},
-											}
-											: { polyfill: ['core-js'] }
-									)
+											'rolldownVite' in vite
+												? {
+														advancedChunks: {
+															groups: [{ name: 'polyfill', test: /core-js/ }],
+														},
+													}
+												: { polyfill: ['core-js'] }
+										)
 									: {}
 							),
 						},

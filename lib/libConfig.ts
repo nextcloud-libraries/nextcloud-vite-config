@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import type { LibraryFormats, UserConfig, UserConfigFn, BuildOptions, Plugin, Rollup } from 'vite'
+import type { ExternalsOptions } from 'rollup-plugin-node-externals'
+import type { BuildOptions, LibraryFormats, Plugin, Rollup, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
+import { nodeExternals } from 'rollup-plugin-node-externals'
 import { mergeConfig } from 'vite'
-import { createBaseConfig } from './baseConfig.js'
-
 import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
-import { nodeExternals, type ExternalsOptions } from 'rollup-plugin-node-externals'
+import { createBaseConfig } from './baseConfig.js'
 import { ImportCSSPlugin } from './plugins/ImportCSS.js'
 
 type OutputOptions = BuildOptions['rollupOptions']['output']
@@ -19,6 +19,7 @@ type OutputOptions = BuildOptions['rollupOptions']['output']
 export interface LibraryOptions extends BaseOptions {
 	/**
 	 * Whether to minify the output
+	 *
 	 * @default false For libraries the code is not minified by default for better DX. Usually it is not needed: a library will be minified as a part of an app bundling.
 	 */
 	minify?: boolean
@@ -44,6 +45,7 @@ export interface LibraryOptions extends BaseOptions {
 
 	/**
 	 * Formats you like your library to be built
+	 *
 	 * @default ['es']
 	 */
 	libraryFormats?: LibraryFormats[]
@@ -62,9 +64,9 @@ export interface LibraryOptions extends BaseOptions {
  *
  * @param entries Entry points of your app
  * @param options Options to use
- * @return {UserConfigFn} The vite config
+ * @return The vite config
  */
-export const createLibConfig = (entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfigFn => {
+export function createLibConfig(entries: { [entryAlias: string]: string }, options: LibraryOptions = {}): UserConfigFn {
 	// Add default values for options
 	options = {
 		config: {},
@@ -128,7 +130,7 @@ export const createLibConfig = (entries: { [entryAlias: string]: string }, optio
 			}
 
 			// Manually define output options for file extensions
-			const outputOptions: OutputOptions = options.libraryFormats.map(format => {
+			const outputOptions: OutputOptions = options.libraryFormats.map((format) => {
 				const extension = format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)
 				return {
 					format,

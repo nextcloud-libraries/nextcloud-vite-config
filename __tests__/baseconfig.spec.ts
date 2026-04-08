@@ -4,21 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import { describe, expect, it } from 'vitest'
-import { BaseOptions, createBaseConfig } from '../lib/baseConfig'
-import { resolveConfig } from 'vite'
+import type { BaseOptions } from '../lib/baseConfig.ts'
 
-const createConfig = async (
-	command: 'build' | 'serve' = 'build',
-	mode: 'development' | 'production' = 'production',
-	options?: BaseOptions,
-) =>
-	await resolveConfig(
-		await createBaseConfig(
-			options,
-		)({ command, mode, isSsrBuild: false }),
+import { resolveConfig } from 'vite'
+import { describe, expect, it } from 'vitest'
+import { createBaseConfig } from '../lib/baseConfig.ts'
+
+async function createConfig(command: 'build' | 'serve' = 'build', mode: 'development' | 'production' = 'production', options?: BaseOptions) {
+	return await resolveConfig(
+		await createBaseConfig(options)({ command, mode, isSsrBuild: false }),
 		command,
 	)
+}
 
 describe('baseconfig', () => {
 	it('Correctly set minify option to false', async () => {
