@@ -13,7 +13,6 @@ import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { corejsPlugin } from 'rollup-plugin-corejs'
 import { mergeConfig } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
 
 export type NodePolyfillsOptions = Parameters<typeof nodePolyfills>[0]
 
@@ -100,9 +99,7 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 		return mergeConfig(
 			{
 				plugins: [
-				// Fix build in watch mode with commonjs files
-					RemoveEnsureWatchPlugin,
-					// Add vue 3 support
+				// Add vue 3 support
 					vue({
 						isProduction: !isDev,
 						style: {
