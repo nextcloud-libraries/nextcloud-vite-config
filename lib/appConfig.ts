@@ -9,12 +9,11 @@ import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 import type { EmptyJSDirPluginOptions } from './plugins/EmptyJSDir.js'
 import type { REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
 
-import { replacePlugin } from 'rolldown/plugins'
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 import { cwd } from 'node:process'
+import { replacePlugin } from 'rolldown/plugins'
 import { mergeConfig } from 'vite'
-import * as vite from 'vite'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 import { createBaseConfig } from './baseConfig.js'
 import { CSSEntryPointsPlugin } from './plugins/CSSEntryPoints.js'
@@ -167,11 +166,11 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
 			if (env.command === 'serve') {
 				plugins.push(replacePlugin({
-						appName: JSON.stringify(options.appName),
-						appVersion: JSON.stringify(appVersion),
-					}, {
-						delimiters: ['\\b', '\\b'],
-						preventAssignment: true,
+					appName: JSON.stringify(options.appName),
+					appVersion: JSON.stringify(appVersion),
+				}, {
+					delimiters: ['\\b', '\\b'],
+					preventAssignment: true,
 				}))
 			}
 
@@ -192,6 +191,10 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 						}
 					},
 				},
+				define: {
+					appName: JSON.stringify(options.appName),
+					appVersion: JSON.stringify(appVersion),
+				},
 				build: {
 					// Output dir is the project root to allow main style to be generated within `/css`
 					outDir: '',
@@ -201,8 +204,6 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 							...entries,
 						},
 						output: {
-							// global variables for appName and appVersion
-							intro: `const appName = ${JSON.stringify(options.appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
 							assetFileNames: (assetInfo) => {
 								// Allow to customize the asset file names
 								if (options.assetFileNames) {
