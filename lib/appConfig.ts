@@ -8,7 +8,7 @@ import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 import type { EmptyJSDirPluginOptions } from './plugins/EmptyJSDir.js'
 import type { REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
 
-import replace from '@rollup/plugin-replace'
+import { replacePlugin } from 'rolldown/plugins'
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 import { cwd } from 'node:process'
@@ -164,18 +164,13 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 			}
 
 			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
-			if (env.command === 'serve' && !vite.rolldownVersion) {
-				// Only needed for vite <= 7
-				const { default: replacePlugin } = await import('@rollup/plugin-replace')
-				// @ts-expect-error - types do not match with vite 8
+			if (env.command === 'serve') {
 				plugins.push(replacePlugin({
-					delimiters: ['\\b', '\\b'],
-					include: ['src/**'],
-					preventAssignment: true,
-					values: {
 						appName: JSON.stringify(options.appName),
 						appVersion: JSON.stringify(appVersion),
-					},
+					}, {
+						delimiters: ['\\b', '\\b'],
+						preventAssignment: true,
 				}))
 			}
 
