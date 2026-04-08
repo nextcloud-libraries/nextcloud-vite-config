@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.8.0 [UNRELEASED]
+### Notes
+The default options have been aligned with version 2 of this package.
+- `thirdPartyLicense` default to disabled
+- `extractLicenseInformation` default to enabled
+
 ## [v1.7.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v1.7.1...v1.7.2) (2025-10-20)
 ### Fixed
 * fix(REUSE): also add correct license headers for facade chunks [\#737](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/737)
