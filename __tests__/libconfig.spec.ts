@@ -91,6 +91,8 @@ describe('library config', () => {
 					main: 'src/main.js',
 				},
 				options,
-			)({ command, mode, isSsrBuild: false }), command)
+			)({ command, mode, isSsrBuild: false }),
+			command,
+		)
 	}
 })
