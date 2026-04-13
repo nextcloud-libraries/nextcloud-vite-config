@@ -3,6 +3,11 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/nextcloud-libraries/nextcloud-vite-config)](https://api.reuse.software/info/github.com/nextcloud-libraries/nextcloud-vite-config)
 [![npm last version](https://img.shields.io/npm/v/@nextcloud/vite-config.svg?style=flat-square)](https://www.npmjs.com/package/@nextcloud/vite-config) [![Project documentation](https://img.shields.io/badge/documentation-online-blue?style=flat-square)](https://nextcloud-libraries.github.io/nextcloud-vite-config/)
 
+<!--
+  - SPDX-FileCopyrightText: Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 Shared Vite ⚡ config for Nextcloud apps and libraries, which also can be easily extended.
 
 ## API reference
@@ -112,6 +117,11 @@ So for libraries the CSS will still be extracted by Vite, but the extracted CSS 
 This way the library user can decide how to handle the imported CSS without relying on a DOM environment.
 
 ## Development
+
+### Testing
+To make sure all use cases properly work using this configuration,
+we created some "end-to-end" tests for it. Those tests are placed
+inside the `tests/` directory and resemble small test apps.
 
 ### 📤 Releasing a new version
 

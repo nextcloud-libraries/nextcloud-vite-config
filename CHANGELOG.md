@@ -1,4 +1,8 @@
 # Changelog
+<!--
+  - SPDX-FileCopyrightText: Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 
 ## [v2.5.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.1...v2.5.2) (2025-10-20)
 ### 🐛 Fixed bugs
