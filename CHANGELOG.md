@@ -4,6 +4,15 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
+## v3.0.0 [UNRELEASED]
+### Breaking changes
+* This configuration is now only working with Vite v8 (rolldown / OXC based).
+* The `thirdPartyLicense` config option has been removed.
+  We recommend using SPDX headers, which is already the default for apps with the `extractLicenseInformation` option.
+  If you really need a bill-of-materials you can use the now native Vite option `build.license`.
+* This configuration version is now compatible with apps targeting Vue 3 and Vue 2.
+  For Vue 2 you will have to adjust your dependencies a bit, [more information can be found in the README](./README.md#use-with-vue-2).
+
 ## [v2.5.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.1...v2.5.2) (2025-10-20)
 ### 🐛 Fixed bugs
 * fix(REUSE): also add correct license headers for facade chunks [\#736](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/736) \([susnux](https://github.com/susnux)\)
