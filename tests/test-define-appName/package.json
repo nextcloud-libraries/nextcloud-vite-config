@@ -1,0 +1,12 @@
+{
+	"name": "test-define-app-name",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "vite build"
+	},
+	"dependencies": {
+		"sub": "file:./sub"
+	}
+}

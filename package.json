@@ -35,8 +35,9 @@
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"prerelease:format-changelog": "node build/format-changelog.mjs",
-		"test": "vitest run",
-		"test:coverage": "vitest run --coverage.enabled --coverage.all",
+		"pretest": "npm run build && npm pack && mv nextcloud-vite-config-*.tgz nextcloud-vite-config.tgz",
+		"test": "cd tests && npm run test",
+		"test:watch": "cd tests && npm run test:watch",
 		"ts:check": "tsc --noEmit"
 	},
 	"dependencies": {
