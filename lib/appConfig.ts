@@ -215,7 +215,7 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 
 								const [name] = assetInfo.names
 								const extType = name.split('.').pop()!
-								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+								if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(extType)) {
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
 									if (userConfig.build?.cssCodeSplit !== false) {
