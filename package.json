@@ -43,11 +43,11 @@
 	"dependencies": {
 		"browserslist-to-esbuild": "^2.1.1",
 		"magic-string": "^0.30.21",
-		"rolldown-plugin-dts": "^0.23.2",
 		"rollup-plugin-corejs": "^1.0.2",
 		"rollup-plugin-node-externals": "^8.1.2",
 		"spdx-expression-parse": "^4.0.0",
 		"vite-plugin-css-injected-by-js": "^4.0.1",
+		"vite-plugin-dts": "^4.5.4",
 		"vite-plugin-node-polyfills": "^0.26.0"
 	},
 	"devDependencies": {
