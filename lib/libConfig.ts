@@ -6,7 +6,7 @@
 
 import type { Options as DTSOptions } from 'rolldown-plugin-dts'
 import type { ExternalsOptions } from 'rollup-plugin-node-externals'
-import type { LibraryFormats, Plugin, Rolldown, Rollup, UserConfig, UserConfigFn } from 'vite'
+import type { LibraryFormats, Plugin, Rolldown, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
 
 import { dts as dtsPlugin } from 'rolldown-plugin-dts'
@@ -109,7 +109,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 			// Make sure we get a user config and not a promise or a user config function
 			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
-			const assetFileNames = (assetInfo: Rollup.PreRenderedAsset) => {
+			const assetFileNames = (assetInfo: Rolldown.PreRenderedAsset) => {
 				// Allow to customize the asset file names
 				if (options.assetFileNames) {
 					const customName = options.assetFileNames(assetInfo)
@@ -126,20 +126,6 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 				return 'assets/[name][extname]'
 			}
 
-			// Manually define output options for file extensions
-			const outputOptions: Rolldown.OutputOptions[] = options.libraryFormats!.map((format) => {
-				const extension = format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)
-				return {
-					format,
-					interop: 'auto', // Add __esModule for CJS externals imports to fix interop issues in tools like Babel/TS
-					hoistTransitiveImports: false, // For libraries this might otherwise introduce side effects
-					preserveModules: false,
-					assetFileNames,
-					entryFileNames: `[name].${extension}`,
-					chunkFileNames: `chunks/[name].${extension}`,
-				}
-			})
-
 			return mergeConfig({
 				plugins,
 				build: {
@@ -147,13 +133,20 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 						entry: {
 							...entries,
 						},
+						formats: options.libraryFormats,
+						fileName(format, entryName) {
+							return `${entryName}.${format === 'es' ? 'mjs' : (format === 'cjs' ? 'cjs' : `${format}.js`)}`
+						},
 						cssFileName: options.cssFileName,
 					},
 					cssCodeSplit: true,
 					outDir: 'dist',
-					rollupOptions: {
+					rolldownOptions: {
 						external: [/^core-js\//],
-						output: outputOptions,
+						output: {
+							hoistTransitiveImports: false, // Hoisting can cause issues with externals
+							assetFileNames,
+						},
 					},
 				},
 			} as UserConfig, userConfig as UserConfig)
