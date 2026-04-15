@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { OutputOptions, PreRenderedAsset } from 'rollup'
+import type { OutputOptions, PreRenderedAsset } from 'rolldown'
 import type { Plugin } from 'vite'
 
 import { basename, dirname, extname, join, normalize } from 'path'
@@ -41,7 +41,7 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 			 */
 			function fixupAssetFileNames(config: Required<OutputOptions['assetFileNames']>) {
 				// Return a wrapper function
-				return (info: PreRenderedAsset) => {
+				return (info: PreRenderedAsset): string => {
 					// If the original assets name option is a function we need to call it otherwise just use the template string
 					const name = typeof config === 'function' ? config(info) : config
 					// Only handle CSS files not extracted by this plugin
@@ -118,7 +118,6 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 							source: '',
 							name: 'name.css',
 							names: ['name.css'],
-							originalFileName: null,
 							originalFileNames: [],
 						}))
 
@@ -126,7 +125,6 @@ export function CSSEntryPointsPlugin(options?: CSSEntryPointsPluginOptions) {
 					type: 'asset',
 					name: `\0${cssName}`,
 					fileName: normalize(join(path, cssName)),
-					needsCodeReference: false,
 					source: `/* extracted by css-entry-points-plugin */\n${source}`,
 				})
 			}

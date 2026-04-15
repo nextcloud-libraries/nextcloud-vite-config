@@ -3,9 +3,12 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/nextcloud-libraries/nextcloud-vite-config)](https://api.reuse.software/info/github.com/nextcloud-libraries/nextcloud-vite-config)
 [![npm last version](https://img.shields.io/npm/v/@nextcloud/vite-config.svg?style=flat-square)](https://www.npmjs.com/package/@nextcloud/vite-config) [![Project documentation](https://img.shields.io/badge/documentation-online-blue?style=flat-square)](https://nextcloud-libraries.github.io/nextcloud-vite-config/)
 
-Shared Vite ⚡ config for Nextcloud apps and libraries, which also can be easily extended.
+<!--
+  - SPDX-FileCopyrightText: Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 
-**Please note version 2+ is for Vue 3 only, for Vue 2.7 use the 1.x version.**
+Shared Vite ⚡ config for Nextcloud apps and libraries, which also can be easily extended.
 
 ## API reference
 
@@ -82,6 +85,24 @@ export default createLibConfig({
 })
 ```
 
+### Use with Vue 2
+If you still require Vue 2 support this is possible by manually adjusting your dependencies
+to use the vue 2 plugin for vite instead.
+For this you need to override `@vitejs/plugin-vue` with `@vitejs/plugin-vue2` and adjust its peer dependencies,
+this can be done in the *package.json* like this:
+```diff
+ "devDependencies": {
+    "@nextcloud/vite-config": "^3.0.0",
++   "@vitejs/plugin-vue": "npm:@vitejs/plugin-vue2@>=2.3.4"
+    "vite": "^8.0.0"
+ },
++"overrides": {
++    "@vitejs/plugin-vue": {
++        "vite": "^8"
++    }
++}
+```
+
 ### Notes
 
 #### Inlining / injecting CSS
@@ -96,6 +117,11 @@ So for libraries the CSS will still be extracted by Vite, but the extracted CSS 
 This way the library user can decide how to handle the imported CSS without relying on a DOM environment.
 
 ## Development
+
+### Testing
+To make sure all use cases properly work using this configuration,
+we created some "end-to-end" tests for it. Those tests are placed
+inside the `tests/` directory and resemble small test apps.
 
 ### 📤 Releasing a new version
 

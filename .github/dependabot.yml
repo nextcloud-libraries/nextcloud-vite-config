@@ -16,6 +16,9 @@ updates:
   - package-ecosystem: npm
     target-branch: "main"
     directory: "/"
+    cooldown:
+      default-days: 4
+      semver-major-days: 8
     schedule:
       interval: "weekly"
       day: "saturday"
@@ -28,6 +31,44 @@ updates:
         patterns:
           - "vitest"
           - "@vitest/*"
+
+  - package-ecosystem: npm
+    target-branch: "main"
+    directories:
+      - "/tests"
+      - "/tests/*"
+    cooldown:
+      default-days: 8
+    schedule:
+      interval: "monthly"
+      day: "saturday"
+      time: "03:30"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 10
+    versioning-strategy: "increase"
+
+###################
+# STABLE BRANCHES #
+
+  - package-ecosystem: npm
+    target-branch: "stable2"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "03:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 10
+    versioning-strategy: "increase"
+    groups:
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+    ignore:
+      - dependency-name: "*"
+        # ignore all major updates
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: npm
     target-branch: "stable1"

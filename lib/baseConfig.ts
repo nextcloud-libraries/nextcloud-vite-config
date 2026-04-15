@@ -5,18 +5,14 @@
  */
 
 import type { CoreJSPluginOptions } from 'rollup-plugin-corejs'
-import type { Rollup, UserConfigExport, UserConfigFn } from 'vite'
+import type { Plugin, Rolldown, UserConfig, UserConfigExport, UserConfigFn } from 'vite'
 
-import replace from '@rollup/plugin-replace'
 import vue from '@vitejs/plugin-vue'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
-import { readFileSync } from 'node:fs'
+import { replacePlugin } from 'rolldown/plugins'
 import { corejsPlugin } from 'rollup-plugin-corejs'
-import { minify as minifyPlugin } from 'rollup-plugin-esbuild-minify'
-import license from 'rollup-plugin-license'
-import { defineConfig, mergeConfig } from 'vite'
+import { mergeConfig } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import { RemoveEnsureWatchPlugin } from './plugins/RemoveEnsureWatch.js'
 
 export type NodePolyfillsOptions = Parameters<typeof nodePolyfills>[0]
 
@@ -48,20 +44,14 @@ export interface BaseOptions {
 	 */
 	coreJS?: CoreJSPluginOptions
 	/**
-	 * Location of license summary file of third party dependencies
-	 *
-	 * @default false
-	 */
-	thirdPartyLicense?: string
-	/**
 	 * Customize the asset file names.
-	 * Similar to `output.assetFileNames` in rollup config,
+	 * Similar to `output.assetFileNames` in rolldown config,
 	 * but if returns undefined, then this config defaults is be used.
 	 *
 	 * @example Move CSS styles to `styles/style.css` instead of the default `css/[entrypoint-name].css`:
 	 *          (chunkInfo) => chunkInfo.names[0].endsWith('.css') ? 'styles/style.css' : undefined
 	 */
-	assetFileNames?: (chunkInfo: Rollup.PreRenderedAsset) => string | undefined
+	assetFileNames?: (chunkInfo: Rolldown.PreRenderedAsset) => string | undefined
 	/**
 	 * Vite config to override or extend the base config
 	 */
@@ -85,49 +75,29 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 		// Make sure we get a user config and not a promise or a user config function
 		const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
 
-		const plugins = []
+		const plugins: Plugin[] = []
 		// Add polyfills for node packages
 		if (options?.nodePolyfills) {
 			plugins.push(nodePolyfills(typeof options.nodePolyfills === 'object' ? options.nodePolyfills : {}))
 		}
 
 		// Replace global variables, built-in `define` option does not work (replaces also strings in 'node_modules/`)
-		if (Object.keys(options.replace).length > 0) {
-			plugins.push(replace({
+		if (Object.keys(options.replace ?? {}).length > 0) {
+			plugins.push(replacePlugin(options.replace, {
 				preventAssignment: true,
 				delimiters: ['\\b', '\\b'],
-				include: ['src/**/*', 'lib/**/*', 'node_modules/@nextcloud/vue/**/*'],
-				values: options.replace,
-			}))
+			}) as unknown as Plugin)
 		}
 
 		// Add required polyfills, by default browserslist config is used
 		if (options.coreJS !== undefined) {
-			plugins.push(corejsPlugin(options.coreJS))
-		}
-
-		// Add license header with all dependencies
-		if (options.thirdPartyLicense) {
-			const licenseTemplate = readFileSync(new URL('../banner-template.txt', import.meta.url), 'utf-8')
-
-			plugins.push(license({
-				thirdParty: {
-					output: {
-						file: options.thirdPartyLicense,
-						template: licenseTemplate,
-					},
-				},
-			}))
-			// Enforce the license is generated at the end so all dependencies are included
-			plugins.at(-1).enforce = 'post'
+			plugins.push(corejsPlugin(options.coreJS) as unknown as Plugin)
 		}
 
 		return mergeConfig(
-			defineConfig({
+			{
 				plugins: [
-				// Fix build in watch mode with commonjs files
-					RemoveEnsureWatchPlugin,
-					// Add vue 3 support
+				// Add vue 3 support
 					vue({
 						isProduction: !isDev,
 						style: {
@@ -136,29 +106,26 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 					}),
 					// Add custom plugins
 					...plugins,
-					// Remove unneeded whitespace
-					options?.minify ? minifyPlugin() : undefined,
 				],
-				esbuild: {
-					legalComments: 'inline',
+				oxc: {
 					target: browserslistToEsbuild(),
-					banner: options.thirdPartyLicense ? `/*! third party licenses: ${options.thirdPartyLicense} */` : undefined,
 				},
 				build: {
 					minify: !!options.minify,
 					cssTarget: browserslistToEsbuild(),
 					sourcemap: true,
 					target: browserslistToEsbuild(),
-					// fix watch mode if the output is within the input (base directory)
-					rollupOptions: {
-						watch: {
-							allowInputInsideOutputPath: true,
+					rolldownOptions: {
+						output: {
+							comments: {
+								legal: true,
+							},
 						},
 					},
 				},
-			}),
+			} satisfies UserConfig,
 			// Add overrides from user config
-			userConfig,
+			userConfig as UserConfig,
 		)
 	}
 }

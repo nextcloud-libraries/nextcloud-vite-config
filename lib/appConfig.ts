@@ -3,17 +3,17 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import type { OutputOptions } from 'rolldown'
 import type { Plugin, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions, NodePolyfillsOptions } from './baseConfig.js'
 import type { EmptyJSDirPluginOptions } from './plugins/EmptyJSDir.js'
 import type { REUSELicensesPluginOptions } from './plugins/REUSELicensesPlugin.js'
 
-import replace from '@rollup/plugin-replace'
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 import { cwd } from 'node:process'
+import { replacePlugin } from 'rolldown/plugins'
 import { mergeConfig } from 'vite'
-import * as vite from 'vite'
 import injectCSSPlugin from 'vite-plugin-css-injected-by-js'
 import { createBaseConfig } from './baseConfig.js'
 import { CSSEntryPointsPlugin } from './plugins/CSSEntryPoints.js'
@@ -70,13 +70,6 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	nodePolyfills?: boolean | NodePolyfillsOptions
 
 	/**
-	 * Location of license summary file of third party dependencies
-	 *
-	 * @default undefined (no BOM generated)
-	 */
-	thirdPartyLicense?: string
-
-	/**
 	 * Extract license information from built assets into `.license` files
 	 * This is needed to be REUSE complient.
 	 *
@@ -112,8 +105,8 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 	const appinfo = findAppinfo(cwd())
 	if (appinfo) {
 		const content = String(readFileSync(appinfo))
-		const version = content.match(/<version>([^<]+)<\/version>/i)[1]
-		const id = content.match(/<id>([^<]+)<\/id>/i)[1]
+		const version = content.match(/<version>([^<]+)<\/version>/i)![1]
+		const id = content.match(/<id>([^<]+)<\/id>/i)![1]
 
 		if (version) {
 			appVersion = version
@@ -122,12 +115,12 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 			options.appName = id
 		}
 	} else {
-		appVersion = process.env.npm_package_version
+		appVersion = process.env.npm_package_version ?? '0.0.0'
 	}
 
 	if (!options.appName) {
 		console.warn('No app name configured, falling back to name from `package.json`')
-		options.appName = process.env.npm_package_name
+		options.appName = process.env.npm_package_name ?? 'unknown'
 	}
 
 	return createBaseConfig({
@@ -139,7 +132,7 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 
 			// This config is used to extend or override our base config
 			// Make sure we get a user config and not a promise or a user config function
-			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config)
+			const userConfig = await Promise.resolve(typeof options.config === 'function' ? options.config(env) : options.config) ?? {}
 
 			const plugins = [] as Plugin[]
 			// Inject all imported styles into the javascript bundle by creating dynamic styles on the document
@@ -172,14 +165,12 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 
 			// When building in serve mode (e.g. unit tests with vite) the intro option below will be ignored, so we must replace that values
 			if (env.command === 'serve') {
-				plugins.push(replace({
+				plugins.push(replacePlugin({
+					appName: JSON.stringify(options.appName),
+					appVersion: JSON.stringify(appVersion),
+				}, {
 					delimiters: ['\\b', '\\b'],
-					include: ['src/**'],
 					preventAssignment: true,
-					values: {
-						appName: JSON.stringify(options.appName),
-						appVersion: JSON.stringify(appVersion),
-					},
 				}))
 			}
 
@@ -200,17 +191,19 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 						}
 					},
 				},
+				define: {
+					appName: JSON.stringify(options.appName),
+					appVersion: JSON.stringify(appVersion),
+				},
 				build: {
 					// Output dir is the project root to allow main style to be generated within `/css`
 					outDir: '',
 					emptyOutDir: false, // ensure project root is NOT emptied!
-					rollupOptions: {
+					rolldownOptions: {
 						input: {
 							...entries,
 						},
 						output: {
-							// global variables for appName and appVersion
-							intro: `const appName = ${JSON.stringify(options.appName)}; const appVersion = ${JSON.stringify(appVersion)};`,
 							assetFileNames: (assetInfo) => {
 								// Allow to customize the asset file names
 								if (options.assetFileNames) {
@@ -221,8 +214,8 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 								}
 
 								const [name] = assetInfo.names
-								const extType = name.split('.').pop()
-								if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+								const extType = name.split('.').pop()!
+								if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(extType)) {
 									return 'img/[name][extname]'
 								} else if (/css/i.test(extType)) {
 									if (userConfig.build?.cssCodeSplit !== false) {
@@ -243,15 +236,11 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 							},
 							...(
 								options?.coreJS
-									? (
-											'rolldownVite' in vite
-												? {
-														advancedChunks: {
-															groups: [{ name: 'polyfill', test: /core-js/ }],
-														},
-													}
-												: { polyfill: ['core-js'] }
-										)
+									? {
+											codeSplitting: {
+												groups: [{ name: 'polyfill', test: /core-js/ }],
+											},
+										} as Partial<OutputOptions>
 									: {}
 							),
 						},
