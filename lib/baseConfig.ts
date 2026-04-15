@@ -5,7 +5,7 @@
  */
 
 import type { CoreJSPluginOptions } from 'rollup-plugin-corejs'
-import type { Plugin, Rollup, UserConfig, UserConfigExport, UserConfigFn } from 'vite'
+import type { Plugin, Rolldown, UserConfig, UserConfigExport, UserConfigFn } from 'vite'
 
 import vue from '@vitejs/plugin-vue'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
@@ -45,13 +45,13 @@ export interface BaseOptions {
 	coreJS?: CoreJSPluginOptions
 	/**
 	 * Customize the asset file names.
-	 * Similar to `output.assetFileNames` in rollup config,
+	 * Similar to `output.assetFileNames` in rolldown config,
 	 * but if returns undefined, then this config defaults is be used.
 	 *
 	 * @example Move CSS styles to `styles/style.css` instead of the default `css/[entrypoint-name].css`:
 	 *          (chunkInfo) => chunkInfo.names[0].endsWith('.css') ? 'styles/style.css' : undefined
 	 */
-	assetFileNames?: (chunkInfo: Rollup.PreRenderedAsset) => string | undefined
+	assetFileNames?: (chunkInfo: Rolldown.PreRenderedAsset) => string | undefined
 	/**
 	 * Vite config to override or extend the base config
 	 */
@@ -107,8 +107,7 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 					// Add custom plugins
 					...plugins,
 				],
-				esbuild: {
-					legalComments: 'inline',
+				oxc: {
 					target: browserslistToEsbuild(),
 				},
 				build: {
@@ -116,14 +115,15 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 					cssTarget: browserslistToEsbuild(),
 					sourcemap: true,
 					target: browserslistToEsbuild(),
-					// fix watch mode if the output is within the input (base directory)
-					rollupOptions: {
-						watch: {
-							allowInputInsideOutputPath: true,
+					rolldownOptions: {
+						output: {
+							comments: {
+								legal: true,
+							},
 						},
 					},
 				},
-			},
+			} satisfies UserConfig,
 			// Add overrides from user config
 			userConfig as UserConfig,
 		)
