@@ -62,13 +62,13 @@
 		"eslint": "^10.2.1",
 		"typedoc": "^0.28.19",
 		"typescript": "^5.9.3",
-		"vite": "^7.3.1",
+		"vite": "^8.0.9",
 		"vitest": "^4.0.7"
 	},
 	"peerDependencies": {
 		"browserslist": ">=4.0",
 		"sass": ">=1.60",
-		"vite": "^7.3.1"
+		"vite": "^8.0.9"
 	},
 	"engines": {
 		"node": "^20 || ^22 || ^24"
