@@ -159,6 +159,11 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 							hoistTransitiveImports: false, // Hoisting can cause issues with externals
 							assetFileNames,
 							chunkFileNames: 'chunks/[name]-[hash].js',
+							comments: {
+								annotation: true, // keep PURE annotations
+								jsdoc: !options.minify,
+								legal: !options.minify,
+							},
 						},
 					},
 				},

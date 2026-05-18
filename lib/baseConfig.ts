@@ -115,13 +115,6 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 					cssTarget: browserslistToEsbuild(),
 					sourcemap: true,
 					target: browserslistToEsbuild(),
-					rolldownOptions: {
-						output: {
-							comments: {
-								legal: true,
-							},
-						},
-					},
 				},
 			} satisfies UserConfig,
 			// Add overrides from user config
