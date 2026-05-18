@@ -1,7 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`app config > replaces process.env 1`] = `
-"var e={};window.my_timezone=e.TZ;
-//# sourceMappingURL=@nextcloud-vite-config-main.mjs.map
-"
-`;

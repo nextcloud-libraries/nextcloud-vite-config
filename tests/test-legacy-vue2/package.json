@@ -1,0 +1,22 @@
+{
+	"name": "test-legacy-vue2",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "vite build"
+	},
+	"overrides": {
+		"@vitejs/plugin-vue": {
+			"vite": "^8"
+		}
+	},
+	"dependencies": {
+		"vue": "^2.7.16"
+	},
+	"devDependencies": {
+		"@nextcloud/vite-config": "file:../../nextcloud-vite-config.tgz",
+		"@vitejs/plugin-vue": "npm:@vitejs/plugin-vue2@^2.3.4",
+		"vite": "^8.0.8"
+	}
+}
