@@ -243,12 +243,11 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 							chunkFileNames: () => {
 								return 'js/[name]-[hash].chunk.mjs'
 							},
-							strictExecutionOrder: false,
+							strictExecutionOrder: true,
 							codeSplitting: options.codeSplitting ?? {
 								groups: [
 									...(options?.coreJS ? [{ name: 'polyfill', test: /core-js/ }] : []),
-									{ name: 'common', test: /(^\0|[\\/]node_modules[\\/])/, minShareCount: 2 },
-									{ name: 'vendor', test: /(^\0|[\\/]node_modules[\\/])/, maxSize: 820_000, minSize: 100_000, entriesAware: true, entriesAwareMergeThreshold: 100_000 },
+									...(Object.keys(entries).length > 1 ? [{ name: 'vendor', test: /(^\0|[\\/]node_modules[\\/])/, entriesAware: true, entriesAwareMergeThreshold: 20_000 }] : []),
 								],
 							},
 						},
