@@ -76,6 +76,15 @@ export interface AppOptions extends Omit<BaseOptions, 'inlineCSS'> {
 	 * @default {}
 	 */
 	extractLicenseInformation?: REUSELicensesPluginOptions | false
+
+	/**
+	 * Override the default code splitting configuration for the app build.
+	 * By default, code splitting is configured to create separate chunks for common dependencies and vendor libraries.
+	 * You can provide your own configuration to customize how the code is split into chunks.
+	 *
+	 * @see https://rolldown.rs/reference/OutputOptions.codeSplitting
+	 */
+	codeSplitting?: OutputOptions['codeSplitting']
 }
 
 /**
@@ -234,15 +243,13 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 							chunkFileNames: () => {
 								return 'js/[name]-[hash].chunk.mjs'
 							},
-							...(
-								options?.coreJS
-									? {
-											codeSplitting: {
-												groups: [{ name: 'polyfill', test: /core-js/ }],
-											},
-										} as Partial<OutputOptions>
-									: {}
-							),
+							strictExecutionOrder: true,
+							codeSplitting: options.codeSplitting ?? {
+								groups: [
+									...(options?.coreJS ? [{ name: 'polyfill', test: /core-js/ }] : []),
+									...(Object.keys(entries).length > 1 ? [{ name: 'vendor', test: /(^\0|[\\/]node_modules[\\/])/, entriesAware: true, entriesAwareMergeThreshold: 20_000 }] : []),
+								],
+							},
 						},
 					},
 				},
