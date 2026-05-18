@@ -243,6 +243,7 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 							chunkFileNames: () => {
 								return 'js/[name]-[hash].chunk.mjs'
 							},
+							comments: !(options.minify ?? env.mode === 'production'),
 							strictExecutionOrder: true,
 							codeSplitting: options.codeSplitting ?? {
 								groups: [
