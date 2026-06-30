@@ -12,7 +12,7 @@
 		}
 	},
 	"dependencies": {
-		"vue": "^2.7.16"
+		"vue": "^3.5.38"
 	},
 	"devDependencies": {
 		"@nextcloud/vite-config": "file:../../nextcloud-vite-config.tgz",
