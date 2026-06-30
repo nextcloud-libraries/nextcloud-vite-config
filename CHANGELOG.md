@@ -5,6 +5,12 @@
 -->
 
 ## v3.0.0 [UNRELEASED]
+### ⚠️ Warning
+For the moment we strongly recommend to only use Vite v8 for bundling libraries.
+Bundling apps can lead to increase number of chunks due to some issues with the new rolldown backend.
+For this please track the upstream issue:
+- https://github.com/rolldown/rolldown/issues/9463
+
 ### Breaking changes
 * This configuration is now only working with Vite v8 (rolldown / OXC based).
 * The `thirdPartyLicense` config option has been removed.
