@@ -1,0 +1,21 @@
+{
+	"name": "@nextcloud/vite-config-tests",
+	"private": true,
+	"workspaces": [
+		"test-*",
+		"!test-legacy-vue2"
+	],
+	"scripts": {
+		"pretest": "sh ./prepare-tests.sh",
+		"test": "vitest run",
+		"pretest:watch": "npm run pretest",
+		"test:watch": "vitest"
+	},
+	"dependencies": {
+		"@nextcloud/vite-config": "file:../nextcloud-vite-config.tgz"
+	},
+	"devDependencies": {
+		"@vitest/browser-playwright": "^4.1.4",
+		"vitest": "^4.1.4"
+	}
+}

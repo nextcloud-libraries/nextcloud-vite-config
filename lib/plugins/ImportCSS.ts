@@ -32,6 +32,10 @@ export const ImportCSSPlugin: () => Plugin = () => {
 		generateBundle(options, bundle) {
 			for (const filename in bundle) {
 				const chunk = bundle[filename]
+				if (chunk.type !== 'chunk') {
+					continue
+				}
+
 				// Make sure chunk is an output chunk with meta data
 				if (!('viteMetadata' in chunk) || !chunk.viteMetadata) {
 					continue
@@ -44,7 +48,7 @@ export const ImportCSSPlugin: () => Plugin = () => {
 				}
 
 				// Inject the referenced style files at the top of the chunk.
-				const ms = new MagicString(chunk.code)
+				const ms = new MagicString(chunk.code, { filename: chunk.fileName })
 				for (const cssFileName of importedCss) {
 					let cssFilePath = relative(dirname(chunk.fileName), cssFileName)
 					cssFilePath = cssFilePath.startsWith('.') ? cssFilePath : `./${cssFilePath}`
@@ -55,6 +59,7 @@ export const ImportCSSPlugin: () => Plugin = () => {
 					}
 				}
 				chunk.code = ms.toString()
+				// @ts-expect-error - currently broken rolldown types (but we ensure its correct by passing the filename to MagicString)
 				chunk.map = ms.generateMap()
 			}
 		},
