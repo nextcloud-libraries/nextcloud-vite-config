@@ -6,11 +6,12 @@
 
 import type { ExternalsOptions } from 'rollup-plugin-node-externals'
 import type { BuildOptions, LibraryFormats, Plugin, Rollup, UserConfig, UserConfigFn } from 'vite'
+import type { PluginOptions as DTSOptions } from 'vite-plugin-dts'
 import type { BaseOptions } from './baseConfig.js'
 
 import { nodeExternals } from 'rollup-plugin-node-externals'
 import { mergeConfig } from 'vite'
-import DTSPlugin, { type PluginOptions as DTSOptions } from 'vite-plugin-dts'
+import DTSPlugin from 'vite-plugin-dts'
 import { createBaseConfig } from './baseConfig.js'
 import { ImportCSSPlugin } from './plugins/ImportCSS.js'
 
