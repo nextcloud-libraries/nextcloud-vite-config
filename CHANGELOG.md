@@ -18,6 +18,33 @@ For this please track the upstream issue:
   If you really need a bill-of-materials you can use the now native Vite option `build.license`.
 * This configuration version is now compatible with apps targeting Vue 3 and Vue 2.
   For Vue 2 you will have to adjust your dependencies a bit, [more information can be found in the README](./README.md#use-with-vue-2).
+* Node 22.12+ is the now the minimum supported Node version
+
+### Other changes
+* The configuration officially supports the upcoming LTS Node 26
+* Vite 8.1+ is now a peer dependency
+* `vite-plugin-dts` has been replaced with `rolldown-plugin-dts`
+* Updated dependencies:
+  * Bump `vite-plugin-css-injected-by-js` to 5.0.1
+
+## [v2.5.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.2...v2.5.3) (2026-06-30)
+## What's Changed
+### 🐛 Fixed bugs
+* fix(lib): remove extra `formats` option [\#771](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/771)
+* fix(lib): remove hash from the file names [\#772](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/772)
+
+### Other changes
+* chore: update Node and NPM dev versions to align with apps [\#757](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/757)
+* chore: migrate code linting to ESLint v10 and eslint config v9 [\#855](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/855)
+* Updated dependencies:
+  * Bump `rollup-plugin-corejs` to 1.0.2
+  * Bump `@rollup/plugin-replace` to 6.0.3
+  * Bump `@vitejs/plugin-vue` to 6.0.4
+  * Bump `vite-plugin-css-injected-by-js`
+  * Bump `rollup-plugin-license` to 3.7.1
+  * Bump `rollup-plugin-node-externals` to 9.0.1
+  * Bump `vite-plugin-node-polyfills` to 0.28.0
+* ci: update all workflow templates from organization template repository
 
 ## [v2.5.2](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.1...v2.5.2) (2025-10-20)
 ### 🐛 Fixed bugs
