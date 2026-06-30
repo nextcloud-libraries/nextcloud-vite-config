@@ -15,7 +15,7 @@
 		"@nextcloud/vite-config": "file:../nextcloud-vite-config.tgz"
 	},
 	"devDependencies": {
-		"@vitest/browser-playwright": "^4.1.4",
+		"@vitest/browser-playwright": "^4.1.9",
 		"vitest": "^4.1.4"
 	}
 }
