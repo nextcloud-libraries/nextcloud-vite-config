@@ -6,6 +6,10 @@
 	"bugs": {
 		"url": "https://github.com/nextcloud-libraries/nextcloud-vite-config/issues"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nextcloud-libraries/nextcloud-vite-config.git"
+	},
 	"license": "AGPL-3.0-or-later",
 	"author": "Nextcloud GmbH and Nextcloud contributors",
 	"contributors": [
