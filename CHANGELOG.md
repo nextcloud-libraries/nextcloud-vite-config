@@ -1,7 +1,11 @@
 # Changelog
 
+## [v2.5.4](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.3...v2.5.4) (2026-06-30)
+### Other changes
+* Fixed dependencies in provided distribution files
+* fix: add missing `repository` key to package.json [\#944](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/944)
+
 ## [v2.5.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.2...v2.5.3) (2026-06-30)
-## What's Changed
 ### 🐛 Fixed bugs
 * fix(lib): remove extra `formats` option [\#771](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/771)
 * fix(lib): remove hash from the file names [\#772](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/772)
