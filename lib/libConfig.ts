@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import type { Options as DtsPluginOptions } from 'rolldown-plugin-dts'
 import type { ExternalsOptions } from 'rollup-plugin-node-externals'
 import type { LibraryFormats, Plugin, Rolldown, UserConfig, UserConfigFn } from 'vite'
 import type { BaseOptions } from './baseConfig.js'
@@ -35,13 +36,15 @@ export interface LibraryOptions extends BaseOptions {
 	/**
 	 * Options for the Vite DTS plugin
 	 *
-	 * This plugin allows to create .d.ts files for your library including the .vue files
-	 * Pass `false` to disable the plugin
+	 * This plugin allows to create .d.ts files for your library including the .vue files.
+	 * Pass `false` to disable the plugin and not generate any .d.ts files.
+	 * If you do not use Vue in your project set `{ vue: false }` to disable the Vue support and speed up the build.
+	 * Otherwise you can also directly set any of the options of the `rolldown-plugin-dts` plugin.
 	 */
 	DtsPluginOptions?: false | {
 		/** If set to false no Vue types will be generated */
 		vue?: boolean
-	}
+	} & DtsPluginOptions
 
 	/**
 	 * Formats you like your library to be built
@@ -107,6 +110,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 					vue: options.DtsPluginOptions?.vue ?? true,
 					parallel: options.DtsPluginOptions?.vue ?? true,
 					oxc: options.DtsPluginOptions?.vue === false, // Oxc is faster but does not support .vue files
+					...options.DtsPluginOptions,
 				})) as Plugin[])
 			}
 
