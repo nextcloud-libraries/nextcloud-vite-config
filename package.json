@@ -60,7 +60,7 @@
 		"@types/spdx-expression-parse": "^4.0.0",
 		"@vitest/coverage-v8": "^4.1.9",
 		"eslint": "^10.6.0",
-		"typedoc": "^0.28.19",
+		"typedoc": "^0.28.20",
 		"typescript": "^6.0.3",
 		"vite": "^8.1.1",
 		"vitest": "^4.1.9"
