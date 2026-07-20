@@ -47,7 +47,7 @@
 	"dependencies": {
 		"browserslist-to-esbuild": "^2.1.1",
 		"magic-string": "^0.30.21",
-		"rolldown-plugin-dts": "^0.27.1",
+		"rolldown-plugin-dts": "^0.27.9",
 		"rollup-plugin-corejs": "^1.0.2",
 		"rollup-plugin-node-externals": "^9.0.1",
 		"spdx-expression-parse": "^4.0.0",
