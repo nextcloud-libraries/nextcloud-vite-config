@@ -17,6 +17,6 @@
 	"devDependencies": {
 		"@nextcloud/vite-config": "file:../../nextcloud-vite-config.tgz",
 		"@vitejs/plugin-vue": "npm:@vitejs/plugin-vue2@^2.3.4",
-		"vite": "^8.0.8"
+		"vite": "^8.1.5"
 	}
 }
