@@ -109,7 +109,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 				plugins.push(...(dtsPlugin({
 					vue: options.DtsPluginOptions?.vue ?? true,
 					parallel: options.DtsPluginOptions?.vue ?? true,
-					oxc: options.DtsPluginOptions?.vue === false, // Oxc is faster but does not support .vue files
+					oxc: options.DtsPluginOptions?.vue === false ? { stripInternal: true } : undefined, // Oxc is faster but does not support .vue files
 					...options.DtsPluginOptions,
 				})) as Plugin[])
 			}
