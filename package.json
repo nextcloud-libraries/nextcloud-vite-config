@@ -51,7 +51,7 @@
 		"rollup-plugin-corejs": "^1.0.2",
 		"rollup-plugin-node-externals": "^9.0.1",
 		"spdx-expression-parse": "^5.0.0",
-		"vite-plugin-css-injected-by-js": "^5.0.1",
+		"vite-plugin-css-injected-by-js": "^5.0.2",
 		"vite-plugin-node-polyfills": "^0.28.0"
 	},
 	"devDependencies": {
