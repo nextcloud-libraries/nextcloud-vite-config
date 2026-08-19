@@ -18,17 +18,25 @@ For this please track the upstream issue:
   If you really need a bill-of-materials you can use the now native Vite option `build.license`.
 * This configuration version is now compatible with apps targeting Vue 3 and Vue 2.
   For Vue 2 you will have to adjust your dependencies a bit, [more information can be found in the README](./README.md#use-with-vue-2).
-* Node 22.12+ is the now the minimum supported Node version
+* Node 22.18+ is the now the minimum supported Node version
+
+### 🚀 Enhancements
+* feat(lib): allow to override DTS plugin options [\#947](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/947) \([susnux](https://github.com/susnux)\)
+
+### 🐛 Fixed bugs
+* fix: improve chunking behavior when using the app config [\#1003](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/1003) \([susnux](https://github.com/susnux)\)
 
 ### Other changes
 * The configuration officially supports the upcoming LTS Node 26
 * Vite 8.1+ is now a peer dependency
 * `vite-plugin-dts` has been replaced with `rolldown-plugin-dts`
 * Updated dependencies:
-  * Bump `vite-plugin-css-injected-by-js` to 5.0.1
+  * Bump `magic-string` to 1.2.0
+  * Bump `spdx-expression-parse` to 5.0.0
+  * Bump `vite-plugin-css-injected-by-js` to 5.0.2
+  * Bump `rolldown-plugin-dts` to 0.28.2
 
 ## [v2.5.3](https://github.com/nextcloud-libraries/nextcloud-vite-config/compare/v2.5.2...v2.5.3) (2026-06-30)
-## What's Changed
 ### 🐛 Fixed bugs
 * fix(lib): remove extra `formats` option [\#771](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/771)
 * fix(lib): remove hash from the file names [\#772](https://github.com/nextcloud-libraries/nextcloud-vite-config/pull/772)
