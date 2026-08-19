@@ -245,12 +245,17 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 							},
 							comments: !(options.minify ?? env.mode === 'production'),
 							strictExecutionOrder: true,
-							codeSplitting: options.codeSplitting ?? {
-								groups: [
-									...(options?.coreJS ? [{ name: 'polyfill', test: /core-js/ }] : []),
-									...(Object.keys(entries).length > 1 ? [{ name: 'vendor', test: /(^\0|[\\/]node_modules[\\/])/, entriesAware: true, entriesAwareMergeThreshold: 20_000 }] : []),
-								],
-							},
+							codeSplitting: options.codeSplitting ?? (Object.keys(entries).length === 1
+								? false // no code splitting for single entry point by default
+								: {
+										// No `maxSize` here because of rolldown bug: https://github.com/rolldown/rolldown/issues/10718
+										// `maxSize` chunking is applied before tree shaking -> adds unnecessary chunks and increases the size of the final build
+										groups: [
+											{ name: 'shared', minShareCount: 2, minSize: 70_000 },
+											{ name: 'common', entriesAware: true, entriesAwareMergeThreshold: 90_000, minSize: 70_000 },
+											{ name: 'remain' },
+										],
+									}),
 						},
 					},
 				},
