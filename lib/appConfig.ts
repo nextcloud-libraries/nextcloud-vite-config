@@ -229,6 +229,9 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 								} else if (/css/i.test(extType)) {
 									if (userConfig.build?.cssCodeSplit !== false) {
 										// we need hashed css name for css chunks as a cache buster
+										if (env.mode === 'production') {
+											return 'css/[hash].css'
+										}
 										return 'css/[name]-[hash].css'
 									}
 									return `css/${assetsPrefix}[name].css`
@@ -241,6 +244,10 @@ export function createAppConfig(entries: { [entryAlias: string]: string }, optio
 								return `js/${assetsPrefix}[name].mjs`
 							},
 							chunkFileNames: () => {
+								if (env.mode === 'production') {
+									// shorter names in production reduce also imports and so filesize
+									return 'js/[hash].chunk.mjs'
+								}
 								return 'js/[name]-[hash].chunk.mjs'
 							},
 							comments: !(options.minify ?? env.mode === 'production'),
