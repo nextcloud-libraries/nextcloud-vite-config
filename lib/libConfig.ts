@@ -60,6 +60,15 @@ export interface LibraryOptions extends BaseOptions {
 	 * @default `style.css`
 	 */
 	cssFileName?: string
+
+	/**
+	 * Emit every source module as its own file instead of bundling each entry point.
+	 * This lets the consuming app tree-shake and code-split the library per module.
+	 * Combine it with `"sideEffects": false` in the library package.json.
+	 *
+	 * @default false
+	 */
+	preserveModules?: boolean
 }
 
 /**
@@ -161,6 +170,7 @@ export function createLibConfig(entries: { [entryAlias: string]: string }, optio
 						external: [/^core-js\//],
 						output: {
 							hoistTransitiveImports: false, // Hoisting can cause issues with externals
+							preserveModules: options.preserveModules,
 							assetFileNames,
 							chunkFileNames: 'chunks/[name]-[hash].js',
 							comments: {
