@@ -53,6 +53,18 @@ export interface BaseOptions {
 	 */
 	assetFileNames?: (chunkInfo: Rolldown.PreRenderedAsset) => string | undefined
 	/**
+	 * Tell the Vue 3 template compiler which tags are custom elements, rather
+	 * than components to resolve, e.g. `<nc-viewer-file>` from
+	 * `@nextcloud/viewer`. Without it Vue tries to resolve such a tag as a
+	 * component and warns on every render.
+	 *
+	 * Match tags explicitly: a prefix like `nc-` would also catch
+	 * `<nc-button>` written for the `NcButton` component.
+	 *
+	 * @example (tag) => tag === 'nc-viewer-file'
+	 */
+	isCustomElement?: (tag: string) => boolean
+	/**
 	 * Vite config to override or extend the base config
 	 */
 	config?: UserConfigExport
@@ -103,6 +115,9 @@ export function createBaseConfig(options: BaseOptions = {}): UserConfigFn {
 						style: {
 							trim: true,
 						},
+						template: options.isCustomElement
+							? { compilerOptions: { isCustomElement: options.isCustomElement } }
+							: undefined,
 					}),
 					// Add custom plugins
 					...plugins,
