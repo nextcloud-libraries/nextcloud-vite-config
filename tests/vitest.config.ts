@@ -14,11 +14,19 @@ export default defineConfig({
 					name: 'E2E tests',
 					setupFiles: 'setup.ts',
 					browser: {
-						provider: playwright(),
+						provider: playwright({
+							launchOptions: {
+								channel: process.CI ? 'chrome' : 'chromium',
+							},
+						}),
 						enabled: true,
 						// at least one instance is required
 						instances: [
-							{ browser: 'chromium', headless: true, exclude: ['**/node_modules/**', '**/.git/**', '**.node.spec.ts'] },
+							{
+								browser: 'chromium',
+								headless: true,
+								exclude: ['**/node_modules/**', '**/.git/**', '**.node.spec.ts'],
+							},
 						],
 					},
 				},
