@@ -72,7 +72,7 @@
 		"vite": ">=8.2"
 	},
 	"engines": {
-		"node": "^22.18 || ^24 || >=26.0.0"
+		"node": "^24.11.0 || >=26.0.0"
 	},
 	"devEngines": {
 		"packageManager": [
@@ -84,7 +84,7 @@
 		],
 		"runtime": {
 			"name": "node",
-			"version": "^24",
+			"version": "^24.11.0",
 			"onFail": "error"
 		}
 	}
